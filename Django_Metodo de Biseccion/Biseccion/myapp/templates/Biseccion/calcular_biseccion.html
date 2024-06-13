@@ -46,6 +46,10 @@
                     <button type="submit">Generar PDF</button>
                 </form>
                 -->
+            {% if grafica_base64 %}
+                <h2>Gráfica:</h2>
+                <img src="data:image/png;base64,{{ grafica_base64 }}" alt="Gráfica de la función y raíz encontrada">
+            {% endif %}
             {% endif %}
         </div>
         <style>

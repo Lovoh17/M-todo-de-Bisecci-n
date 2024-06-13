@@ -10,9 +10,16 @@ from sympy import symbols, lambdify
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 import json
+import numpy as np
+import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
 
 def home(request):
     return render(request ,'Biseccion/home.html')
+
+def login_forms(request):
+    return render(request, 'Biseccion/login.html',)
 
 def biseccion(ecuacion, a, b, tol_porcentual, max_iter=100):
     try:
@@ -23,6 +30,12 @@ def biseccion(ecuacion, a, b, tol_porcentual, max_iter=100):
 
     iter_count = 0
     iteraciones = []
+
+    # Arrays para graficar la función y la raíz
+    x_vals = np.linspace(a, b, 400)
+    y_vals = f(x_vals)
+    root_x_vals = []
+    root_y_vals = []
 
     while True:
         iter_count += 1
@@ -55,6 +68,10 @@ def biseccion(ecuacion, a, b, tol_porcentual, max_iter=100):
         if iter_count >= max_iter:
             break
 
+        # Actualizar valores para graficar la raíz
+        root_x_vals.append(midpoint)
+        root_y_vals.append(f(midpoint))
+
     raiz_aproximada = (a + b) / 2.0
     error_absoluto = abs(b - a) / 2.0
     
@@ -72,15 +89,14 @@ def biseccion(ecuacion, a, b, tol_porcentual, max_iter=100):
     # Agregar la última iteración a iteraciones
     iteraciones.append([iter_count, raiz_aproximada, error_absoluto, error_porcentual])
 
-    return raiz_aproximada, iter_count, error_absoluto, iteraciones, error_porcentual
+    return raiz_aproximada, iter_count, error_absoluto, iteraciones, error_porcentual, x_vals, y_vals, root_x_vals, root_y_vals
 
-def login_forms(request):
-    return render(request, 'Biseccion/login.html',)
 
 #Usamos la funcion de la vista para traer los datos y mostrarlos
 def calcular_biseccion(request):
     resultado_biseccion = None
     mensaje = None
+    grafica_base64 = None
 
     if request.method == 'POST':
         form = BiseecionForm(request.POST)
@@ -95,6 +111,26 @@ def calcular_biseccion(request):
                 ecuacion = sympify(ec_values, locals={'sin': sin, 'cos': cos, 'tan': tan, 'exp': exp})
                 resultado_biseccion = biseccion(ecuacion, valor_min, valor_max, error_porcentual)
                 form = BiseecionForm()
+
+                # Obtener datos para graficar
+                raiz_aproximada, _, _, _, _, x_vals, y_vals, root_x_vals, root_y_vals = resultado_biseccion
+
+                # Graficar la función y la raíz encontrada
+                plt.figure(figsize=(8, 6))
+                plt.plot(x_vals, y_vals, label='Función')
+                plt.scatter(root_x_vals, root_y_vals, color='red', label='Raíz')
+                plt.xlabel('x')
+                plt.ylabel('f(x)')
+                plt.title('Gráfica de la Función y Raíz Encontrada por Bisección')
+                plt.legend()
+
+                # Convertir la gráfica a base64 para mostrar en el template
+                buffer = BytesIO()
+                plt.savefig(buffer, format='png')
+                buffer.seek(0)
+                grafica_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+                buffer.close()
+
             except ValueError as e:
                 mensaje = str(e)
     else:
@@ -104,9 +140,9 @@ def calcular_biseccion(request):
         'form': form,
         'resultado_biseccion': resultado_biseccion,
         'mensaje': mensaje,
+        'grafica_base64': grafica_base64,
     }
     return render(request, 'Biseccion/calcular_biseccion.html', context)
- 
 #por el momento no jala 
 def generar_pdf(request):
     resultado_biseccion = request.GET.get('resultado_biseccion')
