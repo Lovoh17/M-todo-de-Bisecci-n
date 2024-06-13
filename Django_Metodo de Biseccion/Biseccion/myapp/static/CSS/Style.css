@@ -818,14 +818,14 @@
   box-shadow: -10px 0 0 rgb(112, 11, 151);
 }
 
-.titulo, .nav4 .logo, .nav3 .logo, .nav2_Ver2 .logo, .nav2 .logo, .Drip_logo_TemaC, .bentoXx1, .tema {
+.titulo, .Drip_logo_TemaC, .bentoXx1, .tema {
   text-shadow: 3px 3px rgb(112, 11, 151);
   font-size: 30px;
   font-weight: bolder;
   font-style: italic;
   font-family: "Lato";
 }
-.titulo::first-letter, .nav4 .logo::first-letter, .nav3 .logo::first-letter, .nav2_Ver2 .logo::first-letter, .nav2 .logo::first-letter, .Drip_logo_TemaC::first-letter, .bentoXx1::first-letter, .tema::first-letter {
+.titulo::first-letter, .Drip_logo_TemaC::first-letter, .bentoXx1::first-letter, .tema::first-letter {
   color: rgb(142, 5, 194);
   margin-right: 10px;
   text-shadow: 2px 4px white;
@@ -848,16 +848,19 @@
   font-style: italic;
   font-family: "Poppins";
   align-self: self-start;
+  color: rgb(0, 255, 55);
 }
 .temasm::first-letter {
   font-size: 18px;
 }
 
-.contenido {
+.contenido__ {
   font-size: 30px;
-  font-weight: 500;
+  font-weight: bolder;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   text-wrap: wrap;
+  margin-bottom: 20px;
+  color: rgb(0, 255, 55);
 }
 
 .contenido-article {
@@ -1207,14 +1210,14 @@
   box-shadow: -10px 0 0 rgb(112, 11, 151);
 }
 
-.titulo, .nav4 .logo, .nav3 .logo, .nav2_Ver2 .logo, .nav2 .logo, .Drip_logo_TemaC, .bentoXx1, .tema {
+.titulo, .Drip_logo_TemaC, .bentoXx1, .tema {
   text-shadow: 3px 3px rgb(112, 11, 151);
   font-size: 30px;
   font-weight: bolder;
   font-style: italic;
   font-family: "Lato";
 }
-.titulo::first-letter, .nav4 .logo::first-letter, .nav3 .logo::first-letter, .nav2_Ver2 .logo::first-letter, .nav2 .logo::first-letter, .Drip_logo_TemaC::first-letter, .bentoXx1::first-letter, .tema::first-letter {
+.titulo::first-letter, .Drip_logo_TemaC::first-letter, .bentoXx1::first-letter, .tema::first-letter {
   color: rgb(142, 5, 194);
   margin-right: 10px;
   text-shadow: 2px 4px white;
@@ -1237,16 +1240,19 @@
   font-style: italic;
   font-family: "Poppins";
   align-self: self-start;
+  color: rgb(0, 255, 55);
 }
 .temasm::first-letter {
   font-size: 18px;
 }
 
-.contenido {
+.contenido__ {
   font-size: 30px;
-  font-weight: 500;
+  font-weight: bolder;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   text-wrap: wrap;
+  margin-bottom: 20px;
+  color: rgb(0, 255, 55);
 }
 
 .contenido-article {
@@ -1473,6 +1479,7 @@
 
 .butontest_boxshadow_Th3 {
   background: rgb(83, 92, 145);
+  height: 100vh !important;
 }
 .butontest_boxshadow_Th3:hover {
   background: #a2a1cc;
@@ -2506,14 +2513,14 @@
   box-shadow: -10px 0 0 rgb(112, 11, 151);
 }
 
-.titulo, .nav4 .logo, .nav3 .logo, .nav2_Ver2 .logo, .nav2 .logo, .Drip_logo_TemaC, .bentoXx1, .tema {
+.titulo, .Drip_logo_TemaC, .bentoXx1, .tema {
   text-shadow: 3px 3px rgb(112, 11, 151);
   font-size: 30px;
   font-weight: bolder;
   font-style: italic;
   font-family: "Lato";
 }
-.titulo::first-letter, .nav4 .logo::first-letter, .nav3 .logo::first-letter, .nav2_Ver2 .logo::first-letter, .nav2 .logo::first-letter, .Drip_logo_TemaC::first-letter, .bentoXx1::first-letter, .tema::first-letter {
+.titulo::first-letter, .Drip_logo_TemaC::first-letter, .bentoXx1::first-letter, .tema::first-letter {
   color: rgb(142, 5, 194);
   margin-right: 10px;
   text-shadow: 2px 4px white;
@@ -2536,16 +2543,19 @@
   font-style: italic;
   font-family: "Poppins";
   align-self: self-start;
+  color: rgb(0, 255, 55);
 }
 .temasm::first-letter {
   font-size: 18px;
 }
 
-.contenido {
+.contenido__ {
   font-size: 30px;
-  font-weight: 500;
+  font-weight: bolder;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   text-wrap: wrap;
+  margin-bottom: 20px;
+  color: rgb(0, 255, 55);
 }
 
 .contenido-article {
@@ -2978,14 +2988,14 @@
   box-shadow: -10px 0 0 rgb(112, 11, 151);
 }
 
-.titulo, .nav4 .logo, .nav3 .logo, .nav2_Ver2 .logo, .nav2 .logo, .Drip_logo_TemaC, .bentoXx1, .tema {
+.titulo, .Drip_logo_TemaC, .bentoXx1, .tema {
   text-shadow: 3px 3px rgb(112, 11, 151);
   font-size: 30px;
   font-weight: bolder;
   font-style: italic;
   font-family: "Lato";
 }
-.titulo::first-letter, .nav4 .logo::first-letter, .nav3 .logo::first-letter, .nav2_Ver2 .logo::first-letter, .nav2 .logo::first-letter, .Drip_logo_TemaC::first-letter, .bentoXx1::first-letter, .tema::first-letter {
+.titulo::first-letter, .Drip_logo_TemaC::first-letter, .bentoXx1::first-letter, .tema::first-letter {
   color: rgb(142, 5, 194);
   margin-right: 10px;
   text-shadow: 2px 4px white;
@@ -3008,16 +3018,19 @@
   font-style: italic;
   font-family: "Poppins";
   align-self: self-start;
+  color: rgb(0, 255, 55);
 }
 .temasm::first-letter {
   font-size: 18px;
 }
 
-.contenido {
+.contenido__ {
   font-size: 30px;
-  font-weight: 500;
+  font-weight: bolder;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   text-wrap: wrap;
+  margin-bottom: 20px;
+  color: rgb(0, 255, 55);
 }
 
 .contenido-article {
@@ -3367,14 +3380,14 @@
   box-shadow: -10px 0 0 rgb(112, 11, 151);
 }
 
-.titulo, .nav4 .logo, .nav3 .logo, .nav2_Ver2 .logo, .nav2 .logo, .Drip_logo_TemaC, .bentoXx1, .tema {
+.titulo, .Drip_logo_TemaC, .bentoXx1, .tema {
   text-shadow: 3px 3px rgb(112, 11, 151);
   font-size: 30px;
   font-weight: bolder;
   font-style: italic;
   font-family: "Lato";
 }
-.titulo::first-letter, .nav4 .logo::first-letter, .nav3 .logo::first-letter, .nav2_Ver2 .logo::first-letter, .nav2 .logo::first-letter, .Drip_logo_TemaC::first-letter, .bentoXx1::first-letter, .tema::first-letter {
+.titulo::first-letter, .Drip_logo_TemaC::first-letter, .bentoXx1::first-letter, .tema::first-letter {
   color: rgb(142, 5, 194);
   margin-right: 10px;
   text-shadow: 2px 4px white;
@@ -3397,16 +3410,19 @@
   font-style: italic;
   font-family: "Poppins";
   align-self: self-start;
+  color: rgb(0, 255, 55);
 }
 .temasm::first-letter {
   font-size: 18px;
 }
 
-.contenido {
+.contenido__ {
   font-size: 30px;
-  font-weight: 500;
+  font-weight: bolder;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   text-wrap: wrap;
+  margin-bottom: 20px;
+  color: rgb(0, 255, 55);
 }
 
 .contenido-article {
@@ -3633,6 +3649,7 @@
 
 .butontest_boxshadow_Th3 {
   background: rgb(83, 92, 145);
+  height: 100vh !important;
 }
 .butontest_boxshadow_Th3:hover {
   background: #a2a1cc;
@@ -6764,14 +6781,14 @@
   box-shadow: -10px 0 0 rgb(112, 11, 151);
 }
 
-.titulo, .nav4 .logo, .nav3 .logo, .nav2_Ver2 .logo, .nav2 .logo, .Drip_logo_TemaC, .bentoXx1, .tema {
+.titulo, .Drip_logo_TemaC, .bentoXx1, .tema {
   text-shadow: 3px 3px rgb(112, 11, 151);
   font-size: 30px;
   font-weight: bolder;
   font-style: italic;
   font-family: "Lato";
 }
-.titulo::first-letter, .nav4 .logo::first-letter, .nav3 .logo::first-letter, .nav2_Ver2 .logo::first-letter, .nav2 .logo::first-letter, .Drip_logo_TemaC::first-letter, .bentoXx1::first-letter, .tema::first-letter {
+.titulo::first-letter, .Drip_logo_TemaC::first-letter, .bentoXx1::first-letter, .tema::first-letter {
   color: rgb(142, 5, 194);
   margin-right: 10px;
   text-shadow: 2px 4px white;
@@ -6794,16 +6811,19 @@
   font-style: italic;
   font-family: "Poppins";
   align-self: self-start;
+  color: rgb(0, 255, 55);
 }
 .temasm::first-letter {
   font-size: 18px;
 }
 
-.contenido {
+.contenido__ {
   font-size: 30px;
-  font-weight: 500;
+  font-weight: bolder;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   text-wrap: wrap;
+  margin-bottom: 20px;
+  color: rgb(0, 255, 55);
 }
 
 .contenido-article {
@@ -7153,14 +7173,14 @@
   box-shadow: -10px 0 0 rgb(112, 11, 151);
 }
 
-.titulo, .nav4 .logo, .nav3 .logo, .nav2_Ver2 .logo, .nav2 .logo, .Drip_logo_TemaC, .bentoXx1, .tema {
+.titulo, .Drip_logo_TemaC, .bentoXx1, .tema {
   text-shadow: 3px 3px rgb(112, 11, 151);
   font-size: 30px;
   font-weight: bolder;
   font-style: italic;
   font-family: "Lato";
 }
-.titulo::first-letter, .nav4 .logo::first-letter, .nav3 .logo::first-letter, .nav2_Ver2 .logo::first-letter, .nav2 .logo::first-letter, .Drip_logo_TemaC::first-letter, .bentoXx1::first-letter, .tema::first-letter {
+.titulo::first-letter, .Drip_logo_TemaC::first-letter, .bentoXx1::first-letter, .tema::first-letter {
   color: rgb(142, 5, 194);
   margin-right: 10px;
   text-shadow: 2px 4px white;
@@ -7183,16 +7203,19 @@
   font-style: italic;
   font-family: "Poppins";
   align-self: self-start;
+  color: rgb(0, 255, 55);
 }
 .temasm::first-letter {
   font-size: 18px;
 }
 
-.contenido {
+.contenido__ {
   font-size: 30px;
-  font-weight: 500;
+  font-weight: bolder;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   text-wrap: wrap;
+  margin-bottom: 20px;
+  color: rgb(0, 255, 55);
 }
 
 .contenido-article {
@@ -9034,14 +9057,14 @@ header a {
   box-shadow: -10px 0 0 rgb(112, 11, 151);
 }
 
-.titulo, .nav4 .logo, .nav3 .logo, .nav2_Ver2 .logo, .nav2 .logo, .Drip_logo_TemaC, .tema, .bentoXx1 {
+.titulo, .Drip_logo_TemaC, .tema, .bentoXx1 {
   text-shadow: 3px 3px rgb(112, 11, 151);
   font-size: 30px;
   font-weight: bolder;
   font-style: italic;
   font-family: "Lato";
 }
-.titulo::first-letter, .nav4 .logo::first-letter, .nav3 .logo::first-letter, .nav2_Ver2 .logo::first-letter, .nav2 .logo::first-letter, .Drip_logo_TemaC::first-letter, .tema::first-letter, .bentoXx1::first-letter {
+.titulo::first-letter, .Drip_logo_TemaC::first-letter, .tema::first-letter, .bentoXx1::first-letter {
   color: rgb(142, 5, 194);
   margin-right: 10px;
   text-shadow: 2px 4px white;
@@ -9064,16 +9087,19 @@ header a {
   font-style: italic;
   font-family: "Poppins";
   align-self: self-start;
+  color: rgb(0, 255, 55);
 }
 .temasm::first-letter {
   font-size: 18px;
 }
 
-.contenido {
+.contenido__ {
   font-size: 30px;
-  font-weight: 500;
+  font-weight: bolder;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   text-wrap: wrap;
+  margin-bottom: 20px;
+  color: rgb(0, 255, 55);
 }
 
 .contenido-article {
@@ -9525,6 +9551,37 @@ header a {
   }
 }
 @media only screen and (max-width: 768px) {
+  .nav3 .Drip_logo_TemaC h1 {
+    font-size: 15px;
+    color: white;
+    text-shadow: 3px 4px rgb(146, 144, 195);
+    text-decoration: none;
+    margin-left: 2px;
+  }
+  .nav3 .Drip_logo_TemaC h1::first-letter {
+    margin-right: 3px;
+    text-shadow: 3px 4px black;
+    font-size: 40px;
+  }
+}
+@media only screen and (max-width: 768px) and (max-width: 1000px) {
+  .nav3 .Drip_logo_TemaC h1 {
+    font-size: 20px;
+    margin: 0;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .nav3 .logo {
+    font-size: 20px;
+    color: white;
+    text-decoration: none;
+    margin-left: 5px;
+  }
+  .nav3 .logo::first-letter {
+    color: white !important;
+    margin-right: 2px;
+    font-size: 25px;
+  }
   .nav3 .header {
     height: 85px;
     padding: 5px 3px;
@@ -10084,14 +10141,14 @@ header a {
   box-shadow: -10px 0 0 rgb(112, 11, 151);
 }
 
-.titulo, .tema, .bentoXx1, .Drip_logo_TemaC, .nav2 .logo, .nav2_Ver2 .logo, .nav3 .logo, .nav4 .logo {
+.titulo, .tema, .bentoXx1, .Drip_logo_TemaC {
   text-shadow: 3px 3px rgb(112, 11, 151);
   font-size: 30px;
   font-weight: bolder;
   font-style: italic;
   font-family: "Lato";
 }
-.titulo::first-letter, .tema::first-letter, .bentoXx1::first-letter, .Drip_logo_TemaC::first-letter, .nav2 .logo::first-letter, .nav2_Ver2 .logo::first-letter, .nav3 .logo::first-letter, .nav4 .logo::first-letter {
+.titulo::first-letter, .tema::first-letter, .bentoXx1::first-letter, .Drip_logo_TemaC::first-letter {
   color: rgb(142, 5, 194);
   margin-right: 10px;
   text-shadow: 2px 4px white;
@@ -10114,16 +10171,19 @@ header a {
   font-style: italic;
   font-family: "Poppins";
   align-self: self-start;
+  color: rgb(0, 255, 55);
 }
 .temasm::first-letter {
   font-size: 18px;
 }
 
-.contenido {
+.contenido__ {
   font-size: 30px;
-  font-weight: 500;
+  font-weight: bolder;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   text-wrap: wrap;
+  margin-bottom: 20px;
+  color: rgb(0, 255, 55);
 }
 
 .contenido-article {
@@ -10473,14 +10533,14 @@ header a {
   box-shadow: -10px 0 0 rgb(112, 11, 151);
 }
 
-.titulo, .tema, .bentoXx1, .Drip_logo_TemaC, .nav2 .logo, .nav2_Ver2 .logo, .nav3 .logo, .nav4 .logo {
+.titulo, .tema, .bentoXx1, .Drip_logo_TemaC {
   text-shadow: 3px 3px rgb(112, 11, 151);
   font-size: 30px;
   font-weight: bolder;
   font-style: italic;
   font-family: "Lato";
 }
-.titulo::first-letter, .tema::first-letter, .bentoXx1::first-letter, .Drip_logo_TemaC::first-letter, .nav2 .logo::first-letter, .nav2_Ver2 .logo::first-letter, .nav3 .logo::first-letter, .nav4 .logo::first-letter {
+.titulo::first-letter, .tema::first-letter, .bentoXx1::first-letter, .Drip_logo_TemaC::first-letter {
   color: rgb(142, 5, 194);
   margin-right: 10px;
   text-shadow: 2px 4px white;
@@ -10503,16 +10563,19 @@ header a {
   font-style: italic;
   font-family: "Poppins";
   align-self: self-start;
+  color: rgb(0, 255, 55);
 }
 .temasm::first-letter {
   font-size: 18px;
 }
 
-.contenido {
+.contenido__ {
   font-size: 30px;
-  font-weight: 500;
+  font-weight: bolder;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   text-wrap: wrap;
+  margin-bottom: 20px;
+  color: rgb(0, 255, 55);
 }
 
 .contenido-article {
@@ -10739,6 +10802,7 @@ header a {
 
 .butontest_boxshadow_Th3 {
   background: rgb(83, 92, 145);
+  height: 100vh !important;
 }
 .butontest_boxshadow_Th3:hover {
   background: #a2a1cc;

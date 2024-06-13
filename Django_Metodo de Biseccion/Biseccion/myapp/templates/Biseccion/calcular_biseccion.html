@@ -3,12 +3,11 @@
 
     {% block content %}
         <div class="fade-in">
-            <form method="post">
+            <form class="div_full_md" method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit" class="btn btn-primary">Calcular</button>
+                <button type="submit" class="buttontest_Th2">Calcular</button>
             </form>
-
             {% if mensaje %}
                 <p>{{ mensaje }}</p>
             {% endif %}
@@ -48,14 +47,5 @@
                 -->
             {% endif %}
         </div>
-        <style>
-            .dot {
-                width: 10px;
-                height: 10px;
-                background-color: #000;
-                border-radius: 50%;
-                display: inline-block;
-                margin-right: 10px; /* Ajusta la separación horizontal */
-            }
-        </style>
+
     {% endblock %}

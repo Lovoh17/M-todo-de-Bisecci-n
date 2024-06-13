@@ -170,6 +170,7 @@
 .butontest_boxshadow_Th3 {
   @extend .butontest_boxshadow_Th;
   background: $color-secundarioC;
+  height: 100vh !important;
 
   &:hover {
     background: lighten($color: $color-primarioC, $amount: 5);

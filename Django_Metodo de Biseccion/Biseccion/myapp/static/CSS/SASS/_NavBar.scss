@@ -88,7 +88,6 @@ $color-secundario : rgb(112, 11, 151);
   }
 
   .logo {
-    @extend .titulo;
     font-family: map-get($map: $FontPackLogo , $key: $FontLogo ) !important;
     font-size: 32px;
     color: white;
@@ -265,7 +264,6 @@ $color-secundario : rgb(112, 11, 151);
 
   @media only screen and (max-width: 768px) {
     .Drip_logo_TemaC {
-      @extend .titulo;
     
       h1 {
         font-size: 15px;
@@ -289,7 +287,6 @@ $color-secundario : rgb(112, 11, 151);
     }
    
     .logo {
-      @extend .titulo;
       font-size: 20px;
       color: white;
       text-decoration: none;
