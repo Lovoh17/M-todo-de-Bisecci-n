@@ -1,0 +1,40 @@
+{% extends 'Biseccion/base.html' %}
+    {% load static %}
+
+    {% block content %}
+        <div class="fade-in">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Calcular</button>
+            </form>
+
+            {% if mensaje %}
+            <p>{{ mensaje }}</p>
+            {% endif %}
+
+            {% if resultado_biseccion %}
+            <h2>Resultados de la Bisección:</h2>
+            <p>Raíz aproximada: {{ resultado_biseccion.0|default:"No calculada" }}</p>
+            <p>Número de iteraciones: {{ resultado_biseccion.1|default:"No calculado" }}</p>
+            <p>Error: {{ resultado_biseccion.2|default:"No calculado" }}</p>
+            
+            <h3>Iteraciones:</h3>
+            <ul>
+                {% for iteracion in resultado_biseccion.3 %}
+                <li>Iteración {{ iteracion.0 }}: Raíz = {{ iteracion.1 }}, Error = {{ iteracion.2 }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <style>
+            .dot {
+                width: 10px;
+                height: 10px;
+                background-color: #000;
+                border-radius: 50%;
+                display: inline-block;
+                margin-right: 10px; /* Ajusta la separación horizontal */
+            }
+        </style>
+    {% endblock %}
