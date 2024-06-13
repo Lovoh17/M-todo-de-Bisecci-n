@@ -12,7 +12,7 @@
         <br><a class="btn btn-primary mt-4">Perfil</a><br>
         <a  class="btn btn-primary mt-4">Calcular Metodo de Biseccion</a><br>
       {% else %}
-        <a  class="btn btn-primary"><span class="glyphicon glyphicon-log-in"></span>Iniciar Sesion</a> 
+        <a href="{% url 'login' %}" class="btn btn-primary"><span class="glyphicon glyphicon-log-in"></span>Iniciar Sesion</a> 
         <a  class="btn btn-success">Registrarse</a>
         <br><br></a>Utilizar método sin registrarse</a><br>
         <a href="{% url 'calcular_Biseccion' %}" class="btn btn-primary mt-4">Calcular metodo de Biseccion</a><br>

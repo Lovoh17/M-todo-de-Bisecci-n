@@ -1,0 +1,15 @@
+{% extends 'Biseccion/base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+  <div class="text-center fade-in">
+    <h2 class="mb-4">Iniciar Sesion</h2>
+    {{ msg }}
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Iniciar Sesion</button>
+    </form>
+  </div>
+{% endblock %}

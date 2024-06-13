@@ -5,6 +5,7 @@ import sympy as sp
 from .models import *
 from sympy import *
 import csv
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
 from sympy import symbols, lambdify
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
@@ -72,6 +73,9 @@ def biseccion(ecuacion, a, b, tol_porcentual, max_iter=100):
     iteraciones.append([iter_count, raiz_aproximada, error_absoluto, error_porcentual])
 
     return raiz_aproximada, iter_count, error_absoluto, iteraciones, error_porcentual
+
+def login_forms(request):
+    return render(request, 'Biseccion/login.html',)
 
 #Usamos la funcion de la vista para traer los datos y mostrarlos
 def calcular_biseccion(request):
