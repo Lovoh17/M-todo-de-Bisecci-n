@@ -7,3 +7,7 @@ class BiseecionForm(forms.Form):
     step = forms.CharField(label='Ingrese el tamaño del paso para buscar intervalos: ', widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: 1'}))
     error_porcentual = forms.CharField(label='Ingrese el valor de le Tolerancia', widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: 0.001'}))
 
+class DiferenciacionForm(forms.Form):
+    f = forms.CharField(label='Escriba la ecuacion:', widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: x**2+5*3x'}))
+    x = forms.CharField(label='Ingrese el valor de X:', widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: 7'}))
+    h = forms.CharField(label='Ingrese el valor de h', widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: 0.4'}))

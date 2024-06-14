@@ -13,8 +13,9 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 from io import BytesIO
+import io
 import base64
-
+import pandas as pd
 def home(request):
     return render(request ,'Biseccion/home.html')
 
@@ -30,12 +31,6 @@ def biseccion(ecuacion, a, b, tol_porcentual, max_iter=100):
 
     iter_count = 0
     iteraciones = []
-
-    # Arrays para graficar la función y la raíz
-    x_vals = np.linspace(a, b, 400)
-    y_vals = f(x_vals)
-    root_x_vals = []
-    root_y_vals = []
 
     while True:
         iter_count += 1
@@ -55,7 +50,7 @@ def biseccion(ecuacion, a, b, tol_porcentual, max_iter=100):
         error_porcentual = round(error_porcentual, 4)
         
         # Agregar a iteraciones solo si es una nueva iteración o se ha alcanzado la tolerancia
-        iteraciones.append([iter_count, raiz_actual, error_absoluto, error_porcentual])
+        iteraciones.append([iter_count, f'F({raiz_actual})', raiz_actual, error_porcentual])
 
         if error_porcentual < tol_porcentual or f(midpoint) == 0:
             break
@@ -67,10 +62,6 @@ def biseccion(ecuacion, a, b, tol_porcentual, max_iter=100):
 
         if iter_count >= max_iter:
             break
-
-        # Actualizar valores para graficar la raíz
-        root_x_vals.append(midpoint)
-        root_y_vals.append(f(midpoint))
 
     raiz_aproximada = (a + b) / 2.0
     error_absoluto = abs(b - a) / 2.0
@@ -87,12 +78,21 @@ def biseccion(ecuacion, a, b, tol_porcentual, max_iter=100):
     error_porcentual = round(error_porcentual, 4)
     
     # Agregar la última iteración a iteraciones
-    iteraciones.append([iter_count, raiz_aproximada, error_absoluto, error_porcentual])
+    iteraciones.append([iter_count, f'F({raiz_aproximada})', raiz_aproximada, f'{error_porcentual}%'])
 
-    return raiz_aproximada, iter_count, error_absoluto, iteraciones, error_porcentual, x_vals, y_vals, root_x_vals, root_y_vals
+    return raiz_aproximada, iter_count, error_absoluto, iteraciones, error_porcentual
 
+def encontrar_intervalos(f, rango_min, rango_max, paso):
+    intervalos = []
+    x = rango_min
+    while x < rango_max:
+        if f(x) * f(x + paso) < 0:
+            intervalos.append((x, x + paso))
+        x += paso
+    
+    df_intervalos = pd.DataFrame(intervalos, columns=["Inicio Intervalo", "Fin Intervalo"])
+    return df_intervalos
 
-#Usamos la funcion de la vista para traer los datos y mostrarlos
 def calcular_biseccion(request):
     resultado_biseccion = None
     mensaje = None
@@ -113,19 +113,30 @@ def calcular_biseccion(request):
                 form = BiseecionForm()
 
                 # Obtener datos para graficar
-                raiz_aproximada, _, _, _, _, x_vals, y_vals, root_x_vals, root_y_vals = resultado_biseccion
+                raiz_aproximada, _, _, iteraciones_data, _, _, _, _ = resultado_biseccion
 
                 # Graficar la función y la raíz encontrada
+                x_vals = np.linspace(valor_min, valor_max, 400)
+                f = lambdify(x, ecuacion)
+                y_vals = f(x_vals)
+
                 plt.figure(figsize=(8, 6))
                 plt.plot(x_vals, y_vals, label='Función')
-                plt.scatter(root_x_vals, root_y_vals, color='red', label='Raíz')
+                plt.axhline(0, color='black', linewidth=0.5)
+                plt.axvline(raiz_aproximada, color='red', linestyle='--', label=f'Raíz aproximada: {raiz_aproximada}')
+                
+                for _, _, mid, _ in iteraciones_data:
+                    plt.axvline(mid, color='blue', linestyle=':', linewidth=0.5)
+
+                plt.scatter(raiz_aproximada, f(raiz_aproximada), color='red')
+                plt.title('Método de Bisección')
                 plt.xlabel('x')
                 plt.ylabel('f(x)')
-                plt.title('Gráfica de la Función y Raíz Encontrada por Bisección')
                 plt.legend()
+                plt.grid(True)
 
                 # Convertir la gráfica a base64 para mostrar en el template
-                buffer = BytesIO()
+                buffer = io.BytesIO()
                 plt.savefig(buffer, format='png')
                 buffer.seek(0)
                 grafica_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
@@ -143,6 +154,67 @@ def calcular_biseccion(request):
         'grafica_base64': grafica_base64,
     }
     return render(request, 'Biseccion/calcular_biseccion.html', context)
+
+def derivada_forward(f, x, h):
+    return (f(x + h) - f(x)) / h
+# Función para calcular la derivada numérica usando diferencia hacia adelante
+def derivada_backward(f, x, h):
+    return (f(x) - f(x - h)) / h
+
+# Función para calcular la derivada numérica usando diferencia central
+def derivada_central(f, x, h):
+    return (f(x + h) - f(x - h)) / (2 * h)
+
+def diferencias(request):
+    resultado = {}
+
+    if request.method == 'POST':
+        form = DiferenciacionForm(request.POST)
+        if form.is_valid():
+            funcion = form.cleaned_data['f']
+            valor_x = float(form.cleaned_data['x'])
+            valor_h = float(form.cleaned_data['h'])
+
+            try:
+                x = symbols('x')
+                ecuacion = sympify(funcion)
+                f = lambdify(x, ecuacion)
+
+                # Calcular la derivada exacta
+                derivada_exacta = diff(ecuacion, x)
+                derivada_exacta_func = lambdify(x, derivada_exacta)
+                derivada_exacta_val = derivada_exacta_func(valor_x)
+
+                # Calcular las derivadas utilizando los tres métodos
+                derivada_fwd = derivada_forward(f, valor_x, valor_h)
+                derivada_bwd = derivada_backward(f, valor_x, valor_h)
+                derivada_cen = derivada_central(f, valor_x, valor_h)
+
+                # Calcular los errores
+                error_fwd = abs(derivada_fwd - derivada_exacta_val)
+                error_bwd = abs(derivada_bwd - derivada_exacta_val)
+                error_cen = abs(derivada_cen - derivada_exacta_val)
+
+                # Preparar los resultados para mostrar en la plantilla
+                resultado = {
+                    'derivada_fwd': round(derivada_fwd, 4),
+                    'error_fwd': round(error_fwd, 4),
+                    'derivada_bwd': round(derivada_bwd, 4),
+                    'error_bwd': round(error_bwd, 4),
+                    'derivada_cen': round(derivada_cen, 4),
+                    'error_cen': round(error_cen, 4),
+                    'derivada_exacta': round(derivada_exacta_val, 4)
+                }
+
+            except Exception as e:
+                resultado = {'error': str(e)}
+
+    else:
+        form = DiferenciacionForm()
+
+    return render(request, 'Biseccion/diferencias.html', {'form': form, 'resultado': resultado})
+
+
 #por el momento no jala 
 def generar_pdf(request):
     resultado_biseccion = request.GET.get('resultado_biseccion')

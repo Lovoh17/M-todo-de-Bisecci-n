@@ -1,0 +1,24 @@
+{% extends 'Biseccion/baseDiferencias.html' %}
+    {% load static %}
+
+    {% block content %}
+        <div class="fade-in">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Calcular</button>
+            </form>
+            
+            {% if resultado %}
+                <h2>Resultados:</h2>
+                {% if resultado.error %}
+                    <p>Error: {{ resultado.error }}</p>
+                {% else %}
+                    <p>Diferencia hacia adelante: {{ resultado.derivada_fwd }} (Error: {{ resultado.error_fwd }})</p>
+                    <p>Diferencia hacia atrás: {{ resultado.derivada_bwd }} (Error: {{ resultado.error_bwd }})</p>
+                    <p>Diferencia central: {{ resultado.derivada_cen }} (Error: {{ resultado.error_cen }})</p>
+                    <p>Derivada exacta: {{ resultado.derivada_exacta }}</p>
+                {% endif %}
+            {% endif %}
+        </div>
+    {% endblock %}

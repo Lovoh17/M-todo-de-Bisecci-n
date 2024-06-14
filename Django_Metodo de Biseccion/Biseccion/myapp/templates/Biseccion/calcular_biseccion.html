@@ -1,65 +1,60 @@
 {% extends 'Biseccion/base.html' %}
-    {% load static %}
+{% load static %}
 
-    {% block content %}
-        <div class="fade-in">
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-primary">Calcular</button>
-            </form>
+{% block content %}
+    <div class="fade-in">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Calcular</button>
+        </form>
 
-            {% if mensaje %}
-                <p>{{ mensaje }}</p>
-            {% endif %}
+        {% if mensaje %}
+            <p>{{ mensaje }}</p>
+        {% endif %}
 
-            {% if resultado_biseccion %}
-                <h2>Resultados de la Bisección:</h2>
-                <p>Raíz aproximada: {{ resultado_biseccion.0|default:"No calculada" }}</p>
-                <p>Número de iteraciones: {{ resultado_biseccion.1|default:"No calculado" }}</p>
-                <p>Error: {{ resultado_biseccion.2|default:"No calculado" }}</p>
-                        
-                <h3>Iteraciones:</h3>
-                <table border="1" style="border-collapse: collapse; width: 100%;">
-                    <thead>
-                        <tr style="background-color: #f2f2f2;">
-                            <th style="padding: 8px; text-align: center;">Iteración</th>
-                            <th style="padding: 8px; text-align: center;">Raíz</th>
-                            <th style="padding: 8px; text-align: center;">Error absoluto</th>
-                            <th style="padding: 8px; text-align: center;">Error porcentual</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for iteracion in resultado_biseccion.3 %}
-                        <tr>
-                            <td style="padding: 8px; text-align: center;">{{ iteracion.0 }}</td>
-                            <td style="padding: 8px; text-align: center;">{{ iteracion.1 }}</td>
-                            <td style="padding: 8px; text-align: center;">{{ iteracion.2 }}</td>
-                            <td style="padding: 8px; text-align: center;">{{ iteracion.3 }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <!--
-                <form action="{% url 'generar_pdf' %}" method="get">
-                    <input type="hidden" name="resultado_biseccion" value='{{ resultado_biseccion|escapejs }}'>
-                    <button type="submit">Generar PDF</button>
-                </form>
-                -->
+        {% if resultado_biseccion %}
+            <h2>Resultados de la Bisección:</h2>
+            <p>Raíz aproximada: {{ resultado_biseccion.0|default:"No calculada" }}</p>
+            <p>Número de iteraciones: {{ resultado_biseccion.1|default:"No calculado" }}</p>
+            <p>Error: {{ resultado_biseccion.2|default:"No calculado" }}</p>
+                    
+            <h3>Iteraciones:</h3>
+            <table border="1" style="border-collapse: collapse; width: 100%;">
+                <thead>
+                    <tr style="background-color: #f2f2f2;">
+                        <th style="padding: 8px; text-align: center;">Iteración</th>
+                        <th style="padding: 8px; text-align: center;">f(Raíz)</th>
+                        <th style="padding: 8px; text-align: center;">Raíz Aproximada</th>
+                        <th style="padding: 8px; text-align: center;">Error %</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for iteracion in resultado_biseccion.3 %}
+                    <tr>
+                        <td style="padding: 8px; text-align: center;">{{ iteracion.0 }}</td>
+                        <td style="padding: 8px; text-align: center;">{{ iteracion.1 }}</td>
+                        <td style="padding: 8px; text-align: center;">{{ iteracion.2 }}</td>
+                        <td style="padding: 8px; text-align: center;">{{ iteracion.3 }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
             {% if grafica_base64 %}
                 <h2>Gráfica:</h2>
                 <img src="data:image/png;base64,{{ grafica_base64 }}" alt="Gráfica de la función y raíz encontrada">
             {% endif %}
-            {% endif %}
-        </div>
-        <style>
-            .dot {
-                width: 10px;
-                height: 10px;
-                background-color: #000;
-                border-radius: 50%;
-                display: inline-block;
-                margin-right: 10px; /* Ajusta la separación horizontal */
-            }
-        </style>
-    {% endblock %}
+        {% endif %}
+    </div>
+    <style>
+        .dot {
+            width: 10px;
+            height: 10px;
+            background-color: #000;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 10px; /* Ajusta la separación horizontal */
+        }
+    </style>
+{% endblock %}
