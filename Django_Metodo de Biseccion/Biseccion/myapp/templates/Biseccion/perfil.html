@@ -5,6 +5,7 @@
 {% block content %}
   <div class="text-center fade-in">
     <h2 class="mb-4">¡Bienvenido!</h2>
+    <img src="https://th.bing.com/th/id/OIP.P_4Oo2saYQaWxBy6F3lY7wAAAA?rs=1&pid=ImgDetMain" style="width=100px; height:100px" class="rounded mx-auto d-block" alt="...">
     {% if user.is_authenticated %}
       <p>Hola {{ user.username }}!</p>
       <a href="{% url 'cerrar_sesion' %}" class="btn btn-danger">Cerrar Sesion</a>

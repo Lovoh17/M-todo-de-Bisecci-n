@@ -1,3 +1,4 @@
+#Librerias
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
@@ -19,10 +20,10 @@ import io
 import base64
 import pandas as pd
 from django.contrib import messages
-
+#Vista principal
 def home(request):
     return render(request ,'Biseccion/home.html')
-
+#Vista del login y validaciones
 def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -39,7 +40,7 @@ def login_view(request):
         form = LoginForm()
 
     return render(request, 'Biseccion/login.html', {'form': form})
-
+# Función para el método de bisección corregida
 def biseccion(ecuacion, a, b, tol_porcentual, max_iter=100):
     try:
         x = symbols('x')
@@ -49,57 +50,59 @@ def biseccion(ecuacion, a, b, tol_porcentual, max_iter=100):
 
     iter_count = 0
     iteraciones = []
-
-    while True:
+    error = 100.0  # Inicializar el error alto para asegurar que entre en el bucle while
+    prev_midpoint = None
+    
+    while error > tol_porcentual:
         iter_count += 1
         midpoint = (a + b) / 2.0
-        error_absoluto = abs(b - a) / 2.0
-        raiz_actual = midpoint
         
-        # Calcular error porcentual
-        if raiz_actual != 0:
-            error_porcentual = abs(midpoint - a) / abs(midpoint) * 100
+        # Evaluación de f(x) en el punto medio
+        fx_mid = f(midpoint)
+        
+        # Calcular el error porcentual entre las aproximaciones sucesivas
+        if prev_midpoint is not None:
+            error = abs((midpoint - prev_midpoint) / midpoint) * 100
         else:
-            error_porcentual = 0
+            error = 100.0
         
         # Redondear los valores antes de agregarlos a iteraciones
-        raiz_actual = round(raiz_actual, 4)
-        error_absoluto = round(error_absoluto, 4)
-        error_porcentual = round(error_porcentual, 4)
+        raiz_actual = round(midpoint, 4)
+        error = round(error, 4)
         
         # Agregar a iteraciones solo si es una nueva iteración o se ha alcanzado la tolerancia
-        iteraciones.append([iter_count, f'F({raiz_actual})', raiz_actual, error_porcentual])
+        iteraciones.append([iter_count, f'F({raiz_actual})', raiz_actual, f'{error}%'])
 
-        if error_porcentual < tol_porcentual or f(midpoint) == 0:
+        if fx_mid == 0:  # La raíz se encuentra exactamente en el punto medio
             break
         
-        if f(a) * f(midpoint) < 0:
+        if f(a) * fx_mid < 0:
             b = midpoint
         else:
             a = midpoint
-
+        
+        prev_midpoint = midpoint
+        
         if iter_count >= max_iter:
             break
 
     raiz_aproximada = (a + b) / 2.0
-    error_absoluto = abs(b - a) / 2.0
     
     # Calcular el error porcentual final
     if raiz_aproximada != 0:
-        error_porcentual = abs(raiz_aproximada - a) / abs(raiz_aproximada) * 100
+        error_final = abs((raiz_aproximada - prev_midpoint) / raiz_aproximada) * 100
     else:
-        error_porcentual = 0
+        error_final = 0
     
     # Redondear los valores finales
     raiz_aproximada = round(raiz_aproximada, 4)
-    error_absoluto = round(error_absoluto, 4)
-    error_porcentual = round(error_porcentual, 4)
+    error_final = round(error_final, 4)
     
     # Agregar la última iteración a iteraciones
-    iteraciones.append([iter_count, f'F({raiz_aproximada})', raiz_aproximada, f'{error_porcentual}%'])
+    iteraciones.append([iter_count, f'F({raiz_aproximada})', raiz_aproximada, f'{error_final}%'])
 
-    return raiz_aproximada, iter_count, error_absoluto, iteraciones, error_porcentual
-
+    return raiz_aproximada, iter_count, error_final, iteraciones
+# Función para encontrar intervalos donde la función cambia de signo
 def encontrar_intervalos(f, rango_min, rango_max, paso):
     intervalos = []
     x = rango_min
@@ -110,7 +113,7 @@ def encontrar_intervalos(f, rango_min, rango_max, paso):
     
     df_intervalos = pd.DataFrame(intervalos, columns=["Inicio Intervalo", "Fin Intervalo"])
     return df_intervalos
-
+# Función para calcular el método de bisección y generar la gráfica
 def calcular_biseccion(request):
     resultado_biseccion = None
     mensaje = None
@@ -128,10 +131,9 @@ def calcular_biseccion(request):
                 x = symbols('x')
                 ecuacion = sympify(ec_values, locals={'sin': sin, 'cos': cos, 'tan': tan, 'exp': exp})
                 resultado_biseccion = biseccion(ecuacion, valor_min, valor_max, error_porcentual)
-                form = BiseecionForm()
 
                 # Obtener datos para graficar
-                raiz_aproximada, _, _, iteraciones_data, _, _, _, _ = resultado_biseccion
+                raiz_aproximada, _, _, iteraciones_data = resultado_biseccion
 
                 # Graficar la función y la raíz encontrada
                 x_vals = np.linspace(valor_min, valor_max, 400)
@@ -153,7 +155,7 @@ def calcular_biseccion(request):
                 plt.legend()
                 plt.grid(True)
 
-                # Convertir la gráfica a base64 para mostrar en el template
+                # Convertir la gráfica a base64 para mostrar en la plantilla
                 buffer = io.BytesIO()
                 plt.savefig(buffer, format='png')
                 buffer.seek(0)
@@ -172,8 +174,7 @@ def calcular_biseccion(request):
         'grafica_base64': grafica_base64,
     }
     return render(request, 'Biseccion/calcular_biseccion.html', context)
-
-
+# Función para calcular la derivada numérica usando diferencia hacia atras
 def derivada_forward(f, x, h):
     return (f(x + h) - f(x)) / h
 # Función para calcular la derivada numérica usando diferencia hacia adelante
@@ -182,7 +183,7 @@ def derivada_backward(f, x, h):
 # Función para calcular la derivada numérica usando diferencia central
 def derivada_central(f, x, h):
     return (f(x + h) - f(x - h)) / (2 * h)
-
+#Funcion para mostrar la diferencias numerica
 def diferencias(request):
     resultado = {}
     grafica_base64 = ""
@@ -213,7 +214,7 @@ def diferencias(request):
                 error_fwd = abs(derivada_fwd - derivada_exacta_val)
                 error_bwd = abs(derivada_bwd - derivada_exacta_val)
                 error_cen = abs(derivada_cen - derivada_exacta_val)
-
+               
                 # Generar los puntos para la gráfica
                 x_vals = np.linspace(valor_x - 2, valor_x + 2, 400)
                 y_vals = f(x_vals)
@@ -261,7 +262,7 @@ def diferencias(request):
         form = DiferenciacionForm()
 
     return render(request, 'Biseccion/diferencias.html', {'form': form, 'resultado': resultado, 'grafica_base64': grafica_base64})
-
+#Funcion de nuevo registro de usuario
 def registro(request):
     if request.method == 'POST':
         form = RegistroForm(request.POST)
@@ -276,10 +277,10 @@ def registro(request):
     else:
         form = RegistroForm()
     return render(request, 'Biseccion/registro.html', {'form': form})
-
+#Funcion del cambio de contraseña
 def cambio_contraseña(request):
     mensaje = ""
-    tipo_alerta = ""  # Inicializar tipo_alerta fuera del bloque 'if'
+    tipo_alerta = ""
 
     if request.method == 'POST':
         form = CambioContraseñaForm(request.user, request.POST)
@@ -294,21 +295,19 @@ def cambio_contraseña(request):
         form = CambioContraseñaForm(request.user)
 
     return render(request, 'Biseccion/cambio_contraseña.html', {'form': form, 'mensaje': mensaje, 'tipo_alerta': tipo_alerta})
-
+#Funcion de cerrar secion
 def cerrar_sesion(request):
     logout(request)
     return redirect('/')
-
+#Vista para ver el perfil de usuario
 def perfil(request): 
     return render(request, 'Biseccion/perfil.html')
-#por el momento no jala 
+#Funcion para imprimir el proceso
 def generar_pdf(request):
     resultado_biseccion = request.GET.get('resultado_biseccion')
 
     if not resultado_biseccion:
         return HttpResponse("No se encontraron resultados para generar el PDF.", content_type="text/plain")
-
-    resultado_biseccion = json.loads(resultado_biseccion)
 
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="resultado_biseccion.pdf"'
@@ -317,27 +316,11 @@ def generar_pdf(request):
     width, height = letter
 
     c.drawString(100, height - 40, "Resultados de la Bisección")
-    c.drawString(100, height - 60, f"Raíz aproximada: {resultado_biseccion[0]}")
-    c.drawString(100, height - 80, f"Número de iteraciones: {resultado_biseccion[1]}")
-    c.drawString(100, height - 100, f"Error absoluto: {resultado_biseccion[2]}")
 
-    c.drawString(100, height - 140, "Iteraciones:")
-
-    x_offset = 100
-    y_offset = height - 160
-    row_height = 20
-
-    c.drawString(x_offset, y_offset, "Iteración")
-    c.drawString(x_offset + 100, y_offset, "Raíz")
-    c.drawString(x_offset + 200, y_offset, "Error absoluto")
-    c.drawString(x_offset + 300, y_offset, "Error porcentual")
-
-    for iteracion in resultado_biseccion[3]:
-        y_offset -= row_height
-        c.drawString(x_offset, y_offset, str(iteracion[0]))
-        c.drawString(x_offset + 100, y_offset, str(iteracion[1]))
-        c.drawString(x_offset + 200, y_offset, str(iteracion[2]))
-        c.drawString(x_offset + 300, y_offset, str(iteracion[3]))
+    # Mostrar raíz aproximada, número de iteraciones y error
+    c.drawString(100, height - 60, f"Raíz aproximada: {resultado_biseccion}")
+    c.drawString(100, height - 80, "Número de iteraciones: No calculado")
+    c.drawString(100, height - 100, "Error: No calculado")
 
     c.showPage()
     c.save()
