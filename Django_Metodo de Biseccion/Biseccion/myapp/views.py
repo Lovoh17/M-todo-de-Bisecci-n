@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from .forms import *
+from django.contrib.auth import update_session_auth_hash
 import sympy as sp
 from .models import *
 from sympy import *
@@ -16,11 +18,27 @@ from io import BytesIO
 import io
 import base64
 import pandas as pd
+from django.contrib import messages
+
 def home(request):
     return render(request ,'Biseccion/home.html')
 
-def login_forms(request):
-    return render(request, 'Biseccion/login.html',)
+def login_view(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')  # Reemplazar con la vista deseada
+            else:
+                form.add_error(None, 'Invalid username or password')
+    else:
+        form = LoginForm()
+
+    return render(request, 'Biseccion/login.html', {'form': form})
 
 def biseccion(ecuacion, a, b, tol_porcentual, max_iter=100):
     try:
@@ -155,18 +173,19 @@ def calcular_biseccion(request):
     }
     return render(request, 'Biseccion/calcular_biseccion.html', context)
 
+
 def derivada_forward(f, x, h):
     return (f(x + h) - f(x)) / h
 # Función para calcular la derivada numérica usando diferencia hacia adelante
 def derivada_backward(f, x, h):
     return (f(x) - f(x - h)) / h
-
 # Función para calcular la derivada numérica usando diferencia central
 def derivada_central(f, x, h):
     return (f(x + h) - f(x - h)) / (2 * h)
 
 def diferencias(request):
     resultado = {}
+    grafica_base64 = ""
 
     if request.method == 'POST':
         form = DiferenciacionForm(request.POST)
@@ -195,6 +214,35 @@ def diferencias(request):
                 error_bwd = abs(derivada_bwd - derivada_exacta_val)
                 error_cen = abs(derivada_cen - derivada_exacta_val)
 
+                # Generar los puntos para la gráfica
+                x_vals = np.linspace(valor_x - 2, valor_x + 2, 400)
+                y_vals = f(x_vals)
+
+                # Crear la gráfica
+                plt.figure(figsize=(10, 6))
+                plt.plot(x_vals, y_vals, label=f'f(x) = {funcion}')
+                plt.scatter([valor_x], [f(valor_x)], color='red', zorder=1)
+                
+                # Mostrar la derivada exacta y las aproximaciones
+                plt.scatter([valor_x], [derivada_exacta_val], color='blue', zorder=5)
+                plt.scatter([valor_x], [derivada_fwd], color='green', zorder=5)
+                plt.scatter([valor_x], [derivada_bwd], color='purple', zorder=5)
+                plt.scatter([valor_x], [derivada_cen], color='orange', zorder=5)
+
+                # Configurar la gráfica
+                plt.title('Gráfica de la función y sus derivadas')
+                plt.xlabel('x')
+                plt.ylabel('f(x)')
+                plt.legend()
+                plt.grid(True)
+                
+                # Guardar la gráfica en un buffer
+                buffer = io.BytesIO()
+                plt.savefig(buffer, format='png')
+                buffer.seek(0)
+                grafica_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+                buffer.close()
+
                 # Preparar los resultados para mostrar en la plantilla
                 resultado = {
                     'derivada_fwd': round(derivada_fwd, 4),
@@ -212,9 +260,47 @@ def diferencias(request):
     else:
         form = DiferenciacionForm()
 
-    return render(request, 'Biseccion/diferencias.html', {'form': form, 'resultado': resultado})
+    return render(request, 'Biseccion/diferencias.html', {'form': form, 'resultado': resultado, 'grafica_base64': grafica_base64})
 
+def registro(request):
+    if request.method == 'POST':
+        form = RegistroForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            messages.success(request, f'Bienvenido {username}, tu cuenta ha sido creada exitosamente.')
+            return redirect('home') 
+    else:
+        form = RegistroForm()
+    return render(request, 'Biseccion/registro.html', {'form': form})
 
+def cambio_contraseña(request):
+    mensaje = ""
+    tipo_alerta = ""  # Inicializar tipo_alerta fuera del bloque 'if'
+
+    if request.method == 'POST':
+        form = CambioContraseñaForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, '¡Contraseña cambiada exitosamente!')
+            return redirect('home')
+        else:
+            messages.error(request, 'Ha ocurrido un error. Por favor, verifica los datos ingresados.')
+    else:
+        form = CambioContraseñaForm(request.user)
+
+    return render(request, 'Biseccion/cambio_contraseña.html', {'form': form, 'mensaje': mensaje, 'tipo_alerta': tipo_alerta})
+
+def cerrar_sesion(request):
+    logout(request)
+    return redirect('/')
+
+def perfil(request): 
+    return render(request, 'Biseccion/perfil.html')
 #por el momento no jala 
 def generar_pdf(request):
     resultado_biseccion = request.GET.get('resultado_biseccion')

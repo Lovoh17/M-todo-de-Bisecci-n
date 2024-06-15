@@ -1,15 +1,25 @@
 {% extends 'Biseccion/base.html' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Loguearse{% endblock %}
 
 {% block content %}
-  <div class="text-center fade-in">
-    <h2 class="mb-4">Iniciar Sesion</h2>
-    {{ msg }}
+<div class="text-center fade-in">
+    <h2 class="mb-4">¡Bienvenido!</h2>
     <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit" class="btn btn-primary">Iniciar Sesion</button>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Loguearse</button>
     </form>
-  </div>
+    {% if form.errors %}
+        <div class="alert alert-danger mt-3">
+            <ul>
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+</div>
 {% endblock %}

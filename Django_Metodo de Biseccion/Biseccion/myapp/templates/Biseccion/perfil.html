@@ -1,0 +1,17 @@
+{% extends 'Biseccion/base.html' %}
+
+{% block title %}Loguearse{% endblock %}
+
+{% block content %}
+  <div class="text-center fade-in">
+    <h2 class="mb-4">¡Bienvenido!</h2>
+    {% if user.is_authenticated %}
+      <p>Hola {{ user.username }}!</p>
+      <a href="{% url 'cerrar_sesion' %}" class="btn btn-danger">Cerrar Sesion</a>
+      <br>{{ user.username }}
+    {% else %}
+      <a href="{% url 'login' %}" class="btn btn-primary"><span class="glyphicon glyphicon-log-in"></span>Loguearse</a> 
+      <a href="{% url 'cerrar_sesion' %}"class="btn btn-success">Registrarse</a>
+    {% endif %}
+  </div>
+{% endblock %}

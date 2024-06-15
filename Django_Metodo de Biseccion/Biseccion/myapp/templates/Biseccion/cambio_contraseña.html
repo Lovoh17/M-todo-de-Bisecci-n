@@ -1,0 +1,17 @@
+{% extends 'Biseccion/base.html' %}
+
+{% block content %}
+<div class="text-center fade-in">
+    <h2 class="mb-4">Editar contraseña</h2>
+    {% if mensaje %}
+        <div class="alert alert-{{ tipo_alerta }}" role="alert">
+            {{ mensaje }}
+        </div>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    </form>
+</div>
+{% endblock %}
