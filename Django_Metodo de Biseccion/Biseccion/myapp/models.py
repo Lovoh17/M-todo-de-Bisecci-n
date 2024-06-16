@@ -56,3 +56,29 @@ def encontrar_intervalos(ec_values, valor_min, valor_max, paso):
         x_val += paso
     
     return intervalos
+
+
+##################################################################################################
+class membresias(models.Model):
+    id_membresia = models.AutoField(primary_key=True)
+    categoria_membresia = models.CharField(max_length=200)
+
+
+class Usuarios(models.Model):
+    id_user = models.AutoField(primary_key=True)
+    membresia_id_user = models.ForeignKey(membresias, on_delete=models.RESTRICT)
+    nombre_User = models.CharField(max_length=200)
+    apellido_User = models.CharField(max_length=200)
+    correo_User = models.CharField(max_length=200)
+    password_User = models.CharField(max_length=200)
+
+
+class Historial(models.Model):
+    id_Historial = models.AutoField(primary_key=True)
+    id_user_Historial = models.ForeignKey(Usuarios, on_delete=models.RESTRICT)
+    Procesos_Historial = models.TextField()
+
+def __str__(self):
+    return self.Procesos_Historial
+
+##################################################################################################

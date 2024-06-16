@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import PasswordChangeForm
+from .models import *
+
 class BiseecionForm(forms.Form):
     Ec_values = forms.CharField(label='Escriba la ecuacion:', widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: x**2+5*3x'}))
     valor_min = forms.CharField(label='Ingrese el rango mínimo de búsqueda:', widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: -3'}))
@@ -41,6 +43,13 @@ class RegistroForm(UserCreationForm):
         user.last_name = self.cleaned_data['last_name']
         if commit:
             user.save()
+            UserMembresiaid = membresias.objects.get(id_membresia=1)
+            UserName = self.cleaned_data['email']
+            UserApellido = self.cleaned_data['email']
+            UserCorreo = self.cleaned_data['first_name']
+            UserPass = self.cleaned_data['last_name']
+            newUser = Usuarios(categoria_membresia=UserMembresiaid, nombre_User = UserName, apellido_User = UserApellido, correo_User = UserCorreo,password_User = UserPass)
+            newUser.save()
         return user
     
 class CambioContraseñaForm(PasswordChangeForm):
