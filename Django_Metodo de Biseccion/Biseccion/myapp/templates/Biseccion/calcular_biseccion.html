@@ -45,13 +45,14 @@
                         </tbody>
                     </table>
                 {% endif %}
+                
                 {% if grafica_base64 %}
                     <h2>Gráfica:</h2>
-                    <img src="data:image/png;base64,{{ grafica_base64 }}" alt="Gráfica de la función y raíz encontrada">
+                    <img src="data:image/png;base64,{{ grafica_base64 }}" alt="Gráfica de la función y raíz encontrada" class="grafica">
                 {% endif %}
-                <!--X
-                <h3>Descargar PDF:</h3>
-                <a href="{% url 'generar_pdf' %}?resultado_biseccion={{ resultado_biseccion|safe|escapejs }}">Descargar PDF</a>-->
+                
+                <!-- Aquí puedes añadir más elementos según sea necesario, como enlaces para descargar PDF u otras funcionalidades -->
+                
             {% endif %}
         {% endif %}
     </div>

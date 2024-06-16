@@ -40,7 +40,95 @@ def login_view(request):
         form = LoginForm()
 
     return render(request, 'Biseccion/login.html', {'form': form})
-# Función para el método de bisección corregida
+#Funcion para la teoria de Diferenciacion Numerica
+def teoria_diferencias():
+    teoria = """
+    <h2>Diferencia hacia adelante:</h2>
+    <p>La derivada hacia adelante se aproxima utilizando la siguiente fórmula:</p>
+    <pre>f'(x) ≈ (f(x + h) - f(x)) / h</pre>
+    <p>Donde:</p>
+    <ul>
+        <li>f(x): Valor de la función en el punto x.</li>
+        <li>f(x + h): Valor de la función en el punto x + h.</li>
+        <li>h: Tamaño del paso.</li>
+    </ul>
+
+    <h2>Diferencia hacia atrás:</h2>
+    <p>La derivada hacia atrás se aproxima utilizando la siguiente fórmula:</p>
+    <pre>f'(x) ≈ (f(x) - f(x - h)) / h</pre>
+    <p>Donde:</p>
+    <ul>
+        <li>f(x): Valor de la función en el punto x.</li>
+        <li>f(x - h): Valor de la función en el punto x - h.</li>
+        <li>h: Tamaño del paso.</li>
+    </ul>
+
+    <h2>Diferencia central:</h2>
+    <p>La derivada central se aproxima utilizando la siguiente fórmula:</p>
+    <pre>f'(x) ≈ (f(x + h) - f(x - h)) / (2 * h)</pre>
+    <p>Donde:</p>
+    <ul>
+        <li>f(x + h): Valor de la función en el punto x + h.</li>
+        <li>f(x - h): Valor de la función en el punto x - h.</li>
+        <li>h: Tamaño del paso.</li>
+    </ul>
+    """
+    return teoria
+
+def mostrar_teoria(request):
+    contexto = {
+        'explicacion_teorica': teoria_diferencias()
+    }
+    return render(request, 'Biseccion/teoriaDif.html', contexto)
+#Funcion de la teoria de Biseccion
+def metodo_biseccion(request):
+    formulas = [
+        {
+            'titulo': 'Punto Medio del Intervalo',
+            'formula': 'c = (a + b) / 2',
+            'explicacion': 'Donde a y b son los extremos del intervalo inicial, y c es el punto medio.'
+        },
+        {
+            'titulo': 'Criterio de Convergencia',
+            'formula': 'f(c) = 0',
+            'explicacion': 'El método de bisección determina si la raíz se encuentra en el intervalo izquierdo [a, c] o derecho [c, b] según el cambio de signo en la función evaluada en c.'
+        },
+        {
+            'titulo': 'Actualización del Intervalo',
+            'formula': 'Dependiendo del criterio de convergencia, se actualiza el intervalo de búsqueda para la siguiente iteración.',
+            'explicacion': 'Si f(a) * f(c) < 0, se actualiza el intervalo a [a, c]. Si f(c) * f(b) < 0, se actualiza el intervalo a [c, b].'
+        }
+    ]
+    
+    explicacion_teorica = """
+    En el método de bisección se utilizan varias fórmulas para iterar y encontrar la raíz de una ecuación dentro de un intervalo dado. 
+    Las principales fórmulas que se emplean en este método son las siguientes:
+
+    1. **Punto Medio del Intervalo**:
+       c = (a + b) / 2
+       donde a y b son los extremos del intervalo inicial, y c es el punto medio.
+
+    2. **Criterio de Convergencia**:
+       El método de bisección determina si la raíz se encuentra en el intervalo izquierdo [a, c] o derecho [c, b] según el cambio de signo en la función evaluada en c:
+       - Si f(c) = 0, entonces c es la raíz.
+       - Si f(a) * f(c) < 0, la raíz está en el intervalo [a, c].
+       - Si f(c) * f(b) < 0, la raíz está en el intervalo [c, b].
+
+    3. **Actualización del Intervalo**:
+       Dependiendo del criterio de convergencia, se actualiza el intervalo de búsqueda para la siguiente iteración:
+       - Si f(a) * f(c) < 0, se actualiza el intervalo a [a, c].
+       - Si f(c) * f(b) < 0, se actualiza el intervalo a [c, b].
+
+    Estas fórmulas y criterios son fundamentales para el funcionamiento del método de bisección, que es un método numérico básico pero efectivo para encontrar raíces de ecuaciones no lineales dentro de un intervalo dado.
+    """
+
+    context = {
+        'formulas': formulas,
+        'explicacion_teorica': explicacion_teorica,
+    }
+    
+    return render(request, 'Biseccion/teoriaBiseccion.html', context)
+# Función para convertir la ecuación simbólica a función lambda y aplicar el método de bisección
 def biseccion(ecuacion, a, b, tol_porcentual, max_iter=100):
     try:
         x = symbols('x')
@@ -113,7 +201,7 @@ def encontrar_intervalos(f, rango_min, rango_max, paso):
     
     df_intervalos = pd.DataFrame(intervalos, columns=["Inicio Intervalo", "Fin Intervalo"])
     return df_intervalos
-# Función para calcular el método de bisección y generar la gráfica
+# Vista para calcular el método de bisección y mostrar resultados
 def calcular_biseccion(request):
     resultado_biseccion = None
     mensaje = None
@@ -122,14 +210,14 @@ def calcular_biseccion(request):
     if request.method == 'POST':
         form = BiseecionForm(request.POST)
         if form.is_valid():
-            ec_values = form.cleaned_data['Ec_values']
+            ecuacion = form.cleaned_data['Ec_values']
             valor_min = float(form.cleaned_data['valor_min'])
             valor_max = float(form.cleaned_data['valor_max'])
             error_porcentual = float(form.cleaned_data['error_porcentual'])
 
             try:
                 x = symbols('x')
-                ecuacion = sympify(ec_values, locals={'sin': sin, 'cos': cos, 'tan': tan, 'exp': exp})
+                ecuacion = sympify(ecuacion, locals={'sin': sin, 'cos': cos, 'tan': tan, 'exp': exp})
                 resultado_biseccion = biseccion(ecuacion, valor_min, valor_max, error_porcentual)
 
                 # Obtener datos para graficar

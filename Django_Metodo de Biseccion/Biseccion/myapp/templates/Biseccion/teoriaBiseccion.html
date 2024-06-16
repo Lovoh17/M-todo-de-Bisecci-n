@@ -1,0 +1,23 @@
+<!-- En metodo_biseccion.html -->
+{% extends 'Biseccion/base.html' %}
+
+{% block content %}
+    <div class="fade-in">
+        <h1>Método de Bisección</h1>
+
+        <h2>Explicación Teórica</h2>
+        <p>{{ explicacion_teorica|safe }}</p>
+
+        <h2>Fórmulas del Método de Bisección</h2>
+        <ul>
+            {% for formula in formulas %}
+            <li>
+                <h3>{{ formula.titulo }}</h3>
+                <p><strong>Fórmula:</strong> {{ formula.formula }}</p>
+                <p>{{ formula.explicacion }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'calcular_Biseccion' %}" class="btn btn-primary mt-4">Calcular metodo de Biseccion</a><br>
+    </div>
+{% endblock %}

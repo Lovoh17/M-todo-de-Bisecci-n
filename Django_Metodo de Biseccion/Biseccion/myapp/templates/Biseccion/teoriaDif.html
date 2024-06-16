@@ -1,0 +1,16 @@
+{% extends 'Biseccion/baseDiferencias.html' %}
+
+{% block title %}
+Teoría de Diferencias Finitas
+{% endblock %}
+
+{% block content %}
+  <div class="fade-in">
+    <h1>Teoría de Diferencias Finitas</h1>
+    <hr>
+    <div>
+      {{ explicacion_teorica|safe }}
+    </div>
+    <a href="{% url 'diferencias_divididas' %}" class="btn btn-primary mt-4">Calcular Diferencias Numericas</a><br>
+  </div>
+{% endblock %}
