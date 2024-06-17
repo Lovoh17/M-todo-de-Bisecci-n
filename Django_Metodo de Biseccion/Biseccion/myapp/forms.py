@@ -1,4 +1,5 @@
 from django import forms
+from .models import ExerciseHistory
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import PasswordChangeForm
@@ -50,3 +51,10 @@ class CambioContraseñaForm(PasswordChangeForm):
         self.fields['old_password'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Contraseña actual'})
         self.fields['new_password1'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Nueva contraseña'})
         self.fields['new_password2'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Confirmar nueva contraseña'})
+
+
+
+class ExerciseHistoryForm(forms.ModelForm):
+    class Meta:
+        model = ExerciseHistory
+        fields = ['exercise_name', 'duration', 'calories_burned']

@@ -1,5 +1,6 @@
 #Librerias
 from django.shortcuts import render,redirect
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from .forms import *
@@ -20,22 +21,32 @@ import io
 import base64
 import pandas as pd
 from django.contrib import messages
+from .models import *
+from django.contrib.auth.models import User
+from .models import Usuarios
+from .models import DifferenceDividedHistory
 #Vista principal
 def home(request):
     return render(request ,'Biseccion/home.html')
 #Vista del login y validaciones
+
 def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
+            correo_User = form.cleaned_data['username']
+            password_User = form.cleaned_data['password']
+            
+            # Autenticar al usuario con las credenciales ingresadas
+            user = authenticate(request, username=correo_User, password=password_User)
+            
             if user is not None:
                 login(request, user)
-                return redirect('home')  # Reemplazar con la vista deseada
+                return redirect('home')  # Redirigir a la vista deseada para usuarios autenticados
             else:
-                form.add_error(None, 'Invalid username or password')
+                # Agregar mensaje de error con credenciales ingresadas
+                error_message = f"Usuario: {correo_User}, Contraseña: {password_User}"
+                form.add_error(None, error_message)
     else:
         form = LoginForm()
 
@@ -264,14 +275,55 @@ def calcular_biseccion(request):
     return render(request, 'Biseccion/calcular_biseccion.html', context)
 # Función para calcular la derivada numérica usando diferencia hacia atras
 def derivada_forward(f, x, h):
-    return (f(x + h) - f(x)) / h
-# Función para calcular la derivada numérica usando diferencia hacia adelante
+    f_x = round(f(x), 4)
+    f_x_plus_h = round(f(x + h), 4)
+    resultado = round((f_x_plus_h - f_x) / h, 4)
+    formula_sustituida = f"({f_x_plus_h} - {f_x}) / {h}"
+    pasos = [
+        f"f(x) = {f_x}",
+        f"f(x + h) = {f_x_plus_h}",
+        f"({f_x_plus_h} - {f_x}) / {h} = {resultado}"
+    ]
+    return resultado, formula_sustituida, pasos
+
 def derivada_backward(f, x, h):
-    return (f(x) - f(x - h)) / h
-# Función para calcular la derivada numérica usando diferencia central
+    f_x = round(f(x), 4)
+    f_x_minus_h = round(f(x - h), 4)
+    resultado = round((f_x - f_x_minus_h) / h, 4)
+    formula_sustituida = f"({f_x} - {f_x_minus_h}) / {h}"
+    pasos = [
+        f"f(x) = {f_x}",
+        f"f(x - h) = {f_x_minus_h}",
+        f"({f_x} - {f_x_minus_h}) / {h} = {resultado}"
+    ]
+    return resultado, formula_sustituida, pasos
+
 def derivada_central(f, x, h):
-    return (f(x + h) - f(x - h)) / (2 * h)
-#Funcion para mostrar la diferencias numerica
+    f_x = round(f(x), 4)
+    f_x_plus_h = round(f(x + h), 4)
+    f_x_minus_h = round(f(x - h), 4)
+    resultado = round((f_x_plus_h - f_x_minus_h) / (2 * h), 4)
+    formula_sustituida = f"({f_x_plus_h} - {f_x_minus_h}) / (2 * {h})"
+    pasos = [
+        f"f(x) = {f_x}",
+        f"f(x + h) = {f_x_plus_h}",
+        f"f(x - h) = {f_x_minus_h}",
+        f"({f_x_plus_h} - {f_x_minus_h}) / (2 * {h}) = {resultado}"
+    ]
+    return resultado, formula_sustituida, pasos
+
+def calcular_errores(derivada_fwd, derivada_bwd, derivada_cen, derivada_exacta_val):
+    error_fwd = abs(derivada_fwd - derivada_exacta_val)
+    error_bwd = abs(derivada_bwd - derivada_exacta_val)
+    error_cen = abs(derivada_cen - derivada_exacta_val)
+    
+    return {
+        'error_fwd': round(error_fwd, 4),
+        'error_bwd': round(error_bwd, 4),
+        'error_cen': round(error_cen, 4)
+    }
+
+@login_required
 def diferencias(request):
     resultado = {}
     grafica_base64 = ""
@@ -284,24 +336,22 @@ def diferencias(request):
             valor_h = float(form.cleaned_data['h'])
 
             try:
-                x = symbols('x')
-                ecuacion = sympify(funcion)
-                f = lambdify(x, ecuacion)
+                x = sp.symbols('x')
+                ecuacion = sp.sympify(funcion)
+                f = sp.lambdify(x, ecuacion)
 
                 # Calcular la derivada exacta
-                derivada_exacta = diff(ecuacion, x)
-                derivada_exacta_func = lambdify(x, derivada_exacta)
-                derivada_exacta_val = derivada_exacta_func(valor_x)
+                derivada_exacta = sp.diff(ecuacion, x)
+                derivada_exacta_func = sp.lambdify(x, derivada_exacta)
+                derivada_exacta_val = round(derivada_exacta_func(valor_x), 4)
 
                 # Calcular las derivadas utilizando los tres métodos
-                derivada_fwd = derivada_forward(f, valor_x, valor_h)
-                derivada_bwd = derivada_backward(f, valor_x, valor_h)
-                derivada_cen = derivada_central(f, valor_x, valor_h)
+                derivada_fwd, formula_fwd, pasos_fwd = derivada_forward(f, valor_x, valor_h)
+                derivada_bwd, formula_bwd, pasos_bwd = derivada_backward(f, valor_x, valor_h)
+                derivada_cen, formula_cen, pasos_cen = derivada_central(f, valor_x, valor_h)
 
                 # Calcular los errores
-                error_fwd = abs(derivada_fwd - derivada_exacta_val)
-                error_bwd = abs(derivada_bwd - derivada_exacta_val)
-                error_cen = abs(derivada_cen - derivada_exacta_val)
+                errores = calcular_errores(derivada_fwd, derivada_bwd, derivada_cen, derivada_exacta_val)
                
                 # Generar los puntos para la gráfica
                 x_vals = np.linspace(valor_x - 2, valor_x + 2, 400)
@@ -332,15 +382,42 @@ def diferencias(request):
                 grafica_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
                 buffer.close()
 
+                # Guardar el resultado en el historial
+                DifferenceDividedHistory.objects.create(
+                    user=request.user,
+                    function=funcion,
+                    x_value=valor_x,
+                    h_value=valor_h,
+                    derivada_fwd=derivada_fwd,
+                    formula_fwd=formula_fwd,
+                    pasos_fwd="\n".join(pasos_fwd),
+                    derivada_bwd=derivada_bwd,
+                    formula_bwd=formula_bwd,
+                    pasos_bwd="\n".join(pasos_bwd),
+                    derivada_cen=derivada_cen,
+                    formula_cen=formula_cen,
+                    pasos_cen="\n".join(pasos_cen),
+                    derivada_exacta=derivada_exacta_val,
+                    error_fwd=errores['error_fwd'],
+                    error_bwd=errores['error_bwd'],
+                    error_cen=errores['error_cen']
+                )
+
                 # Preparar los resultados para mostrar en la plantilla
                 resultado = {
-                    'derivada_fwd': round(derivada_fwd, 4),
-                    'error_fwd': round(error_fwd, 4),
-                    'derivada_bwd': round(derivada_bwd, 4),
-                    'error_bwd': round(error_bwd, 4),
-                    'derivada_cen': round(derivada_cen, 4),
-                    'error_cen': round(error_cen, 4),
-                    'derivada_exacta': round(derivada_exacta_val, 4)
+                    'derivada_fwd': derivada_fwd,
+                    'formula_fwd': formula_fwd,
+                    'pasos_fwd': pasos_fwd,
+                    'derivada_bwd': derivada_bwd,
+                    'formula_bwd': formula_bwd,
+                    'pasos_bwd': pasos_bwd,
+                    'derivada_cen': derivada_cen,
+                    'formula_cen': formula_cen,
+                    'pasos_cen': pasos_cen,
+                    'derivada_exacta': derivada_exacta_val,
+                    'error_fwd': round(errores['error_fwd'], 4),
+                    'error_bwd': round(errores['error_bwd'], 4),
+                    'error_cen': round(errores['error_cen'], 4)
                 }
 
             except Exception as e:
@@ -352,18 +429,27 @@ def diferencias(request):
     return render(request, 'Biseccion/diferencias.html', {'form': form, 'resultado': resultado, 'grafica_base64': grafica_base64})
 #Funcion de nuevo registro de usuario
 def registro(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    
     if request.method == 'POST':
         form = RegistroForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
             username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            messages.success(request, f'Bienvenido {username}, tu cuenta ha sido creada exitosamente.')
-            return redirect('home') 
+            password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, f'Bienvenido {username}, tu cuenta ha sido creada exitosamente.')
+                return redirect('home')
+            else:
+                messages.error(request, 'Hubo un problema al autenticarse. Inténtelo de nuevo.')
+        else:
+            messages.error(request, 'Error al crear la cuenta. Verifique los datos ingresados.')
     else:
         form = RegistroForm()
+    
     return render(request, 'Biseccion/registro.html', {'form': form})
 #Funcion del cambio de contraseña
 def cambio_contraseña(request):
@@ -414,3 +500,8 @@ def generar_pdf(request):
     c.save()
 
     return response
+
+@login_required
+def diferencias_historial(request):
+    history = DifferenceDividedHistory.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'Biseccion/historial.html', {'history': history})

@@ -7,23 +7,82 @@
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btn btn-primary">Calcular</button>
+            <!-- En tu archivo base.html o donde corresponda -->
+            {% if user.is_authenticated %}
+            <a href="{% url 'exercise_history' %}">Ver Historial</a>
+            {% endif %}
         </form>
 
-        {% if resultado %}
-            <h2>Resultados:</h2>
-            {% if resultado.error %}
-                <p>Error: {{ resultado.error }}</p>
-            {% else %}
-                <p>Diferencia hacia adelante: {{ resultado.derivada_fwd }} (Error: {{ resultado.error_fwd }})</p>
-                <p>Diferencia hacia atrás: {{ resultado.derivada_bwd }} (Error: {{ resultado.error_bwd }})</p>
-                <p>Diferencia central: {{ resultado.derivada_cen }} (Error: {{ resultado.error_cen }})</p>
-                <p>Derivada exacta: {{ resultado.derivada_exacta }}</p>
-                
-                {% if user.is_authenticated %}
-                    <h2>Gráfica</h2>
-                    <img src="data:image/png;base64,{{ grafica_base64 }}" alt="Gráfica de la función">
+        {% if not user.is_authenticated %}
+            {% if resultado %}
+                {% if not resultado.error %}
+                    <h2>Resultados:</h2>
+                    <div>
+                        <h3>Diferencia hacia adelante:</h3>
+                        <p>Resultado: {{ resultado.derivada_fwd }} (Error: {{ resultado.error_fwd }})</p>
+                    </div>
+                    
+                    <div>
+                        <h3>Diferencia hacia atrás:</h3>
+                        <p>Resultado: {{ resultado.derivada_bwd }} (Error: {{ resultado.error_bwd }})</p>
+                    </div>
+                    
+                    <div>
+                        <h3>Diferencia central:</h3>
+                        <p>Resultado: {{ resultado.derivada_cen }} (Error: {{ resultado.error_cen }})</p>
+                    </div>
+                    
+                    <p><strong>Derivada exacta:</strong> {{ resultado.derivada_exacta }}</p>
                 {% endif %}
             {% endif %}
+        {% endif %}
+        
+        {% if user.is_authenticated %}
+            {% if resultado %}
+                {% if not resultado.error %}
+                    <h2>Resultados:</h2>
+                    <div>
+                        <h3>Diferencia hacia adelante:</h3>
+                        <p>Resultado: {{ resultado.derivada_fwd }} (Error: {{ resultado.error_fwd }})</p>
+                        <p>Fórmula sustituida: {{ resultado.formula_fwd }}</p>
+                        <h4>Paso a paso:</h4>
+                        <ul>
+                            {% for paso in resultado.pasos_fwd %}
+                                <li>{{ paso }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3>Diferencia hacia atrás:</h3>
+                        <p>Resultado: {{ resultado.derivada_bwd }} (Error: {{ resultado.error_bwd }})</p>
+                        <p>Fórmula sustituida: {{ resultado.formula_bwd }}</p>
+                        <h4>Paso a paso:</h4>
+                        <ul>
+                            {% for paso in resultado.pasos_bwd %}
+                                <li>{{ paso }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3>Diferencia central:</h3>
+                        <p>Resultado: {{ resultado.derivada_cen }} (Error: {{ resultado.error_cen }})</p>
+                        <p>Fórmula sustituida: {{ resultado.formula_cen }}</p>
+                        <h4>Paso a paso:</h4>
+                        <ul>
+                            {% for paso in resultado.pasos_cen %}
+                                <li>{{ paso }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    
+                    <p><strong>Derivada exacta:</strong> {{ resultado.derivada_exacta }}</p>
+                {% endif %}
+            {% endif %}
+            
+            <h2>Gráfica</h2>
+            <img src="data:image/png;base64,{{ grafica_base64 }}" alt="Gráfica de la función" class="img-fluid">
         {% endif %}
     </div>
 {% endblock %}

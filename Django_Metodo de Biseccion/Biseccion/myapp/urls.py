@@ -11,6 +11,7 @@ urlpatterns = [
     path('/Django_Metodo de Biseccion/Biseccion/myapp/templates/Biseccion/teoriaDif.html', views.mostrar_teoria, name='teoriaD'),
     path('cerrar-sesion/', views.cerrar_sesion, name='cerrar_sesion'),
     path('perfil/', views.perfil, name='perfil'),
+    path('historial/', views.diferencias_historial, name='exercise_history'),
     path('/Biseccion/myapp/templates/Biseccion/calcular_biseccion.html', views.calcular_biseccion, name='calcular_Biseccion'),
     path('diferencion/', views.diferencias, name='diferencias_divididas'),
     path('generar_pdf/', views.generar_pdf, name='generar_pdf'),
