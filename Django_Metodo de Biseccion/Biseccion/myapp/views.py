@@ -54,30 +54,30 @@ def login_view(request):
 #Funcion para la teoria de Diferenciacion Numerica
 def teoria_diferencias():
     teoria = """
-    <h2>Diferencia hacia adelante:</h2>
-    <p>La derivada hacia adelante se aproxima utilizando la siguiente fórmula:</p>
-    <pre>f'(x) ≈ (f(x + h) - f(x)) / h</pre>
-    <p>Donde:</p>
+    <h2 class="Font_Titulo" >Diferencia hacia adelante :</h2>
+    <p class = "self-start">La derivada hacia adelante se aproxima utilizando la siguiente fórmula:</p>
+    <pre>f'(x) ≈ (f(x + h) - f(x)) / h</pre><br>
+    <p class="self-start">Donde:</p><br><br>
     <ul>
         <li>f(x): Valor de la función en el punto x.</li>
         <li>f(x + h): Valor de la función en el punto x + h.</li>
         <li>h: Tamaño del paso.</li>
-    </ul>
+    </ul><br><br>
 
-    <h2>Diferencia hacia atrás:</h2>
+    <h2 class="Font_Titulo" >Diferencia hacia atrás:</h2>
     <p>La derivada hacia atrás se aproxima utilizando la siguiente fórmula:</p>
     <pre>f'(x) ≈ (f(x) - f(x - h)) / h</pre>
-    <p>Donde:</p>
+    <p class="self-start">Donde:</p><br><br>
     <ul>
         <li>f(x): Valor de la función en el punto x.</li>
         <li>f(x - h): Valor de la función en el punto x - h.</li>
         <li>h: Tamaño del paso.</li>
-    </ul>
+    </ul><br><br>
 
-    <h2>Diferencia central:</h2>
+    <h2 class="Font_Titulo" >Diferencia central:</h2>
     <p>La derivada central se aproxima utilizando la siguiente fórmula:</p>
     <pre>f'(x) ≈ (f(x + h) - f(x - h)) / (2 * h)</pre>
-    <p>Donde:</p>
+    <p class="self-start">Donde:</p><br><br>
     <ul>
         <li>f(x + h): Valor de la función en el punto x + h.</li>
         <li>f(x - h): Valor de la función en el punto x - h.</li>
@@ -94,43 +94,44 @@ def mostrar_teoria(request):
 #Funcion de la teoria de Biseccion
 def metodo_biseccion(request):
     formulas = [
-        {
-            'titulo': 'Punto Medio del Intervalo',
-            'formula': 'c = (a + b) / 2',
-            'explicacion': 'Donde a y b son los extremos del intervalo inicial, y c es el punto medio.'
-        },
-        {
-            'titulo': 'Criterio de Convergencia',
-            'formula': 'f(c) = 0',
-            'explicacion': 'El método de bisección determina si la raíz se encuentra en el intervalo izquierdo [a, c] o derecho [c, b] según el cambio de signo en la función evaluada en c.'
-        },
-        {
-            'titulo': 'Actualización del Intervalo',
-            'formula': 'Dependiendo del criterio de convergencia, se actualiza el intervalo de búsqueda para la siguiente iteración.',
-            'explicacion': 'Si f(a) * f(c) < 0, se actualiza el intervalo a [a, c]. Si f(c) * f(b) < 0, se actualiza el intervalo a [c, b].'
-        }
+    {
+        'titulo': 'Punto Medio del Intervalo',
+        'formula': 'c = (a + b) / 2',
+        'explicacion': 'Donde a y b son los extremos del intervalo inicial, y c es el punto medio.'
+    },
+    {
+        'titulo': 'Criterio de Convergencia',
+        'formula': 'f(c) = 0',
+        'explicacion': 'El método de bisección determina si la raíz se encuentra en el intervalo izquierdo [a, c] o derecho [c, b] según el cambio de signo en la función evaluada en c.'
+    },
+    {
+        'titulo': 'Actualización del Intervalo',
+        'formula': 'Dependiendo del criterio de convergencia, se actualiza el intervalo de búsqueda para la siguiente iteración.',
+        'explicacion': 'Si f(a) * f(c) < 0, se actualiza el intervalo a [a, c]. Si f(c) * f(b) < 0, se actualiza el intervalo a [c, b].'
+    }
     ]
+
     
     explicacion_teorica = """
-    En el método de bisección se utilizan varias fórmulas para iterar y encontrar la raíz de una ecuación dentro de un intervalo dado. 
-    Las principales fórmulas que se emplean en este método son las siguientes:
+    <p class = "text-start">En el método de bisección se utilizan varias fórmulas para iterar y encontrar la raíz de una ecuación dentro de un intervalo dado. 
+    Las principales fórmulas que se emplean en este método son las siguientes:</p><br>
 
-    1. **Punto Medio del Intervalo**:
+    <h1 class="Font_Tema" > 1. *Punto Medio del Intervalo :</h1>
        c = (a + b) / 2
-       donde a y b son los extremos del intervalo inicial, y c es el punto medio.
+       donde a y b son los extremos del intervalo inicial, y c es el punto medio.<br><br>
 
-    2. **Criterio de Convergencia**:
-       El método de bisección determina si la raíz se encuentra en el intervalo izquierdo [a, c] o derecho [c, b] según el cambio de signo en la función evaluada en c:
-       - Si f(c) = 0, entonces c es la raíz.
-       - Si f(a) * f(c) < 0, la raíz está en el intervalo [a, c].
-       - Si f(c) * f(b) < 0, la raíz está en el intervalo [c, b].
+    <h1 class="Font_Tema" > 2. *Criterio de Convergencia :</h1>
+       El método de bisección determina si la raíz se encuentra en el intervalo izquierdo [a, c] o derecho [c, b] según el cambio de signo en la función evaluada en c:<br><br>
+       - Si f(c) = 0, entonces c es la raíz.<br>
+       - Si f(a) * f(c) < 0, la raíz está en el intervalo [a, c].<br>
+       - Si f(c) * f(b) < 0, la raíz está en el intervalo [c, b].<br><br>
 
-    3. **Actualización del Intervalo**:
-       Dependiendo del criterio de convergencia, se actualiza el intervalo de búsqueda para la siguiente iteración:
-       - Si f(a) * f(c) < 0, se actualiza el intervalo a [a, c].
-       - Si f(c) * f(b) < 0, se actualiza el intervalo a [c, b].
+    <h1 class="Font_Tema" >3. *Actualización del Intervalo :</h1>
+       Dependiendo del criterio de convergencia, se actualiza el intervalo de búsqueda para la siguiente iteración:<br><br>
+       - Si f(a) * f(c) < 0, se actualiza el intervalo a [a, c].<br>
+       - Si f(c) * f(b) < 0, se actualiza el intervalo a [c, b].<br><br><br><br>
 
-    Estas fórmulas y criterios son fundamentales para el funcionamiento del método de bisección, que es un método numérico básico pero efectivo para encontrar raíces de ecuaciones no lineales dentro de un intervalo dado.
+    Estas fórmulas y criterios son fundamentales para el funcionamiento del método de bisección, que es un método numérico básico pero efectivo para encontrar raíces de ecuaciones no lineales dentro de un intervalo dado.<br><br><br>
     """
 
     context = {
@@ -323,8 +324,9 @@ def calcular_errores(derivada_fwd, derivada_bwd, derivada_cen, derivada_exacta_v
         'error_cen': round(error_cen, 4)
     }
 
-@login_required
+# @login_required
 def diferencias(request):
+
     resultado = {}
     grafica_base64 = ""
 
@@ -383,25 +385,26 @@ def diferencias(request):
                 buffer.close()
 
                 # Guardar el resultado en el historial
-                DifferenceDividedHistory.objects.create(
-                    user=request.user,
-                    function=funcion,
-                    x_value=valor_x,
-                    h_value=valor_h,
-                    derivada_fwd=derivada_fwd,
-                    formula_fwd=formula_fwd,
-                    pasos_fwd="\n".join(pasos_fwd),
-                    derivada_bwd=derivada_bwd,
-                    formula_bwd=formula_bwd,
-                    pasos_bwd="\n".join(pasos_bwd),
-                    derivada_cen=derivada_cen,
-                    formula_cen=formula_cen,
-                    pasos_cen="\n".join(pasos_cen),
-                    derivada_exacta=derivada_exacta_val,
-                    error_fwd=errores['error_fwd'],
-                    error_bwd=errores['error_bwd'],
-                    error_cen=errores['error_cen']
-                )
+                if request.user.is_authenticated:
+                    DifferenceDividedHistory.objects.create(
+                        user=request.user,
+                        function=funcion,
+                        x_value=valor_x,
+                        h_value=valor_h,
+                        derivada_fwd=derivada_fwd,
+                        formula_fwd=formula_fwd,
+                        pasos_fwd="\n".join(pasos_fwd),
+                        derivada_bwd=derivada_bwd,
+                        formula_bwd=formula_bwd,
+                        pasos_bwd="\n".join(pasos_bwd),
+                        derivada_cen=derivada_cen,
+                        formula_cen=formula_cen,
+                        pasos_cen="\n".join(pasos_cen),
+                        derivada_exacta=derivada_exacta_val,
+                        error_fwd=errores['error_fwd'],
+                        error_bwd=errores['error_bwd'],
+                        error_cen=errores['error_cen']
+                    )
 
                 # Preparar los resultados para mostrar en la plantilla
                 resultado = {

@@ -1,0 +1,895 @@
+@import 'Variables';
+@import 'Shadow';
+@import 'Hovers';
+
+.grid1x3 {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: "a b c d";
+  gap: $small;
+  align-items: center;
+}
+
+.area-1x1 {
+  grid-area: a;
+}
+
+.area-1x2 {
+  grid-area: b;
+}
+
+.area-1x3 {
+  grid-area: c;
+}
+
+.area-1x4 {
+  grid-area: d;
+}
+
+.Bento_grid {
+  padding: $small;
+  margin: 5%;
+  height: 80vh;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-template-areas:
+    "A A A B B"
+    "A A A B B"
+    "C C X B B "
+    "C C D D D"
+    "C C D D D";
+
+  background: linear-gradient($color-secundario, $colorBg-secundario);
+  gap: 10px;
+  border-radius: 0px 12px 0px 12px;
+}
+
+.bentoAx3 {
+  @extend .shadow-top;
+  @extend .div_hover_Scale_Up_Down;
+  margin: 10px;
+  border-radius: $estandar;
+  grid-area: A;
+  color: white;
+  background-color: RGB(0, 128, 255);
+}
+
+.bentoBx2 {
+  @extend .div_hover_Scale_Up_Down;
+  @extend .shadow-right;
+
+  margin: 10px;
+  border-radius: $estandar;
+  grid-area: B;
+  color: white;
+  background-color: RGB(255, 0, 128);
+}
+
+.bentoCx3 {
+  @extend .div_hover_Scale_Up_Down;
+  @extend .shadow-left;
+  margin: 10px;
+  border-radius: $estandar;
+  grid-area: C;
+  color: white;
+  background-color: RGB(255, 128, 0);
+}
+
+.bentoDx3 {
+  @extend .div_hover_Scale_Up_Down;
+  @extend .shadow-bottom;
+  margin: 10px;
+  border-radius: $estandar;
+  grid-area: D;
+  color: white;
+  background-color: RGB(0, 168, 107);
+}
+
+.bentoXx1 {
+  grid-area: X;
+  color: white;
+  @extend.titulo;
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  h1 {
+    font-size: larger;
+  }
+}
+
+@mixin box-styling {
+  border-radius: 10px;
+  border: 2px solid rebeccapurple;
+
+  &:hover {
+    box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.3);
+  }
+
+}
+
+.container-padre {
+  display: grid;
+  border: 2px solid black;
+  width: 90%;
+  height: 600px;
+  margin: auto;
+  margin-top: 15px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  padding: 20px;
+  gap: 10px;
+  background: rgb(52, 52, 52);
+  border-radius: 10px;
+
+  .box1,
+  .box2 {
+    @include box-styling;
+    grid-row: span 2;
+  }
+
+  .box1 {
+    display: flex;
+    grid-column: span 2;
+
+    .box1_info {
+      padding: 20px;
+      align-items: center;
+      align-self: flex-start;
+      font-size: 13px;
+      color: white;
+      width: 200px;
+      height: auto;
+      text-align: justify;
+
+      .box1_button {
+        align-self: self-start;
+        align-items: center;
+        align-items: last baseline;
+        width: 100px;
+        justify-content: center;
+        margin: 50px;
+      }
+    }
+  }
+
+  .box2 {
+    grid-column: span 1;
+  }
+
+
+  @media screen and (max-width: 1080px) {
+    width: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+
+    .box1,
+    .box2 {
+      grid-column: span 1;
+    }
+  }
+}
+
+//////////////////////////////////
+.Pokedex_UnFolded {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border: 10px solid darken($color: rgb(220, 10, 45), $amount: 20);
+  width: 90%;
+  height: 85vh;
+  margin: auto;
+  margin-top: 2%;
+  // gap: 5px;
+  background: rgb(220, 10, 45);
+  border-radius: 10px;
+
+}
+
+/* Define la animación fuera de las reglas de estilo */
+@keyframes grow-left-to-right {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Estilos para el div .Pokedex_Screen */
+.Pokedex_Screen {
+  display: flex;
+  flex-direction: row;
+  width: 95%;
+  height: 95%;
+  background-color: rgb(226, 226, 226);
+  border-radius: 10px;
+  object-fit: contain;
+  padding: 5px;
+  /* Aplica la animación */
+  animation: grow-left-to-right 0.5s ease-in-out;
+}
+
+
+.Pokedex_rest {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  justify-self: flex-end;
+  width: 100%;
+  height: 100%;
+
+  background-image: url("/IMG/Pokeball_minimalista.png");
+  background-size: auto;
+  background-position: center;
+  background-repeat: no-repeat;
+  animation: slide-up 1s ease-in-out;
+
+  @keyframes slide-up {
+    from {
+      transform: translateY(100%);
+      /* Empieza desde abajo */
+    }
+
+    to {
+      transform: translateY(0);
+      /* Llega hasta arriba */
+    }
+  }
+}
+
+.transicionDownUp {
+  @keyframes slide-up {
+    from {
+      transform: translateY(100%);
+      /* Empieza desde abajo */
+    }
+
+    to {
+      transform: translateY(0);
+      /* Llega hasta arriba */
+    }
+  }
+}
+
+.img_fix {
+  z-index: 3;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+  display: block;
+  animation: pulse 4s ease-in-out infinite;
+  filter: drop-shadow(5px 5px 15px rgba(1, 1, 1, 0.734));
+}
+
+.Img_Bg {
+    position: absolute;
+    top: 17%;
+    z-index: 1;
+    width: 400px;
+    height: 200px;
+    display: block;
+
+}
+
+.Pokedex_infoCard {
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+
+  height: 65%;
+  width: 30%;
+
+  align-self: flex-end;
+  align-items: center;
+  background-color: rgb(255, 255, 255) !important;
+  border-radius: 10px;
+  margin-right: 5px;
+  animation: grow-down-to-top 0.90s ease-in;
+  overflow: hidden;
+
+  img {
+    position: absolute;
+    bottom: 45%;
+  }
+
+  // background-image: url("/IMG/Pokeball_minimalista.png");
+  // background-size: auto;
+  // background-position: center top;
+  // background-repeat: no-repeat;
+  // animation: slide-up 1s ease-in-out;
+
+
+}
+@keyframes grow-down-to-top {
+  from {
+      transform: scaleY(0);
+  }
+  to {
+      transform: scaleY(1);
+  }
+}
+
+.Pokedex_Stats {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 30%;
+  height: 100%;
+  border-radius: 10px;
+  margin-right: 5px;
+  background-color: rgb(221, 221, 221);
+
+}
+
+.Pokedex_GeneralStats {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  height: 70%;
+  background-color: rgb(255, 255, 255) !important;
+  border-radius: 10px;
+  margin-right: 5px;
+  padding: 0px;
+  animation: grow-down-to-top 0.90s ease-in;
+  
+}
+
+
+.Pokedex_Evo {
+  @extend .Pokedex_GeneralStats;
+  background-color: rgb(255, 255, 255) !important;
+  height: 30% !important;
+  animation: grow-down-to-top 0.90s ease-in;
+
+
+
+}
+
+.Pokedex_Moves {
+  @extend .Pokedex_List;
+  background-color: rgb(255, 255, 255) !important;
+  animation: grow-down-to-top 0.90s ease-in;
+
+}
+
+
+
+.Pokedex_List {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  width: 30%;
+  height: 100%;
+  background-color: rgb(255, 255, 255) !important;
+  border-radius: 10px;
+  margin-right: 5px;
+  justify-self: flex-start;
+  border: solid 1px lightgray;
+  animation: grow-left-to-right 0.90s ease-in;
+
+}
+
+@keyframes grow-left-to-right {
+  from {
+      transform: scaleX(0);
+  }
+  to {
+      transform: scaleX(1);
+  }
+}
+
+
+.MenuBar {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+
+}
+
+.Pokedex_Folded {
+  display: grid;
+  border: 10px solid darken($color: rgb(220, 10, 45), $amount: 20);
+  width: 400px;
+  height: 600px;
+  margin: auto;
+  margin-top: 15px;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 2fr 1fr;
+  grid-template-areas:
+    'Top'
+    'center'
+    'bottom';
+
+  gap: 5px;
+  background: rgb(220, 10, 45);
+  border-radius: 10px;
+
+  .box {
+    @include box-styling();
+    grid-column: span 1;
+  }
+
+  .box figure {
+    width: 200px;
+    height: 200px;
+  }
+
+}
+
+.Pokedex_Folded_top {
+  grid-area: Top;
+  display: flex;
+  border: 0px 0px 10px 0px solid darken($color: rgb(220, 10, 45), $amount: 20);
+
+}
+
+.lente {
+  margin: 10px 0px 0px 10px;
+  width: 100px;
+  height: 100px;
+  background-color: #00BFFF;
+  border-radius: 50%;
+  border: 8px solid #FFFFFF;
+}
+
+.Dot_Rojo {
+  margin: 10px 0px 0px 10px;
+  width: 20px;
+  height: 20px;
+  background-color: #ff0000;
+  border-radius: 50%;
+  border: 3px solid #040404;
+}
+
+.Dot_Verde {
+  margin: 10px 0px 0px 10px;
+  width: 20px;
+  height: 20px;
+  background-color: #00ff0d;
+  border-radius: 50%;
+  border: 3px solid #040404;
+}
+
+.Dot_Amarillo {
+  margin: 10px 0px 0px 10px;
+  width: 20px;
+  height: 20px;
+  background-color: #ffee00;
+  border-radius: 50%;
+  border: 3px solid #040404;
+}
+
+.Pokedex_Folded_Center {
+  grid-area: center;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+}
+
+.triangulo {
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 25px solid yellow;
+  border-bottom-color: orange;
+  transform: rotate(90deg);
+}
+
+
+
+.container2 {
+  display: grid;
+  border: 2px solid black;
+  width: 960px;
+  height: 400px;
+  margin: auto;
+  margin-top: 15px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+  padding: 20px;
+  gap: 10px;
+  background: rgb(52, 52, 52);
+  border-radius: 10px;
+
+  .box {
+    @include box-styling();
+    grid-column: span 1;
+  }
+
+  .box figure {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+.container-padre2 {
+  display: grid;
+  border: 2px solid black;
+  width: 90%;
+  height: 600px;
+  margin: auto;
+  margin-top: 15px;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  padding: 20px;
+  gap: 10px;
+  background: rgb(52, 52, 52);
+  border-radius: 10px;
+
+  .boxs1 {
+    @include box-styling;
+    grid-column: span 2;
+    grid-row: 1 / span 3;
+    padding: 5px;
+  }
+
+  .boxs2 {
+    @include box-styling;
+    grid-row: 1/ span 2;
+    grid-column: span 2;
+
+  }
+
+  .boxs3 {
+    @include box-styling;
+    grid-row: span 1;
+    grid-column: span 2;
+  }
+
+  .boxs4 {
+    @include box-styling();
+    grid-column: span 6;
+  }
+
+  @media screen and (max-width: 1080px) {
+    width: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr);
+
+    .boxs1,
+    .boxs2,
+    .boxs3,
+    .boxs4 {
+      grid-column: span 1;
+      grid-row: span 1;
+    }
+  }
+}
+
+/*
+//*Template 2 grid Conteiner*/
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Dancing+Script:wght@400..700&family=Sedan:ital@0;1&display=swap');
+//@import 'boton';
+$color2: rgb(112, 11, 151);
+$color1: rgb(83, 92, 145);
+
+.degradado {
+  //background: linear-gradient(to right, $color1, $color2);
+  width: 100%;
+  height: 600;
+}
+
+.layout {
+  display: grid;
+  height: 60;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto 1fr auto;
+  grid-gap: 10px;
+  background-color: #f5f5f5;
+}
+
+.header {
+  grid-column: 1 / -1;
+  background-color: rgb(27, 26, 85);
+  color: white;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.sidebar {
+  background-color: rgb(27, 26, 85);
+  padding: 20px;
+}
+
+.main {
+  grid-column: 2 / -1;
+  background-color: rgb(27, 26, 85);
+  padding: 20px;
+  width: auto;
+  color: rgb(146, 144, 195);
+  ;
+}
+
+.footer {
+  grid-column: 1 / -1;
+  background-color: rgb(27, 26, 85);
+  color: rgb(146, 144, 195);
+  ;
+  padding: 20px;
+}
+
+.layout {
+  .header {
+    @extend .header;
+  }
+
+  .sidebar {
+    @extend .sidebar;
+  }
+
+  .content {
+    @extend .content;
+  }
+
+  .footer {
+    @extend .footer;
+  }
+}
+
+.doc {
+  background-color: $GrayRdBg;
+  height: 100vh;
+  width: 100%;
+  display: grid;
+  grid-template-columns: .75fr 4fr 1fr;
+  grid-row: auto auto;
+  grid-template-areas:
+    "Sidebar  Content Content"
+    "Footer Footer Footer";
+
+  margin: 0;
+}
+
+.Sidebar_content {
+  @extend .shadow-left;
+  grid-area: Sidebar;
+  color: white;
+  background-color: lighten($color: $colorbg-primario, $amount: 20);
+  position: relative;
+  padding-left: 0;
+  padding-top: 5px;
+
+  i {
+    margin-left: 0;
+    margin-right: 8px;
+  }
+
+  a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    list-style-type: none;
+    font-family: map-get($map: $FontPack4, $key: Tema);
+
+    &:hover {
+      @extend .list_Letter_hover;
+      transition: .20s all ease-in;
+      border-radius: 4px;
+      background-color: darken($color: $color-primario, $amount: 20);
+      width: auto+10px;
+    }
+  }
+
+  ul {
+    padding-left: 0px;
+  }
+
+  li {
+    list-style-type: none;
+    padding-left: 15px;
+  }
+
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: lighten($color: $colorbg-primario, $amount: 20) transparent;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: lighten($color: $colorbg-primario, $amount: 20);
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: lighten($color: $colorbg-primario, $amount: 30);
+  }
+}
+
+
+.Content {
+  @extend .shadow-right;
+  border-radius: $estandar;
+  grid-area: Content;
+  color: white;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.ItemList {
+  @extend .shadow-right;
+  background-color: lighten($color: $colorbg-primario, $amount: 20);
+  grid-area: ItemList;
+  color: white;
+}
+
+
+
+//grid para la web tema 1
+.webtema1 {
+  display: grid;
+  height: 100%;
+  width: 100%;
+  grid-template-columns: 1.5fr 2fr 1.5fr;
+  grid-template-rows: auto auto .25fr;
+  grid-template-areas:
+    "carrucel info info"
+    "carrucel form form"
+    "footer footer  footer";
+  ;
+
+  @media screen and (max-width: 800px) {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: .25fr 0.50fr auto;
+    grid-template-areas:
+      "carrucel carrucel"
+      "info info"
+      "form form"
+      "footer footer";
+
+    .carousel_md {
+      width: 100%;
+      height: 40vh;
+      overflow: hidden;
+    }
+
+    .carousel_md img {
+      height: 70vh;
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+.cell-carrucel {
+  grid-area: carrucel;
+  justify-content: center;
+  align-items: center;
+}
+
+.cell-info {
+  grid-area: info;
+  width: auto;
+}
+
+.cell-form {
+  grid-area: form;
+  align-content: center;
+  row-gap: 10px;
+  height: auto;
+}
+
+.cell-footer {
+  grid-area: footer;
+  align-content: center;
+  row-gap: 10px;
+  background-color: $colorBg-secundarioB;
+  margin-top: 10px;
+}
+
+//grid para la web tema 2
+.webtema2 {
+  display: grid;
+  height: 90vh;
+  width: 100%;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr auto;
+
+}
+
+@media only screen and (max-width: 768px) {
+  .webtema2 {
+    display: grid;
+    height: 90vh;
+    width: 100%;
+    grid-template-columns: repeat(3, .75) 1.25fr;
+    grid-template-rows: 1fr 1fr 1fr auto;
+
+    .sideImagen {
+      display: none;
+    }
+
+    .cell-info2 {
+      margin-left: 70px;
+      text-align: center;
+      justify-content: center;
+    }
+
+    .cell-infoBottom {
+      margin-left: 70px;
+    }
+  }
+
+}
+
+.cell-carrucel2 {
+  grid-area: 2/1/2/5;
+  background-color: $colorBg-secundarioC;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  height: 100%;
+
+  button {
+    z-index: 2;
+  }
+
+}
+
+.sideImagen {
+  grid-area: 1/4/4/4;
+  z-index: 0;
+
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+
+}
+
+
+
+
+
+
+.cell-info2 {
+  grid-area: 1/1/1/4;
+  background-color: whitesmoke;
+
+}
+
+.cell-infoBottom {
+  align-content: center;
+  row-gap: 10px;
+  height: auto;
+  grid-area: 3/1/5/4;
+  background-color: whitesmoke;
+}
+
+.cell-footer2 {
+  grid-area: 4/1/4/5;
+  align-content: center;
+  row-gap: 10px;
+  border-radius: rgb(255, 255, 255) solid 4px;
+
+}
+
+.grid_col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30vh;
+  width: 80%;
+
+}

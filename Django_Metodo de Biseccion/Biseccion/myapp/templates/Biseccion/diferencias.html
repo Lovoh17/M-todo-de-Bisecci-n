@@ -6,11 +6,15 @@
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Calcular</button>
+            <button type="submit" class="butontest_boxshadow_Th">Calcular</button>
+
             <!-- En tu archivo base.html o donde corresponda -->
             {% if user.is_authenticated %}
-            <a href="{% url 'exercise_history' %}">Ver Historial</a>
+            
+            <button class="butontest_boxshadow_Th"><a href="{% url 'exercise_history' %}">Ver Historial</a></button>
+
             {% endif %}
+            
         </form>
 
         {% if not user.is_authenticated %}
@@ -36,6 +40,7 @@
                 {% endif %}
             {% endif %}
         {% endif %}
+        
         
         {% if user.is_authenticated %}
             {% if resultado %}
@@ -84,5 +89,8 @@
             <h2>Gráfica</h2>
             <img src="data:image/png;base64,{{ grafica_base64 }}" alt="Gráfica de la función" class="img-fluid">
         {% endif %}
+
+
     </div>
+   
 {% endblock %}

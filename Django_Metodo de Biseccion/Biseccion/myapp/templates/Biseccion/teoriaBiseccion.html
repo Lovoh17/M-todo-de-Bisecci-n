@@ -2,13 +2,13 @@
 {% extends 'Biseccion/base.html' %}
 
 {% block content %}
-    <div class="fade-in">
-        <h1>Método de Bisección</h1>
+    <div class="fade-in ">
+        <h1 class="titulo2">Método de Bisección</h1>
 
         <h2>Explicación Teórica</h2>
         <p>{{ explicacion_teorica|safe }}</p>
 
-        <h2>Fórmulas del Método de Bisección</h2>
+        <h2 class="Font_Tema" >Fórmulas del Método de Bisección</h2>
         <ul>
             {% for formula in formulas %}
             <li>
@@ -18,6 +18,9 @@
             </li>
             {% endfor %}
         </ul>
-        <a href="{% url 'calcular_Biseccion' %}" class="btn btn-primary mt-4">Calcular metodo de Biseccion</a><br>
+        <br><br>
+
+        <button class="butontest_boxshadow_Th3"><a href="{% url 'calcular_Biseccion' %}" >Calcular metodo de Biseccion</a></button>
+
     </div>
 {% endblock %}

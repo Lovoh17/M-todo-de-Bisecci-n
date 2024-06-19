@@ -2,58 +2,63 @@
 {% load static %}
 
 {% block content %}
-    <div class="fade-in">
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Calcular</button>
-        </form>
+<div class="fade-in">
+<form method="post">
+{% csrf_token %}
+{{ form.as_p }}
+<button type="submit" class="btn btn-primary">Calcular</button>
+{% if user.is_authenticated %}
+<a href="">Ver Historial</a>
+{% endif %}
+</form>
 
-        {% if mensaje %}
-            <p>{{ mensaje }}</p>
-        {% endif %}
+    {% if mensaje %}
+        <p>{{ mensaje }}</p>
+    {% endif %}
 
-        {% if resultado_biseccion %}
-            <h2>Resultados de la Bisección:</h2>
-            <p>Raíz aproximada: {{ resultado_biseccion.0|default:"No calculada" }}</p>
-            <p>Número de iteraciones: {{ resultado_biseccion.1|default:"No calculado" }}</p>
-            <p>Error: {{ resultado_biseccion.2|default:"No calculado" }}</p>
+    {% if resultado_biseccion %}
+        <h2>Resultados de la Bisección:</h2>
+        <p>Raíz aproximada: {{ resultado_biseccion.0|default:"No calculada" }}</p>
+        <p>Número de iteraciones: {{ resultado_biseccion.1|default:"No calculado" }}</p>
+        <p>Error: {{ resultado_biseccion.2|default:"No calculado" }}</p>
 
-            {% if not request.user.is_authenticated %}
-                <p>Para ver más detalles, por favor <a href="{% url 'registro' %}" class="badge text-bg-primary text-wrap">inicia sesión</a>.</p>
-            {% else %}
-                {% if resultado_biseccion.3 %}
-                    <h3>Iteraciones:</h3>
-                    <table border="1" style="border-collapse: collapse; width: 100%;">
-                        <thead>
-                            <tr style="background-color: #f2f2f2;">
-                                <th style="padding: 8px; text-align: center;">Iteración</th>
-                                <th style="padding: 8px; text-align: center;">f(Raíz)</th>
-                                <th style="padding: 8px; text-align: center;">Raíz Aproximada</th>
-                                <th style="padding: 8px; text-align: center;">Error %</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for iteracion in resultado_biseccion.3 %}
-                            <tr>
-                                <td style="padding: 8px; text-align: center;">{{ iteracion.0 }}</td>
-                                <td style="padding: 8px; text-align: center;">{{ iteracion.1 }}</td>
-                                <td style="padding: 8px; text-align: center;">{{ iteracion.2 }}</td>
-                                <td style="padding: 8px; text-align: center;">{{ iteracion.3 }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                {% endif %}
-                
-                {% if grafica_base64 %}
-                    <h2>Gráfica:</h2>
-                    <img src="data:image/png;base64,{{ grafica_base64 }}" alt="Gráfica de la función y raíz encontrada" class="grafica">
-                {% endif %}
-                
-                <!-- Aquí puedes añadir más elementos según sea necesario, como enlaces para descargar PDF u otras funcionalidades -->
-                
+        {% if not request.user.is_authenticated %}
+            <p>Para ver más detalles, por favor <a href="{% url 'registro' %}" class="badge text-bg-primary text-wrap">inicia sesión</a>.</p>
+        {% else %}
+            {% if resultado_biseccion.3 %}
+                <h3>Iteraciones:</h3>
+                <table border="1" style="border-collapse: collapse; width: 100%;">
+                    <thead>
+                        <tr style="background-color: #f2f2f2;">
+                            <th style="padding: 8px; text-align: center;">Iteración</th>
+                            <th style="padding: 8px; text-align: center;">f(Raíz)</th>
+                            <th style="padding: 8px; text-align: center;">Raíz Aproximada</th>
+                            <th style="padding: 8px; text-align: center;">Error %</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for iteracion in resultado_biseccion.3 %}
+                        <tr>
+                            <td style="padding: 8px; text-align: center;">{{ iteracion.0 }}</td>
+                            <td style="padding: 8px; text-align: center;">{{ iteracion.1 }}</td>
+                            <td style="padding: 8px; text-align: center;">{{ iteracion.2 }}</td>
+                            <td style="padding: 8px; text-align: center;">{{ iteracion.3 }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             {% endif %}
+            
+            {% if grafica_base64 %}
+                <h2>Gráfica:</h2>
+                <img src="data:image/png;base64,{{ grafica_base64 }}" alt="Gráfica de la función y raíz encontrada" class="grafica">
+            {% endif %}
+            
+            <!-- Aquí puedes añadir más elementos según sea necesario, como enlaces para descargar PDF u otras funcionalidades -->
+            
         {% endif %}
-    </div>
+    {% endif %}
+</div>
+
+
 {% endblock %}

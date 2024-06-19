@@ -3,21 +3,40 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-   <div class="text-center fade-in">
+   <div class="text-center contenido_center   fade-in">
      <h2 class="mb-4">¡Bienvenido!</h2>
      {% if user.is_authenticated %}
         <p>Hola {{ user.username }}!</p>
-        <a href="{% url 'cerrar_sesion' %}" class="btn btn-danger">Cerrar Sesion</a><br>
-        <br><a href="{% url 'editar' %}" class="btn btn-primary mt-4">Editar contraseña</a>
-        <br><a href="{% url 'perfil' %}" class="btn btn-primary mt-4">Perfil</a><br>
-        <a href="{% url 'calcular_Biseccion' %}" class="btn btn-primary mt-4">Calcular Metodo de Biseccion</a><br>
-        <a href="{% url 'diferencias_divididas' %}" class="btn btn-primary mt-4">Calcular Metodo de Diferencias Divididas</a><br>
+        <div class="contenido_center_row">
+          <button class="butontest_boxshadow_Th3" ><a href="{% url 'editar' %}" >Editar contraseña</a> </button>
+          <button class="butontest_boxshadow_Th3" ><a href="{% url 'perfil' %}" >Perfil</a> </button>
+        </div>
+        <br>
+        <h2>Operacines : </h2>
+        <div class="contenido_center_row">
+          <button class="butontest_boxshadow_Th4" ><a href="{% url 'calcular_Biseccion' %}" >Metodo de Biseccion</a> </button>
+          <button class="butontest_boxshadow_Th4" ><a href="{% url 'diferencias_divididas' %}" >Diferencias Numericas</a> </button>
+        </div>
+
+        <hr>
+        <button class="butontest_boxshadow_Th2" ><a href="{% url 'cerrar_sesion' %}" >Cerrar Sesion</a> </button>
+        <br>
       {% else %}
-        <a href="{% url 'login' %}" class="btn btn-primary"><span class="glyphicon glyphicon-log-in"></span>Iniciar Sesion</a> 
-        <a href="{% url 'registro' %}" class="btn btn-success">Registrarse</a>
-        <br><br></a>Utilizar método sin registrarse</a><br>
-        <a href="{% url 'calcular_Biseccion' %}" class="btn btn-primary mt-4">Calcular metodo de Biseccion</a><br>
-        <a href="{% url 'diferencias_divididas' %}" class="btn btn-primary mt-4">Calcular Metodo de Diferencias Divididas</a><br>
+      <div class="contenido_center_row">
+
+      <button class="butontest_boxshadow_Th set_butontest_boxshadow_color_lightgreen  "><a href="{% url 'login' %}" ><span class="glyphicon glyphicon-log-in"></span>Iniciar Sesion</a></button>
+      <button class="butontest_boxshadow_Th3 set_butontest_boxshadow_color_blue"><a href="{% url 'registro' %}">Registrarse</a> </button>
+      </div>
+        
+        <br><br><h2>Utilizar metodos sin registro : </h2>
+        <br>
+        <div class="contenido_center_row">
+
+        <button class="butontest_boxshadow_Th3"><a href="{% url 'calcular_Biseccion' %}" >Metodo de Biseccion</a> </button>
+        <button class="butontest_boxshadow_Th3"><a href="{% url 'diferencias_divididas' %}">Diferencias Numericas</a> </button>
+        </div>
+        <br>
+        <br>
       {% endif %}
    </div>
 {% endblock %}

@@ -3,8 +3,10 @@
 <head>
   <title>{% block title %}Metodo de Diferencias Numericas{% endblock %}</title>
   {% load static %}
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"/>
-  <style> 
+  <!-- <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"/> -->
+  <link rel="stylesheet" href="{% static 'CSS/reset.css' %}">
+  <link rel="stylesheet" href="{% static 'CSS/Style.css' %}">
+  <!-- <style> 
     .container {
       border: 2px solid black;
       border-radius: 10px;
@@ -23,35 +25,28 @@
       border-top: 1px solid black;
       margin: 20px 0;
     }
-  </style>
+  </style> -->
   <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1"/>
 </head>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark text-light">
-  <div class="container">
-    <a class="navbar-brand" href="#">Calculadora Mamalona</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Inicio</a>
-        </li>
-        <li class="nav-item">
-          <a href="{% url 'teoriaB' %}" class="nav-link">Metodo de Biseccion</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'teoriaD' %}">Diferenciacion Numerica</a>
-        </li>
-      </ul>
-    </div>
-  </div>
+<nav class="nav2 navbar-responsive">
+  <a class="logo" title="Pokedex Icon">ANS_Calculator</a>
+  <ul>
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Inicio</a>
+    </li>
+    <li class="nav-item">
+      <a href="{% url 'teoriaB' %}" class="nav-link">Metodo de Biseccion</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'teoriaD' %}">Diferenciacion Numerica</a>
+    </li>
+
+  </ul>
 </nav>
-<body class="bg-dark text-light">
-  <div class="container">
-    <header class="text-center py-5">
-      <h1>Metodo de Diferencias Numericas</h1>
-    </header>
+
+<div class="Display-flex-column ">
+  <div class="container-fluid  txt_center ">
+      <h1 class="titulo2">Metodo de Diferencias Numericas</h1>
     <hr>
     <main>
       {% block content %}
