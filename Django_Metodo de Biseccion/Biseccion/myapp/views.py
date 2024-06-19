@@ -230,7 +230,8 @@ def calcular_biseccion(request):
                 x = symbols('x')
                 ecuacion = sympify(ecuacion, locals={'sin': sin, 'cos': cos, 'tan': tan, 'exp': exp})
                 resultado_biseccion = biseccion(ecuacion, valor_min, valor_max, error_porcentual)
-
+                raiz_aproximada, iter_count, error_final, iteraciones_data = biseccion(ecuacion, valor_min, valor_max, error_porcentual)
+                
                 # Obtener datos para graficar
                 raiz_aproximada, _, _, iteraciones_data = resultado_biseccion
 
@@ -260,6 +261,8 @@ def calcular_biseccion(request):
                 buffer.seek(0)
                 grafica_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
                 buffer.close()
+                
+                
 
             except ValueError as e:
                 mensaje = str(e)
@@ -322,8 +325,7 @@ def calcular_errores(derivada_fwd, derivada_bwd, derivada_cen, derivada_exacta_v
         'error_bwd': round(error_bwd, 4),
         'error_cen': round(error_cen, 4)
     }
-
-@login_required
+#@login_required
 def diferencias(request):
     resultado = {}
     grafica_base64 = ""
@@ -336,53 +338,49 @@ def diferencias(request):
             valor_h = float(form.cleaned_data['h'])
 
             try:
-                x = sp.symbols('x')
-                ecuacion = sp.sympify(funcion)
-                f = sp.lambdify(x, ecuacion)
+                x = symbols('x')
+                ecuacion = sympify(funcion)
+                f = lambdify(x, ecuacion)
 
-                # Calcular la derivada exacta
-                derivada_exacta = sp.diff(ecuacion, x)
-                derivada_exacta_func = sp.lambdify(x, derivada_exacta)
+                # Calculate derivatives
+                derivada_exacta = diff(ecuacion, x)
+                derivada_exacta_func = lambdify(x, derivada_exacta)
                 derivada_exacta_val = round(derivada_exacta_func(valor_x), 4)
 
-                # Calcular las derivadas utilizando los tres métodos
+                # Calculate derivatives using three methods
                 derivada_fwd, formula_fwd, pasos_fwd = derivada_forward(f, valor_x, valor_h)
                 derivada_bwd, formula_bwd, pasos_bwd = derivada_backward(f, valor_x, valor_h)
                 derivada_cen, formula_cen, pasos_cen = derivada_central(f, valor_x, valor_h)
 
-                # Calcular los errores
+                # Calculate errors
                 errores = calcular_errores(derivada_fwd, derivada_bwd, derivada_cen, derivada_exacta_val)
-               
-                # Generar los puntos para la gráfica
+
+                # Generate graph
                 x_vals = np.linspace(valor_x - 2, valor_x + 2, 400)
                 y_vals = f(x_vals)
 
-                # Crear la gráfica
                 plt.figure(figsize=(10, 6))
                 plt.plot(x_vals, y_vals, label=f'f(x) = {funcion}')
                 plt.scatter([valor_x], [f(valor_x)], color='red', zorder=1)
-                
-                # Mostrar la derivada exacta y las aproximaciones
+
                 plt.scatter([valor_x], [derivada_exacta_val], color='blue', zorder=5)
                 plt.scatter([valor_x], [derivada_fwd], color='green', zorder=5)
                 plt.scatter([valor_x], [derivada_bwd], color='purple', zorder=5)
                 plt.scatter([valor_x], [derivada_cen], color='orange', zorder=5)
 
-                # Configurar la gráfica
                 plt.title('Gráfica de la función y sus derivadas')
                 plt.xlabel('x')
                 plt.ylabel('f(x)')
                 plt.legend()
                 plt.grid(True)
-                
-                # Guardar la gráfica en un buffer
+
                 buffer = io.BytesIO()
                 plt.savefig(buffer, format='png')
                 buffer.seek(0)
                 grafica_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
                 buffer.close()
 
-                # Guardar el resultado en el historial
+                # Save results to database
                 DifferenceDividedHistory.objects.create(
                     user=request.user,
                     function=funcion,
@@ -403,7 +401,7 @@ def diferencias(request):
                     error_cen=errores['error_cen']
                 )
 
-                # Preparar los resultados para mostrar en la plantilla
+                # Prepare results for template
                 resultado = {
                     'derivada_fwd': derivada_fwd,
                     'formula_fwd': formula_fwd,
@@ -500,6 +498,7 @@ def generar_pdf(request):
     c.save()
 
     return response
+
 
 @login_required
 def diferencias_historial(request):

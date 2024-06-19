@@ -12,7 +12,8 @@ urlpatterns = [
     path('cerrar-sesion/', views.cerrar_sesion, name='cerrar_sesion'),
     path('perfil/', views.perfil, name='perfil'),
     path('historial/', views.diferencias_historial, name='exercise_history'),
+    #path('biseccion_historial.html/', views.biseccion_historial, name='biseccion_history'),
     path('/Biseccion/myapp/templates/Biseccion/calcular_biseccion.html', views.calcular_biseccion, name='calcular_Biseccion'),
-    path('diferencion/', views.diferencias, name='diferencias_divididas'),
+    path('diferencias.html', views.diferencias, name='diferencias_divididas'),
     path('generar_pdf/', views.generar_pdf, name='generar_pdf'),
 ]

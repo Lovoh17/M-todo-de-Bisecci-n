@@ -7,6 +7,9 @@
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btn btn-primary">Calcular</button>
+            {% if user.is_authenticated %}
+            <a href="">Ver Historial</a>
+            {% endif %}
         </form>
 
         {% if mensaje %}

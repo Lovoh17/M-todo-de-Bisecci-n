@@ -7,7 +7,6 @@
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btn btn-primary">Calcular</button>
-            <!-- En tu archivo base.html o donde corresponda -->
             {% if user.is_authenticated %}
             <a href="{% url 'exercise_history' %}">Ver Historial</a>
             {% endif %}
