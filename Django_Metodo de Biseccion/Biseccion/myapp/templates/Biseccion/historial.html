@@ -3,40 +3,41 @@
 
 {% block content %}
   <h2>Historial de Diferencias Divididas</h2>
-  <table>
+  <table style="border-collapse: collapse; width: 100%; border: 1px solid #ddd;">
     <thead>
-      <tr>
-        <th>Fecha</th>
-        <th>Función</th>
-        <th>x</th>
-        <th>h</th>
-        <th>Derivada Forward</th>
-        <th>Derivada Backward</th>
-        <th>Derivada Central</th>
-        <th>Derivada Exacta</th>
-        <th>Error Forward</th>
-        <th>Error Backward</th>
-        <th>Error Central</th>
-      </tr>
+        <tr style="background-color: #f2f2f2;">
+            <th style="padding: 8px; text-align: center; border: 1px solid #ddd;">Fecha</th>
+            <th style="padding: 8px; text-align: center; border: 1px solid #ddd;">Función</th>
+            <th style="padding: 8px; text-align: center; border: 1px solid #ddd;">x</th>
+            <th style="padding: 8px; text-align: center; border: 1px solid #ddd;">h</th>
+            <th style="padding: 8px; text-align: center; border: 1px solid #ddd;">Derivada Forward</th>
+            <th style="padding: 8px; text-align: center; border: 1px solid #ddd;">Derivada Backward</th>
+            <th style="padding: 8px; text-align: center; border: 1px solid #ddd;">Derivada Central</th>
+            <th style="padding: 8px; text-align: center; border: 1px solid #ddd;">Derivada Exacta</th>
+            <th style="padding: 8px; text-align: center; border: 1px solid #ddd;">Error Forward</th>
+            <th style="padding: 8px; text-align: center; border: 1px solid #ddd;">Error Backward</th>
+            <th style="padding: 8px; text-align: center; border: 1px solid #ddd;">Error Central</th>
+        </tr>
     </thead>
     <tbody>
-      {% for record in history %}
+        {% for record in history %}
         <tr>
-          <td>{{ record.created_at }}</td>
-          <td>{{ record.function }}</td>
-          <td>{{ record.x_value }}</td>
-          <td>{{ record.h_value }}</td>
-          <td>{{ record.derivada_fwd }}</td>
-          <td>{{ record.derivada_bwd }}</td>
-          <td>{{ record.derivada_cen }}</td>
-          <td>{{ record.derivada_exacta }}</td>
-          <td>{{ record.error_fwd }}</td>
-          <td>{{ record.error_bwd }}</td>
-          <td>{{ record.error_cen }}</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">{{ record.created_at }}</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">{{ record.function }}</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">{{ record.x_value }}</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">{{ record.h_value }}</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">{{ record.derivada_fwd }}</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">{{ record.derivada_bwd }}</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">{{ record.derivada_cen }}</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">{{ record.derivada_exacta }}</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">{{ record.error_fwd }}</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">{{ record.error_bwd }}</td>
+            <td style="padding: 8px; text-align: center; border: 1px solid #ddd;">{{ record.error_cen }}</td>
         </tr>
-      {% endfor %}
+        {% endfor %}
     </tbody>
-  </table>
+</table>
+
   <button class="butontest_boxshadow_Th"><a href="{% url 'diferencias_divididas' %}" class="btn btn-primary mt-4">Volver al Metodo de Diferencias Divididas</a></button>
   <br>
 {% endblock %}

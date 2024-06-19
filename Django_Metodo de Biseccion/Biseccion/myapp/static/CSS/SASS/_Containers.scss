@@ -36,6 +36,22 @@
     }
 }
 
+.calculo
+{
+    height: auto;
+    width: 70%;
+    padding: 3%;
+    border: 1px solid gray;
+    border-radius: 15px;
+    @extend .shadow-large;
+    p
+    {
+        font-family: map-get($map: $FontPack3, $key:Titulo );
+        color: black;
+    }
+
+}
+
 
 .container-Welcome {
     margin-top: 10vh;

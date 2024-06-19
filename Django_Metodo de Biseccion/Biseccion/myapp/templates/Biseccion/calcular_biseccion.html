@@ -18,38 +18,42 @@
 
     {% if resultado_biseccion %}
         <h2>Resultados de la Bisección:</h2>
+        <br>
         <p>Raíz aproximada: {{ resultado_biseccion.0|default:"No calculada" }}</p>
         <p>Número de iteraciones: {{ resultado_biseccion.1|default:"No calculado" }}</p>
         <p>Error: {{ resultado_biseccion.2|default:"No calculado" }}</p>
-
+<br>
         {% if not request.user.is_authenticated %}
             <p>Para ver más detalles, por favor <a href="{% url 'registro' %}" class="badge text-bg-primary text-wrap">inicia sesión</a>.</p>
         {% else %}
             {% if resultado_biseccion.3 %}
+            <br>
                 <h3>Iteraciones:</h3>
-                <table border="1" style="border-collapse: collapse; width: 100%;">
+                <table style="border-collapse: collapse; width: 100%; border: 1px solid #ddd;">
                     <thead>
                         <tr style="background-color: #f2f2f2;">
-                            <th style="padding: 8px; text-align: center;">Iteración</th>
-                            <th style="padding: 8px; text-align: center;">f(Raíz)</th>
-                            <th style="padding: 8px; text-align: center;">Raíz Aproximada</th>
-                            <th style="padding: 8px; text-align: center;">Error %</th>
+                            <th style="padding: 8px; text-align: center; border: 2px solid #bcbcbc;">Iteración</th>
+                            <th style="padding: 8px; text-align: center; border: 2px solid #bcbcbc;">f(Raíz)</th>
+                            <th style="padding: 8px; text-align: center; border: 2px solid #bcbcbc;">Raíz Aproximada</th>
+                            <th style="padding: 8px; text-align: center; border: 2px solid #bcbcbc;">Error %</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for iteracion in resultado_biseccion.3 %}
                         <tr>
-                            <td style="padding: 8px; text-align: center;">{{ iteracion.0 }}</td>
-                            <td style="padding: 8px; text-align: center;">{{ iteracion.1 }}</td>
-                            <td style="padding: 8px; text-align: center;">{{ iteracion.2 }}</td>
-                            <td style="padding: 8px; text-align: center;">{{ iteracion.3 }}</td>
+                            <td style="padding: 8px; text-align: center; border: 2px solid #ddd;">{{ iteracion.0 }}</td>
+                            <td style="padding: 8px; text-align: center; border: 2px solid #ddd;">{{ iteracion.1 }}</td>
+                            <td style="padding: 8px; text-align: center; border: 2px solid #ddd;">{{ iteracion.2 }}</td>
+                            <td style="padding: 8px; text-align: center; border: 2px solid #ddd;">{{ iteracion.3 }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
+                
             {% endif %}
             
             {% if grafica_base64 %}
+            <br>
                 <h2>Gráfica:</h2>
                 <img src="data:image/png;base64,{{ grafica_base64 }}" alt="Gráfica de la función y raíz encontrada" class="grafica">
             {% endif %}

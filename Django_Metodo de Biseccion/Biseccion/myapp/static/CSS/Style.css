@@ -596,7 +596,7 @@
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.shadow-large, .container-fluid {
+.shadow-large, .calculo, .container-fluid {
   box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
 }
 
@@ -728,7 +728,7 @@
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.shadow-large, .container-fluid {
+.shadow-large, .calculo, .container-fluid {
   box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
 }
 
@@ -1192,7 +1192,7 @@
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.shadow-large, .container-fluid {
+.shadow-large, .calculo, .container-fluid {
   box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
 }
 
@@ -2665,7 +2665,7 @@
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.shadow-large, .container-fluid {
+.shadow-large, .calculo, .container-fluid {
   box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
 }
 
@@ -3104,7 +3104,7 @@
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.shadow-large, .container-fluid {
+.shadow-large, .calculo, .container-fluid {
   box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
 }
 
@@ -3236,7 +3236,7 @@
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.shadow-large, .container-fluid {
+.shadow-large, .calculo, .container-fluid {
   box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
 }
 
@@ -3700,7 +3700,7 @@
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.shadow-large, .container-fluid {
+.shadow-large, .calculo, .container-fluid {
   box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
 }
 
@@ -6819,7 +6819,7 @@
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.shadow-large, .container-fluid {
+.shadow-large, .calculo, .container-fluid {
   box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
 }
 
@@ -6867,6 +6867,18 @@
   border-radius: 15px;
 }
 .container-fluid p {
+  font-family: "Poppins";
+  color: black;
+}
+
+.calculo {
+  height: auto;
+  width: 70%;
+  padding: 3%;
+  border: 1px solid gray;
+  border-radius: 15px;
+}
+.calculo p {
   font-family: "Poppins";
   color: black;
 }
@@ -7345,7 +7357,7 @@
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.shadow-large, .container-fluid {
+.shadow-large, .container-fluid, .calculo {
   box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
 }
 
@@ -7809,7 +7821,7 @@
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.shadow-large, .container-fluid {
+.shadow-large, .container-fluid, .calculo {
   box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
 }
 
@@ -8641,7 +8653,7 @@ input[type=radio]:checked:after {
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.shadow-large, .container-fluid {
+.shadow-large, .container-fluid, .calculo {
   box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
 }
 
@@ -9041,7 +9053,7 @@ input[type=radio]:checked:after {
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.shadow-large, .container-fluid {
+.shadow-large, .container-fluid, .calculo {
   box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
 }
 
@@ -10133,7 +10145,7 @@ header a {
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.shadow-large, .container-fluid {
+.shadow-large, .container-fluid, .calculo {
   box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
 }
 
@@ -10547,7 +10559,7 @@ header a {
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.shadow-large, .container-fluid {
+.shadow-large, .container-fluid, .calculo {
   box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
 }
 
@@ -11110,7 +11122,7 @@ header a {
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.shadow-large, .container-fluid {
+.shadow-large, .container-fluid, .calculo {
   box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
 }
 
@@ -11217,7 +11229,7 @@ header a {
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.shadow-large, .container-fluid {
+.shadow-large, .container-fluid, .calculo {
   box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
 }
 
@@ -11349,7 +11361,7 @@ header a {
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.shadow-large, .container-fluid {
+.shadow-large, .container-fluid, .calculo {
   box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
 }
 
@@ -11813,7 +11825,7 @@ header a {
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
-.shadow-large, .container-fluid {
+.shadow-large, .container-fluid, .calculo {
   box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.5);
 }
 
