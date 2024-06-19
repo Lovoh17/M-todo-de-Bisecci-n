@@ -1,0 +1,16 @@
+[
+    {
+        "image_url": "https://images.genius.com/7a632861fdff3199582659da2a16dfbc.1000x1000x1.jpg",
+        "first_name": "Rafael Humberto",
+        "last_name": "Lino Lovo",
+        "email": "LL22017@ues.edu.sv",
+        "bio": "lorem"
+    },
+    {
+        "image_url": "https://i.pinimg.com/originals/5c/aa/cf/5caacf1823de3b1e1fc98481185bf3c5.jpg",
+        "first_name": "Kevin Isrrael",
+        "last_name": "Rodruiguez Rivera",
+        "email": "rr19119@ues.edu.sv",
+        "bio": "loremmmm"
+    }
+]

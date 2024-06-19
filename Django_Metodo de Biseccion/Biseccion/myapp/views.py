@@ -17,7 +17,9 @@ import json
 import numpy as np
 import matplotlib.pyplot as plt
 from io import BytesIO
+from django.http import HttpResponseForbidden
 import io
+import os
 import base64
 import pandas as pd
 from django.contrib import messages
@@ -25,6 +27,7 @@ from .models import *
 from django.contrib.auth.models import User
 from .models import Usuarios
 from .models import DifferenceDividedHistory
+from django.conf import settings
 #Vista principal
 def home(request):
     return render(request ,'Biseccion/home.html')
@@ -348,106 +351,85 @@ def diferencias(request):
                 derivada_exacta_val = round(derivada_exacta_func(valor_x), 4)
 
                 # Calculate derivatives using three methods
-                derivada_fwd, formula_fwd, pasos_fwd = derivada_forward(f, valor_x, valor_h)
-                derivada_bwd, formula_bwd, pasos_bwd = derivada_backward(f, valor_x, valor_h)
-                derivada_cen, formula_cen, pasos_cen = derivada_central(f, valor_x, valor_h)
+                derivada_fwd, _, _ = derivada_forward(f, valor_x, valor_h)
+                derivada_bwd, _, _ = derivada_backward(f, valor_x, valor_h)
+                derivada_cen, _, _ = derivada_central(f, valor_x, valor_h)
 
                 # Calculate errors
                 errores = calcular_errores(derivada_fwd, derivada_bwd, derivada_cen, derivada_exacta_val)
 
-                # Generate graph
-                x_vals = np.linspace(valor_x - 2, valor_x + 2, 400)
-                y_vals = f(x_vals)
-
-                plt.figure(figsize=(10, 6))
-                plt.plot(x_vals, y_vals, label=f'f(x) = {funcion}')
-                plt.scatter([valor_x], [f(valor_x)], color='red', zorder=1)
-
-                plt.scatter([valor_x], [derivada_exacta_val], color='blue', zorder=5)
-                plt.scatter([valor_x], [derivada_fwd], color='green', zorder=5)
-                plt.scatter([valor_x], [derivada_bwd], color='purple', zorder=5)
-                plt.scatter([valor_x], [derivada_cen], color='orange', zorder=5)
-
-                plt.title('Gráfica de la función y sus derivadas')
-                plt.xlabel('x')
-                plt.ylabel('f(x)')
-                plt.legend()
-                plt.grid(True)
-
-                buffer = io.BytesIO()
-                plt.savefig(buffer, format='png')
-                buffer.seek(0)
-                grafica_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
-                buffer.close()
-
                 # Save results to database
-                DifferenceDividedHistory.objects.create(
-                    user=request.user,
-                    function=funcion,
-                    x_value=valor_x,
-                    h_value=valor_h,
-                    derivada_fwd=derivada_fwd,
-                    formula_fwd=formula_fwd,
-                    pasos_fwd="\n".join(pasos_fwd),
-                    derivada_bwd=derivada_bwd,
-                    formula_bwd=formula_bwd,
-                    pasos_bwd="\n".join(pasos_bwd),
-                    derivada_cen=derivada_cen,
-                    formula_cen=formula_cen,
-                    pasos_cen="\n".join(pasos_cen),
-                    derivada_exacta=derivada_exacta_val,
-                    error_fwd=errores['error_fwd'],
-                    error_bwd=errores['error_bwd'],
-                    error_cen=errores['error_cen']
-                )
+                if request.user.is_authenticated:
+                    DifferenceDividedHistory.objects.create(
+                        user=request.user,
+                        function=funcion,
+                        x_value=valor_x,
+                        h_value=valor_h,
+                        derivada_fwd=derivada_fwd,
+                        derivada_bwd=derivada_bwd,
+                        derivada_cen=derivada_cen,
+                        derivada_exacta=derivada_exacta_val,
+                        error_fwd=errores['error_fwd'],
+                        error_bwd=errores['error_bwd'],
+                        error_cen=errores['error_cen']
+                    )
 
                 # Prepare results for template
                 resultado = {
                     'derivada_fwd': derivada_fwd,
-                    'formula_fwd': formula_fwd,
-                    'pasos_fwd': pasos_fwd,
                     'derivada_bwd': derivada_bwd,
-                    'formula_bwd': formula_bwd,
-                    'pasos_bwd': pasos_bwd,
                     'derivada_cen': derivada_cen,
-                    'formula_cen': formula_cen,
-                    'pasos_cen': pasos_cen,
                     'derivada_exacta': derivada_exacta_val,
                     'error_fwd': round(errores['error_fwd'], 4),
                     'error_bwd': round(errores['error_bwd'], 4),
                     'error_cen': round(errores['error_cen'], 4)
                 }
 
+                messages.success(request, 'Cálculo de derivadas completado y guardado correctamente.')
+
             except Exception as e:
-                resultado = {'error': str(e)}
+                messages.error(request, f'Ocurrió un error durante el cálculo: {str(e)}')
 
     else:
         form = DiferenciacionForm()
 
-    return render(request, 'Biseccion/diferencias.html', {'form': form, 'resultado': resultado, 'grafica_base64': grafica_base64})
+    return render(request, 'Biseccion/diferencias.html', {'form': form, 'resultado': resultado})
 #Funcion de nuevo registro de usuario
 def registro(request):
     if request.user.is_authenticated:
-        return redirect('home')
-    
+        return redirect('home')  # Redirige al usuario autenticado a la página de inicio
+ 
     if request.method == 'POST':
-        form = RegistroForm(request.POST)
+        form = RegistroForm(request.POST, request.FILES)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
+            image = form.cleaned_data.get('image')
+
+            # Guarda el usuario primero para obtener el ID
+            user.save()
+
+            # Crea el perfil asociado al usuario y guarda la imagen si se proporciona
+            profile = Profile.objects.create(user=user)
+            if image:
+                profile.image = image
+                profile.save()
+
+            # Autentica al usuario recién registrado
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
+
             if user is not None:
-                login(request, user)
+                login(request, user)  # Inicia sesión con el usuario autenticado
                 messages.success(request, f'Bienvenido {username}, tu cuenta ha sido creada exitosamente.')
-                return redirect('home')
+                return redirect('home')  # Redirige a la página de inicio
             else:
                 messages.error(request, 'Hubo un problema al autenticarse. Inténtelo de nuevo.')
         else:
             messages.error(request, 'Error al crear la cuenta. Verifique los datos ingresados.')
     else:
-        form = RegistroForm()
-    
+        form = RegistroForm()  # Crea un formulario vacío si es una solicitud GET
+ 
     return render(request, 'Biseccion/registro.html', {'form': form})
 #Funcion del cambio de contraseña
 def cambio_contraseña(request):
@@ -472,8 +454,10 @@ def cerrar_sesion(request):
     logout(request)
     return redirect('/')
 #Vista para ver el perfil de usuario
-def perfil(request): 
-    return render(request, 'Biseccion/perfil.html')
+@login_required
+def perfil(request):
+    user = request.user
+    return render(request, 'Biseccion/perfil.html', {'user': user})
 #Funcion para imprimir el proceso
 def generar_pdf(request):
     resultado_biseccion = request.GET.get('resultado_biseccion')
@@ -499,8 +483,13 @@ def generar_pdf(request):
 
     return response
 
-
 @login_required
 def diferencias_historial(request):
     history = DifferenceDividedHistory.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'Biseccion/historial.html', {'history': history})
+
+def creator_list(request):
+    json_path = os.path.join(settings.BASE_DIR, 'creadores.json')
+    with open(json_path, 'r') as file:
+        creators = json.load(file)
+    return render(request, 'Biseccion/creadores.html', {'creators': creators})

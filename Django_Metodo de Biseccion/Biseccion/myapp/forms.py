@@ -23,13 +23,20 @@ class RegistroForm(UserCreationForm):
     email = forms.EmailField(required=True)
     first_name = forms.CharField(max_length=30, required=False)
     last_name = forms.CharField(max_length=30, required=False)
+    image = forms.ImageField(required=False)
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'first_name', 'last_name', 'password1', 'password2')
-        widgets = {
-            'username': forms.TextInput(attrs={'autofocus': False}),
-        }
+        fields = ['username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'image']
+
+    def clean_image(self):
+        image = self.cleaned_data.get('image')
+        if image:
+            ext = image.name.split('.')[-1].lower()
+            if ext not in ['png', 'jpg', 'jpeg']:
+                raise forms.ValidationError("Solo se permiten archivos PNG, JPG o JPEG.")
+        return image
+
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -42,8 +49,7 @@ class RegistroForm(UserCreationForm):
         user.last_name = self.cleaned_data['last_name']
         if commit:
             user.save()
-        return user
-    
+        return user    
 class CambioContraseñaForm(PasswordChangeForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

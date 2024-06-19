@@ -2,86 +2,108 @@
 {% load static %}
 
 {% block content %}
-    <div class="fade-in">
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Calcular</button>
-            {% if user.is_authenticated %}
-            <a href="{% url 'exercise_history' %}">Ver Historial</a>
-            {% endif %}
-        </form>
-
-        {% if not user.is_authenticated %}
-            {% if resultado %}
-                {% if not resultado.error %}
-                    <h2>Resultados:</h2>
-                    <div>
-                        <h3>Diferencia hacia adelante:</h3>
-                        <p>Resultado: {{ resultado.derivada_fwd }} (Error: {{ resultado.error_fwd }})</p>
-                    </div>
-                    
-                    <div>
-                        <h3>Diferencia hacia atrás:</h3>
-                        <p>Resultado: {{ resultado.derivada_bwd }} (Error: {{ resultado.error_bwd }})</p>
-                    </div>
-                    
-                    <div>
-                        <h3>Diferencia central:</h3>
-                        <p>Resultado: {{ resultado.derivada_cen }} (Error: {{ resultado.error_cen }})</p>
-                    </div>
-                    
-                    <p><strong>Derivada exacta:</strong> {{ resultado.derivada_exacta }}</p>
-                {% endif %}
-            {% endif %}
-        {% endif %}
-        
+<div class="fade-in">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Calcular</button>
         {% if user.is_authenticated %}
-            {% if resultado %}
-                {% if not resultado.error %}
-                    <h2>Resultados:</h2>
-                    <div>
-                        <h3>Diferencia hacia adelante:</h3>
-                        <p>Resultado: {{ resultado.derivada_fwd }} (Error: {{ resultado.error_fwd }})</p>
-                        <p>Fórmula sustituida: {{ resultado.formula_fwd }}</p>
-                        <h4>Paso a paso:</h4>
-                        <ul>
-                            {% for paso in resultado.pasos_fwd %}
-                                <li>{{ paso }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    
-                    <div>
-                        <h3>Diferencia hacia atrás:</h3>
-                        <p>Resultado: {{ resultado.derivada_bwd }} (Error: {{ resultado.error_bwd }})</p>
-                        <p>Fórmula sustituida: {{ resultado.formula_bwd }}</p>
-                        <h4>Paso a paso:</h4>
-                        <ul>
-                            {% for paso in resultado.pasos_bwd %}
-                                <li>{{ paso }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    
-                    <div>
-                        <h3>Diferencia central:</h3>
-                        <p>Resultado: {{ resultado.derivada_cen }} (Error: {{ resultado.error_cen }})</p>
-                        <p>Fórmula sustituida: {{ resultado.formula_cen }}</p>
-                        <h4>Paso a paso:</h4>
-                        <ul>
-                            {% for paso in resultado.pasos_cen %}
-                                <li>{{ paso }}</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    
-                    <p><strong>Derivada exacta:</strong> {{ resultado.derivada_exacta }}</p>
-                {% endif %}
-            {% endif %}
-            
-            <h2>Gráfica</h2>
-            <img src="data:image/png;base64,{{ grafica_base64 }}" alt="Gráfica de la función" class="img-fluid">
+        <a href="{% url 'exercise_history' %}">Ver Historial</a>
         {% endif %}
-    </div>
+    </form>
+
+    {% if not user.is_authenticated %}
+        {% if resultado %}
+            {% if not resultado.error %}
+                <h2>Resultados:</h2>
+                <div>
+                    <h3>Diferencia hacia adelante:</h3>
+                    <p>Resultado: {{ resultado.derivada_fwd }} (Error: {{ resultado.error_fwd }})</p>
+                    <p>Fórmula sustituida: {{ resultado.formula_fwd }}</p>
+                    <h4>Paso a paso:</h4>
+                    <ul>
+                        {% for paso in resultado.pasos_fwd %}
+                        <li>{{ paso }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>Diferencia hacia atrás:</h3>
+                    <p>Resultado: {{ resultado.derivada_bwd }} (Error: {{ resultado.error_bwd }})</p>
+                    <p>Fórmula sustituida: {{ resultado.formula_bwd }}</p>
+                    <h4>Paso a paso:</h4>
+                    <ul>
+                        {% for paso in resultado.pasos_bwd %}
+                        <li>{{ paso }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>Diferencia central:</h3>
+                    <p>Resultado: {{ resultado.derivada_cen }} (Error: {{ resultado.error_cen }})</p>
+                    <p>Fórmula sustituida: {{ resultado.formula_cen }}</p>
+                    <h4>Paso a paso:</h4>
+                    <ul>
+                        {% for paso in resultado.pasos_cen %}
+                        <li>{{ paso }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <p><strong>Derivada exacta:</strong> {{ resultado.derivada_exacta }}</p>
+            {% else %}
+                <p>{{ resultado.error }}</p>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+    {% if user.is_authenticated %}
+        {% if resultado %}
+            {% if not resultado.error %}
+                <h2>Resultados:</h2>
+                <div>
+                    <h3>Diferencia hacia adelante:</h3>
+                    <p>Resultado: {{ resultado.derivada_fwd }} (Error: {{ resultado.error_fwd }})</p>
+                    <p>Fórmula sustituida: {{ resultado.formula_fwd }}</p>
+                    <h4>Paso a paso:</h4>
+                    <ul>
+                        {% for paso in resultado.pasos_fwd %}
+                        <li>{{ paso }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>Diferencia hacia atrás:</h3>
+                    <p>Resultado: {{ resultado.derivada_bwd }} (Error: {{ resultado.error_bwd }})</p>
+                    <p>Fórmula sustituida: {{ resultado.formula_bwd }}</p>
+                    <h4>Paso a paso:</h4>
+                    <ul>
+                        {% for paso in resultado.pasos_bwd %}
+                        <li>{{ paso }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>Diferencia central:</h3>
+                    <p>Resultado: {{ resultado.derivada_cen }} (Error: {{ resultado.error_cen }})</p>
+                    <p>Fórmula sustituida: {{ resultado.formula_cen }}</p>
+                    <h4>Paso a paso:</h4>
+                    <ul>
+                        {% for paso in resultado.pasos_cen %}
+                        <li>{{ paso }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <p><strong>Derivada exacta:</strong> {{ resultado.derivada_exacta }}</p>
+            {% else %}
+                <p>{{ resultado.error }}</p>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+</div>
 {% endblock %}

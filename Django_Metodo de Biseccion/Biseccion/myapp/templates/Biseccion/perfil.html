@@ -1,18 +1,14 @@
 {% extends 'Biseccion/base.html' %}
 
-{% block title %}Loguearse{% endblock %}
+{% block title %}Perfil{% endblock %}
 
 {% block content %}
-  <div class="text-center fade-in">
+<div class="text-center fade-in">
     <h2 class="mb-4">¡Bienvenido!</h2>
-    <img src="https://th.bing.com/th/id/OIP.P_4Oo2saYQaWxBy6F3lY7wAAAA?rs=1&pid=ImgDetMain" style="width=100px; height:100px" class="rounded mx-auto d-block" alt="...">
-    {% if user.is_authenticated %}
-      <p>Hola {{ user.username }}!</p>
-      <a href="{% url 'cerrar_sesion' %}" class="btn btn-danger">Cerrar Sesion</a>
-      <br>{{ user.username }}
-    {% else %}
-      <a href="{% url 'login' %}" class="btn btn-primary"><span class="glyphicon glyphicon-log-in"></span>Loguearse</a> 
-      <a href="{% url 'cerrar_sesion' %}"class="btn btn-success">Registrarse</a>
+    {% if user.profile.image %}
+      <img src="{{ user.profile.image.url }}" class="rounded-circle mx-auto d-block" style="width: 200px; height: 200px;" alt="Imagen de perfil">
     {% endif %}
-  </div>
+    <p>Hola, {{ user.username }}!</p>
+    <a href="{% url 'cerrar_sesion' %}" class="btn btn-danger">Cerrar Sesión</a>
+</div>
 {% endblock %}

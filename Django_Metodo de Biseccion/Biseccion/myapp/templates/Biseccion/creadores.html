@@ -1,0 +1,37 @@
+{% extends 'Biseccion/base.html' %}
+    
+{% block content %}
+        <h1 class="text-center">Creators</h1>
+        <div class="fade-in">
+            <div class="row">
+                {% for creator in creators %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            {% if creator.image_url %}
+                                <!-- Usar la ruta local de la imagen y ajustar el tamaño -->
+                                <img src="{{ creator.image_url }}" class="card-img-top img-fluid" style="height: 300px; object-fit: cover;" alt="Creator Image">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ creator.first_name }} {{ creator.last_name }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ creator.email }}</h6>
+                                <p class="card-text">{{ creator.bio }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    <!-- Incluir Bootstrap JS y dependencias -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        .fade-in {
+            animation: fadeIn 2s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+    {% endblock %}
