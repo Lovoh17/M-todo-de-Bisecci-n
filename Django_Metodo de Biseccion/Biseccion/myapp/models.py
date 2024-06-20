@@ -64,3 +64,18 @@ class Profile(models.Model):
 
     def __str__(self):
         return f'{self.user.username} Profile'
+    
+    
+class BiseccionHistory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    ecuacion = models.CharField(max_length=255)
+    valor_min = models.FloatField()
+    valor_max = models.FloatField()
+    error_porcentual = models.FloatField()
+    raiz_aproximada = models.FloatField()
+    iter_count = models.IntegerField()
+    error_final = models.FloatField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+def __str__(self):
+    return f"Bisección de '{self.ecuacion}' por {self.user.username}"

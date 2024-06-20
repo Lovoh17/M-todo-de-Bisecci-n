@@ -1,16 +1,39 @@
 [
     {
-        "image_url": "https://images.genius.com/7a632861fdff3199582659da2a16dfbc.1000x1000x1.jpg",
+        "image_url": "/Django_Metodo de Biseccion/Biseccion/myapp/templates/Biseccion/images/lino.jpg",
         "first_name": "Rafael Humberto",
         "last_name": "Lino Lovo",
         "email": "LL22017@ues.edu.sv",
-        "bio": "lorem"
+        "bio": "Back-end",
+        "Desarrollo": [
+            "Python",
+            "Django",
+            "Mysql"
+        ],
+        "Realizacion": [
+            "Modelos",
+            "Vistas",
+            "Urls",
+            "Plantillas",
+            "Base de datos"
+        ]
     },
     {
-        "image_url": "https://i.pinimg.com/originals/5c/aa/cf/5caacf1823de3b1e1fc98481185bf3c5.jpg",
+        "image_url": "/Django_Metodo de Biseccion/Biseccion/myapp/templates/Biseccion/images/kevin.jpg",
         "first_name": "Kevin Isrrael",
         "last_name": "Rodruiguez Rivera",
         "email": "rr19119@ues.edu.sv",
-        "bio": "loremmmm"
+        "bio": "Front-end",
+        "Desarrollo": [
+            "Bootstrap",
+            "Dripp.css",
+            "Python"
+        ],
+        "Realizacion": [
+            "Dessing",
+            "Formularios",
+            "Validaciones",
+            "Plantillas"
+        ]
     }
 ]

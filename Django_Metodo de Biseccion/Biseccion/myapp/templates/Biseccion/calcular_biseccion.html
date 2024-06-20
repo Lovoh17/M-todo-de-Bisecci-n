@@ -2,62 +2,74 @@
 {% load static %}
 
 {% block content %}
-    <div class="fade-in">
+<div class="fade-in">
+    <div class="container py-4">
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
+            <div class="mb-3">
+                {{ form.as_p }}
+            </div>
             <button type="submit" class="btn btn-primary">Calcular</button>
             {% if user.is_authenticated %}
-            <a href="">Ver Historial</a>
+            <a href="{% url 'biseccion_history' %}" class="btn btn-outline-secondary ms-2">Ver Historial</a>
             {% endif %}
-            
         </form>
 
         {% if mensaje %}
-            <p>{{ mensaje }}</p>
+        <div class="alert alert-info mt-3" role="alert">
+            {{ mensaje }}
+        </div>
         {% endif %}
 
         {% if resultado_biseccion %}
+        <div class="mt-4">
             <h2>Resultados de la Bisección:</h2>
-            <p>Raíz aproximada: {{ resultado_biseccion.0|default:"No calculada" }}</p>
-            <p>Número de iteraciones: {{ resultado_biseccion.1|default:"No calculado" }}</p>
-            <p>Error: {{ resultado_biseccion.2|default:"No calculado" }}</p>
+            <ul class="list-group mt-3">
+                <li class="list-group-item">Raíz aproximada: {{ resultado_biseccion.0|default:"No calculada" }}</li>
+                <li class="list-group-item">Número de iteraciones: {{ resultado_biseccion.1|default:"No calculado" }}</li>
+                <li class="list-group-item">Error: {{ resultado_biseccion.2|default:"No calculado" }}</li>
+            </ul>
 
             {% if not request.user.is_authenticated %}
-                <p>Para ver más detalles, por favor <a href="{% url 'registro' %}" class="badge text-bg-primary text-wrap">inicia sesión</a>.</p>
+            <p class="mt-3">Para ver más detalles, por favor <a href="{% url 'registro' %}" class="badge bg-primary text-decoration-none">inicia sesión</a>.</p>
             {% else %}
-                {% if resultado_biseccion.3 %}
-                    <h3>Iteraciones:</h3>
-                    <table border="1" style="border-collapse: collapse; width: 100%;">
-                        <thead>
-                            <tr style="background-color: #f2f2f2;">
-                                <th style="padding: 8px; text-align: center;">Iteración</th>
-                                <th style="padding: 8px; text-align: center;">f(Raíz)</th>
-                                <th style="padding: 8px; text-align: center;">Raíz Aproximada</th>
-                                <th style="padding: 8px; text-align: center;">Error %</th>
+            {% if resultado_biseccion.3 %}
+            <div class="mt-4">
+                <h3>Iteraciones:</h3>
+                <div class="table-responsive">
+                    <table class="table table-bordered mt-3">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col" style="text-align: center;">Iteración</th>
+                                <th scope="col" style="text-align: center;">f(Raíz)</th>
+                                <th scope="col" style="text-align: center;">Raíz Aproximada</th>
+                                <th scope="col" style="text-align: center;">Error %</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for iteracion in resultado_biseccion.3 %}
                             <tr>
-                                <td style="padding: 8px; text-align: center;">{{ iteracion.0 }}</td>
-                                <td style="padding: 8px; text-align: center;">{{ iteracion.1 }}</td>
-                                <td style="padding: 8px; text-align: center;">{{ iteracion.2 }}</td>
-                                <td style="padding: 8px; text-align: center;">{{ iteracion.3 }}</td>
+                                <td style="text-align: center;">{{ iteracion.0 }}</td>
+                                <td style="text-align: center;">{{ iteracion.1 }}</td>
+                                <td style="text-align: center;">{{ iteracion.2 }}</td>
+                                <td style="text-align: center;">{{ iteracion.3 }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
-                {% endif %}
-                
-                {% if grafica_base64 %}
-                    <h2>Gráfica:</h2>
-                    <img src="data:image/png;base64,{{ grafica_base64 }}" alt="Gráfica de la función y raíz encontrada" class="grafica">
-                {% endif %}
-                
-                <!-- Aquí puedes añadir más elementos según sea necesario, como enlaces para descargar PDF u otras funcionalidades -->
-                
+                </div>
+            </div>
             {% endif %}
+
+            {% if grafica_base64 %}
+            <div class="mt-4">
+                <h2>Gráfica:</h2>
+                <img src="data:image/png;base64,{{ grafica_base64 }}" alt="Gráfica de la función y raíz encontrada" class="img-fluid mt-3">
+            </div>
+            {% endif %}
+            {% endif %}
+        </div>
         {% endif %}
     </div>
+</div>
 {% endblock %}

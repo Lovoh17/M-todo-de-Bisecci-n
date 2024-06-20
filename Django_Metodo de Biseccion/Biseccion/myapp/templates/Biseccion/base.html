@@ -1,35 +1,74 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <title>{% block title %}Metodo de Biseccion nuevo{% endblock %}</title>
+  <title>{% block title %}Método de Bisección y Diferenciación Numérica{% endblock %}</title>
   {% load static %}
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"/>
   <style> 
-    .container {
-      border: 2px solid black;
-      border-radius: 10px;
-      padding: 20px;
-      margin-top: 50px;
-      box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
-    }
-
     header {
-      border-bottom: 1px solid black;
+      border-bottom: 1px solid #007bff; /* Color azul primario */
       padding-bottom: 10px;
       margin-bottom: 20px;
+      transition: border-bottom-color 0.3s ease-in-out; /* Transición para el borde inferior */
+    }
+
+    header:hover {
+      border-bottom-color: #0056b3; /* Color azul oscuro al pasar el mouse */
     }
 
     hr {
-      border-top: 1px solid black;
+      border-top: 1px solid #007bff; /* Color azul primario */
       margin: 20px 0;
+      transition: border-top-color 0.3s ease-in-out; /* Transición para el borde superior */
+    }
+
+    hr:hover {
+      border-top-color: #0056b3; /* Color azul oscuro al pasar el mouse */
+    }
+
+    body {
+      background-color: #f0f7ff; /* Fondo azul claro */
+    }
+
+    .navbar-nav .nav-link {
+      transition: color 0.3s ease-in-out; /* Transición para el color del enlace */
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: #0056b3; /* Color azul oscuro al pasar el mouse */
+    }
+
+    .btn {
+      transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; /* Transición para el fondo y color del botón */
+    }
+
+    .btn:hover {
+      background-color: #0056b3; /* Color azul oscuro al pasar el mouse */
+      color: #ffffff; /* Texto blanco al pasar el mouse */
+    }
+
+    .container {
+      transition: box-shadow 0.3s ease-in-out; /* Transición para la sombra del contenedor */
+    }
+
+    .container:hover {
+      box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 20px; /* Sombra más pronunciada al pasar el mouse */
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      transition: color 0.3s ease-in-out; /* Transición para el color del texto del encabezado */
+    }
+
+    h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover {
+      color: #0056b3; /* Color azul oscuro al pasar el mouse */
     }
   </style>
   <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1"/>
 </head>
-<body class="bg-secondary">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-      <a class="navbar-brand" href="#">Calculadora Mamalona</a>
+      <a class="navbar-brand" href="#">Calculadora Metódica</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -39,10 +78,10 @@
             <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Inicio</a>
           </li>
           <li class="nav-item">
-            <a href="{% url 'teoriaB' %}" class="nav-link">Metodo de Biseccion</a>
+            <a href="{% url 'teoriaB' %}" class="nav-link">Método de Bisección</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'teoriaD' %}">Diferenciacion Numerica</a>
+            <a class="nav-link" href="{% url 'teoriaD' %}">Diferenciación Numérica</a>
           </li>
           <li class="nav-item">
             <a href="{% url 'creator' %}" class="nav-link">Creadores</a>
@@ -51,16 +90,19 @@
       </div>
     </div>
   </nav>
-  <div class="container">
-    <header class="text-center py-5">
-      <h1>Metodo de Biseccion Nuevo</h1>
+  <div class="container py-4"style="margin-top:50px">
+    <header class="text-center mb-4">
+      <h1 style="color: #007bff;">Método de Bisección</h1> <!-- Color azul primario -->
     </header>
-    <hr>
+    <hr class="my-4">
     <main>
       {% block content %}
       {% endblock %}
     </main>
-    <hr>
+    <hr class="my-4">
   </div>
+
+  <!-- Scripts de Bootstrap y otros -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

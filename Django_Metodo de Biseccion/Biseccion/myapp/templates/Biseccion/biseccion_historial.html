@@ -1,35 +1,39 @@
-<!-- templates/Biseccion/biseccion_historial.html -->
 {% extends "Biseccion/base.html" %}
-
 {% block content %}
-  <h2>Historial del Método de Bisección</h2>
-  <table border="1" style="border-collapse: collapse; width: 100%;">
-    <thead>
-      <tr style="background-color: #f2f2f2;">
-        <th>Fecha</th>
-        <th>Función</th>
-        <th>Valor a</th>
-        <th>Valor b</th>
-        <th>Tolerancia</th>
-        <th>Raíz</th>
-        <th>Iteraciones</th>
-        <th>Error Final</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for record in history %}
-        <tr>
-          <td>{{ record.created_at }}</td>
-          <td>{{ record.function }}</td>
-          <td>{{ record.a_value }}</td>
-          <td>{{ record.b_value }}</td>
-          <td>{{ record.tol_porcentual }}</td>
-          <td>{{ record.root }}</td>
-          <td>{{ record.iterations }}</td>
-          <td>{{ record.final_error }}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  <a href="{% url 'calcular_Biseccion' %}" class="btn btn-primary mt-4">Calcular metodo de Biseccion</a><br>
+  <div class="container">
+    <h2 class="mb-4">Historial de Cálculos de Bisección</h2>
+    {% if history %}
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Ecuación</th>
+            <th>Valor Mínimo</th>
+            <th>Valor Máximo</th>
+            <th>Error Porcentual</th>
+            <th>Raíz Aproximada</th>
+            <th>Iteraciones</th>
+            <th>Error Final</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in history %}
+            <tr>
+              <td>{{ item.ecuacion }}</td>
+              <td>{{ item.valor_min }}</td>
+              <td>{{ item.valor_max }}</td>
+              <td>{{ item.error_porcentual }}</td>
+              <td>{{ item.raiz_aproximada }}</td>
+              <td>{{ item.iter_count }}</td>
+              <td>{{ item.error_final }}</td>
+              <td>{{ item.created_at|date:"d M Y H:i" }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No has realizado ningún cálculo de bisección aún.</p>
+    {% endif %}
+    <a href="{% url 'calcular_Biseccion' %}" class="btn btn-primary mt-4">Volver al Método de Biseccion</a>
+  </div>
 {% endblock %}

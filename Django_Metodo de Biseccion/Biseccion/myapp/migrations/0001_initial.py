@@ -3,6 +3,7 @@
 import django.db.models.deletion
 from django.conf import settings
 from django.db import migrations, models
+from django.utils import timezone
 
 
 class Migration(migrations.Migration):
@@ -11,6 +12,14 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+    ]
+    operations = [
+        migrations.AddField(
+            model_name='biseccionhistory',
+            name='created_at',
+            field=models.DateTimeField(auto_now_add=True, default=timezone.now),
+            preserve_default=False,
+        ),
     ]
 
     operations = [

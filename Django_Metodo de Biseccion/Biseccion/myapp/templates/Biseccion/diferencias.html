@@ -5,11 +5,13 @@
 <div class="fade-in">
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="mb-3">
+            {{ form.as_p }}
+        </div>
         <button type="submit" class="btn btn-primary">Calcular</button>
         
         {% if user.is_authenticated %}
-            <a href="{% url 'exercise_history' %}" class="btn btn-link">Ver Historial</a>
+            <a href="{% url 'exercise_history' %}" class="btn btn-outline-secondary ms-2">Ver Historial</a>
         {% else %}
             <p>Para ver más detalles, por favor <a href="{% url 'registro' %}" class="badge text-bg-primary text-wrap">inicia sesión</a>.</p>
         {% endif %}
@@ -18,70 +20,53 @@
     {% if not user.is_authenticated %}
         {% if resultado %}
             {% if not resultado.error %}
-                <h2>Resultados:</h2>
-                <div>
-                    <h3>Diferencia hacia adelante:</h3>
-                    <p>Resultado: {{ resultado.derivada_fwd }} (Error: {{ resultado.error_fwd }})</p>
+                <div class="mt-4">
+                    <h2>Resultados:</h2>
+
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h3 class="card-title">Diferencia hacia adelante:</h3>
+                            <p class="card-text">Resultado: {{ resultado.derivada_fwd }} (Error: {{ resultado.error_fwd }})</p>
+                            <p class="card-text">Fórmula sustituida: {{ resultado.formula_fwd }}</p>
+                            <h4 class="card-title">Paso a paso:</h4>
+                            <ul class="list-group list-group-flush">
+                                {% for paso in resultado.pasos_fwd %}
+                                    <li class="list-group-item">{{ paso }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h3 class="card-title">Diferencia hacia atrás:</h3>
+                            <p class="card-text">Resultado: {{ resultado.derivada_bwd }} (Error: {{ resultado.error_bwd }})</p>
+                            <p class="card-text">Fórmula sustituida: {{ resultado.formula_bwd }}</p>
+                            <h4 class="card-title">Paso a paso:</h4>
+                            <ul class="list-group list-group-flush">
+                                {% for paso in resultado.pasos_bwd %}
+                                    <li class="list-group-item">{{ paso }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h3 class="card-title">Diferencia central:</h3>
+                            <p class="card-text">Resultado: {{ resultado.derivada_cen }} (Error: {{ resultado.error_cen }})</p>
+                            <p class="card-text">Fórmula sustituida: {{ resultado.formula_cen }}</p>
+                            <h4 class="card-title">Paso a paso:</h4>
+                            <ul class="list-group list-group-flush">
+                                {% for paso in resultado.pasos_cen %}
+                                    <li class="list-group-item">{{ paso }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <p><strong>Derivada exacta:</strong> {{ resultado.derivada_exacta }}</p>
                 </div>
-
-                <div>
-                    <h3>Diferencia hacia atrás:</h3>
-                    <p>Resultado: {{ resultado.derivada_bwd }} (Error: {{ resultado.error_bwd }})</p>
-                </div>
-
-                <div>
-                    <h3>Diferencia central:</h3>
-                    <p>Resultado: {{ resultado.derivada_cen }} (Error: {{ resultado.error_cen }})</p>
-                </div>
-
-                <p><strong>Derivada exacta:</strong> {{ resultado.derivada_exacta }}</p>
-            {% else %}
-                <p>{{ resultado.error }}</p>
-            {% endif %}
-        {% endif %}
-    {% endif %}
-
-    {% if user.is_authenticated %}
-        {% if resultado %}
-            {% if not resultado.error %}
-                <h2>Resultados:</h2>
-                <div>
-                    <h3>Diferencia hacia adelante:</h3>
-                    <p>Resultado: {{ resultado.derivada_fwd }} (Error: {{ resultado.error_fwd }})</p>
-                    <p>Fórmula sustituida: {{ resultado.formula_fwd }}</p>
-                    <h4>Paso a paso:</h4>
-                    <ul>
-                        {% for paso in resultado.pasos_fwd %}
-                            <li>{{ paso }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-
-                <div>
-                    <h3>Diferencia hacia atrás:</h3>
-                    <p>Resultado: {{ resultado.derivada_bwd }} (Error: {{ resultado.error_bwd }})</p>
-                    <p>Fórmula sustituida: {{ resultado.formula_bwd }}</p>
-                    <h4>Paso a paso:</h4>
-                    <ul>
-                        {% for paso in resultado.pasos_bwd %}
-                            <li>{{ paso }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-
-                <div>
-                    <h3>Diferencia central:</h3>
-                    <p>Resultado: {{ resultado.derivada_cen }} (Error: {{ resultado.error_cen }})</p>
-                    <p>Fórmula sustituida: {{ resultado.formula_cen }}</p>
-                    <h4>Paso a paso:</h4>
-                    <ul>
-                        {% for paso in resultado.pasos_cen %}
-                            <li>{{ paso }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-
-                <p><strong>Derivada exacta:</strong> {{ resultado.derivada_exacta }}</p>
             {% else %}
                 <p>{{ resultado.error }}</p>
             {% endif %}

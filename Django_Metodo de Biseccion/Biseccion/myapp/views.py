@@ -265,6 +265,18 @@ def calcular_biseccion(request):
                 grafica_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
                 buffer.close()
 
+                # Guardar los resultados en la base de datos
+                BiseccionHistory.objects.create(
+                    user=request.user,
+                    ecuacion=form.cleaned_data['Ec_values'],
+                    valor_min=valor_min,
+                    valor_max=valor_max,
+                    error_porcentual=error_porcentual,
+                    raiz_aproximada=raiz_aproximada,
+                    iter_count=iter_count,
+                    error_final=error_final
+                    )
+
             except SyntaxError:
                 mensaje = 'La ecuación ingresada no es válida.'
             except ValueError as e:
@@ -494,6 +506,21 @@ def generar_pdf(request):
 def diferencias_historial(request):
     history = DifferenceDividedHistory.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'Biseccion/historial.html', {'history': history})
+
+@login_required
+def historial_biseccion(request):
+    history = BiseccionHistory.objects.filter(user=request.user).order_by('-created_at')
+    print(history)  # Añade un mensaje para imprimir en la consola del servidor
+    return render(request, 'Biseccion/biseccion_historial.html', {'history': history})
+
+
+@login_required
+def Historial_general(request):
+    history = BiseccionHistory.objects.filter(user=request.user).order_by('-created_at')
+    historydiferencias = DifferenceDividedHistory.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'Biseccion/Historial_general.html', {'history': history, 'historydiferencias': historydiferencias})
+
+
 
 def creator_list(request):
     json_path = os.path.join(settings.BASE_DIR, 'creadores.json')

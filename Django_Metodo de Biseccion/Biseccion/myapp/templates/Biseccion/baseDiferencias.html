@@ -1,66 +1,91 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <title>{% block title %}Metodo de Diferencias Numericas{% endblock %}</title>
+  <title>{% block title %}Método de Bisección y Diferenciación Numérica{% endblock %}</title>
   {% load static %}
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"/>
   <style> 
-    .container {
-      border: 2px solid black;
-      border-radius: 10px;
-      padding: 20px;
-      margin-top: 50px;
-      box-shadow: rgba(0, 0, 255, 0.5) 0px 20px 30px -10px;
+    /* Estilos adicionales personalizados */
+    body {
+      background-color: #f2f2f5; /* Fondo blanco */
     }
 
     header {
-      border-bottom: 1px solid black;
+      border-bottom: 1px solid #6c757d; /* Borde inferior morado */
       padding-bottom: 10px;
       margin-bottom: 20px;
     }
 
     hr {
-      border-top: 1px solid black;
+      border-top: 1px solid #6c757d; /* Borde superior morado */
       margin: 20px 0;
+    }
+
+    .navbar {
+      background-color: #6c757d;
+      
+    }
+
+    .navbar-brand,
+    .navbar-nav .nav-link {
+      color: #000000; /* Texto blanco para enlaces en la barra de navegación */
+    }
+
+    .navbar-nav .nav-link.active {
+      font-weight: bold; /* Enlace activo en negrita */
+    }
+
+    .container {
+      border-radius: 10px; /* Bordes redondeados */
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    h1 {
+      color: #6c757d; /* Título morado */
     }
   </style>
   <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1"/>
 </head>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark text-light">
-  <div class="container">
-    <a class="navbar-brand" href="#">Calculadora Mamalona</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Inicio</a>
-        </li>
-        <li class="nav-item">
-          <a href="{% url 'teoriaB' %}" class="nav-link">Metodo de Biseccion</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'teoriaD' %}">Diferenciacion Numerica</a>
-        </li>
-        <li class="nav-item">
-          <a href="{% url 'creator' %}" class="nav-link">Creadores</a>
-        </li>
-      </ul>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container" style="border: 2px solid #ffffff;">
+      <a class="navbar-brand" href="#">Calculadora Metódica</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'teoriaB' %}" class="nav-link">Método de Bisección</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'teoriaD' %}">Diferenciación Numérica</a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'creator' %}" class="nav-link">Creadores</a>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
-<body class="bg-dark text-light">
-  <div class="container">
-    <header class="text-center py-5">
-      <h1>Metodo de Diferencias Numericas</h1>
+  </nav>
+  <div class="container py-4">
+    <header class="text-center mb-4">
+      <h1>Diferenciación Numérica</h1>
     </header>
-    <hr>
+    <hr class="my-4">
     <main>
       {% block content %}
       {% endblock %}
     </main>
-    <hr>
+    <hr class="my-4">
   </div>
+
+  <!-- Scripts de Bootstrap y otros -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

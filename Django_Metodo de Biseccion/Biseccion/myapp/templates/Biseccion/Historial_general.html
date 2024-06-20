@@ -1,0 +1,90 @@
+{% extends "Biseccion/base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    {% if user.is_authenticated %}
+    <h2 class="mb-4 text-center">Historial de {{ user.username }}</h2>
+    {% endif %}
+    {% if history %}
+    <div class="table-responsive">
+        <h3 class="mb-3">Cálculos de Bisección</h3>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Ecuación</th>
+                    <th scope="col">Valor Mínimo</th>
+                    <th scope="col">Valor Máximo</th>
+                    <th scope="col">Error Porcentual</th>
+                    <th scope="col">Raíz Aproximada</th>
+                    <th scope="col">Iteraciones</th>
+                    <th scope="col">Error Final</th>
+                    <th scope="col">Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in history %}
+                <tr>
+                    <td>{{ item.ecuacion }}</td>
+                    <td>{{ item.valor_min }}</td>
+                    <td>{{ item.valor_max }}</td>
+                    <td>{{ item.error_porcentual }}</td>
+                    <td>{{ item.raiz_aproximada }}</td>
+                    <td>{{ item.iter_count }}</td>
+                    <td>{{ item.error_final }}</td>
+                    <td>{{ item.created_at|date:"d M Y H:i" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="{% url 'calcular_Biseccion' %}" class="btn btn-primary mt-4">Ir al Método de Biseccion</a>
+    {% else %}
+    <p class="text-center">No has realizado ningún cálculo de bisección aún.</p>
+    {% endif %}
+</div>
+
+<div class="container py-4">
+    {% if historydiferencias %}
+    <div class="table-responsive">
+        <h3 class="mb-3">Cálculos de Diferencias Divididas</h3>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Función</th>
+                    <th scope="col">x</th>
+                    <th scope="col">h</th>
+                    <th scope="col">Derivada Forward</th>
+                    <th scope="col">Derivada Backward</th>
+                    <th scope="col">Derivada Central</th>
+                    <th scope="col">Derivada Exacta</th>
+                    <th scope="col">Error Forward</th>
+                    <th scope="col">Error Backward</th>
+                    <th scope="col">Error Central</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in historydiferencias %}
+                <tr>
+                    <td>{{ record.created_at|date:"Y-m-d" }}</td>
+                    <td>{{ record.function }}</td>
+                    <td>{{ record.x_value }}</td>
+                    <td>{{ record.h_value }}</td>
+                    <td>{{ record.derivada_fwd }}</td>
+                    <td>{{ record.derivada_bwd }}</td>
+                    <td>{{ record.derivada_cen }}</td>
+                    <td>{{ record.derivada_exacta }}</td>
+                    <td>{{ record.error_fwd }}</td>
+                    <td>{{ record.error_bwd }}</td>
+                    <td>{{ record.error_cen }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="{% url 'diferencias_divididas' %}" class="btn btn-primary mt-4">Ir al Método de Diferencias Divididas</a>
+    {% else %}
+    <p class="text-center">No has realizado ningún cálculo de Diferenciación Numérica aún.</p>
+    {% endif %}
+</div>
+{% endblock %}
