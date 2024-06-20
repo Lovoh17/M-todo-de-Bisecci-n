@@ -1,4 +1,3 @@
-<!-- exercise_history.html -->
 {% extends "Biseccion/baseDiferencias.html" %}
 
 {% block content %}
@@ -22,7 +21,7 @@
     <tbody>
       {% for record in history %}
         <tr>
-          <td>{{ record.created_at }}</td>
+          <td>{{ record.created_at|date:"Y-m-d" }}</td>
           <td>{{ record.function }}</td>
           <td>{{ record.x_value }}</td>
           <td>{{ record.h_value }}</td>

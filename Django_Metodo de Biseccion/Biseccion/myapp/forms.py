@@ -3,6 +3,8 @@ from .models import ExerciseHistory
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import PasswordChangeForm
+from tinymce.widgets import TinyMCE
+from .models import Profile
 class BiseecionForm(forms.Form):
     Ec_values = forms.CharField(label='Escriba la ecuacion:', widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: x**2+5*3x'}))
     valor_min = forms.CharField(label='Ingrese el rango mínimo de búsqueda:', widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: -3'}))
@@ -29,15 +31,6 @@ class RegistroForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'password1', 'password2', 'first_name', 'last_name', 'image']
 
-    def clean_image(self):
-        image = self.cleaned_data.get('image')
-        if image:
-            ext = image.name.split('.')[-1].lower()
-            if ext not in ['png', 'jpg', 'jpeg']:
-                raise forms.ValidationError("Solo se permiten archivos PNG, JPG o JPEG.")
-        return image
-
-        
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].required = False
@@ -49,7 +42,12 @@ class RegistroForm(UserCreationForm):
         user.last_name = self.cleaned_data['last_name']
         if commit:
             user.save()
-        return user    
+            profile = Profile.objects.create(user=user)
+            image = self.cleaned_data.get('image')
+            if image:
+                profile.image = image
+                profile.save()
+        return user 
 class CambioContraseñaForm(PasswordChangeForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

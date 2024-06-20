@@ -1,5 +1,6 @@
 #Librerias
 from django.shortcuts import render,redirect
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
@@ -280,6 +281,11 @@ def calcular_biseccion(request):
     }
     return render(request, 'Biseccion/calcular_biseccion.html', context)
 # Función para calcular la derivada numérica usando diferencia hacia atras
+
+#def exercise_detail(request, pk):
+#   ejercicio = get_object_or_404(DifferenceDividedHistory, pk=pk, user=request.user)
+#    return render(request, 'Biseccion/detalles_diferencias.html', {'ejercicio': ejercicio})
+
 def derivada_forward(f, x, h):
     f_x = round(f(x), 4)
     f_x_plus_h = round(f(x + h), 4)
@@ -331,7 +337,6 @@ def calcular_errores(derivada_fwd, derivada_bwd, derivada_cen, derivada_exacta_v
 #@login_required
 def diferencias(request):
     resultado = {}
-    grafica_base64 = ""
 
     if request.method == 'POST':
         form = DiferenciacionForm(request.POST)
@@ -350,10 +355,10 @@ def diferencias(request):
                 derivada_exacta_func = lambdify(x, derivada_exacta)
                 derivada_exacta_val = round(derivada_exacta_func(valor_x), 4)
 
-                # Calculate derivatives using three methods
-                derivada_fwd, _, _ = derivada_forward(f, valor_x, valor_h)
-                derivada_bwd, _, _ = derivada_backward(f, valor_x, valor_h)
-                derivada_cen, _, _ = derivada_central(f, valor_x, valor_h)
+                # Calculate derivatives using three methods with steps
+                derivada_fwd, formula_fwd, pasos_fwd = derivada_forward(f, valor_x, valor_h)
+                derivada_bwd, formula_bwd, pasos_bwd = derivada_backward(f, valor_x, valor_h)
+                derivada_cen, formula_cen, pasos_cen = derivada_central(f, valor_x, valor_h)
 
                 # Calculate errors
                 errores = calcular_errores(derivada_fwd, derivada_bwd, derivada_cen, derivada_exacta_val)
@@ -377,8 +382,14 @@ def diferencias(request):
                 # Prepare results for template
                 resultado = {
                     'derivada_fwd': derivada_fwd,
+                    'formula_fwd': formula_fwd,
+                    'pasos_fwd': pasos_fwd,
                     'derivada_bwd': derivada_bwd,
+                    'formula_bwd': formula_bwd,
+                    'pasos_bwd': pasos_bwd,
                     'derivada_cen': derivada_cen,
+                    'formula_cen': formula_cen,
+                    'pasos_cen': pasos_cen,
                     'derivada_exacta': derivada_exacta_val,
                     'error_fwd': round(errores['error_fwd'], 4),
                     'error_bwd': round(errores['error_bwd'], 4),
@@ -398,21 +409,11 @@ def diferencias(request):
 def registro(request):
     if request.user.is_authenticated:
         return redirect('home')  # Redirige al usuario autenticado a la página de inicio
- 
+    
     if request.method == 'POST':
         form = RegistroForm(request.POST, request.FILES)
         if form.is_valid():
-            user = form.save(commit=False)
-            image = form.cleaned_data.get('image')
-
-            # Guarda el usuario primero para obtener el ID
-            user.save()
-
-            # Crea el perfil asociado al usuario y guarda la imagen si se proporciona
-            profile = Profile.objects.create(user=user)
-            if image:
-                profile.image = image
-                profile.save()
+            user = form.save()
 
             # Autentica al usuario recién registrado
             username = form.cleaned_data.get('username')
@@ -429,7 +430,7 @@ def registro(request):
             messages.error(request, 'Error al crear la cuenta. Verifique los datos ingresados.')
     else:
         form = RegistroForm()  # Crea un formulario vacío si es una solicitud GET
- 
+
     return render(request, 'Biseccion/registro.html', {'form': form})
 #Funcion del cambio de contraseña
 def cambio_contraseña(request):

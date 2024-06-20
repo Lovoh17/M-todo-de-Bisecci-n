@@ -1,0 +1,19 @@
+{% extends "Biseccion/baseDiferencias.html" %}
+
+{% block content %}
+  <h2>Detalles del Ejercicio</h2>
+  <ul>
+    <li><strong>Fecha:</strong> {{ ejercicio.created_at }}</li>
+    <li><strong>Función:</strong> {{ ejercicio.function }}</li>
+    <li><strong>x:</strong> {{ ejercicio.x_value }}</li>
+    <li><strong>h:</strong> {{ ejercicio.h_value }}</li>
+    <li><strong>Derivada Forward:</strong> {{ ejercicio.derivada_fwd }}</li>
+    <li><strong>Derivada Backward:</strong> {{ ejercicio.derivada_bwd }}</li>
+    <li><strong>Derivada Central:</strong> {{ ejercicio.derivada_cen }}</li>
+    <li><strong>Derivada Exacta:</strong> {{ ejercicio.derivada_exacta }}</li>
+    <li><strong>Error Forward:</strong> {{ ejercicio.error_fwd }}</li>
+    <li><strong>Error Backward:</strong> {{ ejercicio.error_bwd }}</li>
+    <li><strong>Error Central:</strong> {{ ejercicio.error_cen }}</li>
+  </ul>
+  <a href="{% url 'exercise_history' %}" class="btn btn-primary mt-4">Volver al Historial</a>
+{% endblock %}
