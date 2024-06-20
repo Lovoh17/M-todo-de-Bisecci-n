@@ -5,18 +5,111 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import PasswordChangeForm
 from tinymce.widgets import TinyMCE
 from .models import Profile
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+from sympy import sympify
 class BiseecionForm(forms.Form):
-    Ec_values = forms.CharField(label='Escriba la ecuacion:', widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: x**2+5*3x'}))
-    valor_min = forms.CharField(label='Ingrese el rango mínimo de búsqueda:', widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: -3'}))
-    valor_max = forms.CharField(label='Ingrese el rango máximo de búsqueda', widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: 3'}))
-    step = forms.CharField(label='Ingrese el tamaño del paso para buscar intervalos: ', widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: 1'}))
-    error_porcentual = forms.CharField(label='Ingrese el valor de le Tolerancia', widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: 0.001'}))
+    Ec_values = forms.CharField(
+        label='Escriba la ecuación:',
+        widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: x**2 + 5*3*x'}),
+        required=True,
+        max_length=100,
+    )
+    valor_min = forms.FloatField(
+        label='Ingrese el rango mínimo de búsqueda:',
+        widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: -3'}),
+        required=True,
+    )
+    valor_max = forms.FloatField(
+        label='Ingrese el rango máximo de búsqueda',
+        widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: 3'}),
+        required=True,
+    )
+    step = forms.FloatField(
+        label='Ingrese el tamaño del paso para buscar intervalos: ',
+        widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: 1'}),
+        required=True,
+    )
+    error_porcentual = forms.FloatField(
+        label='Ingrese el valor de la Tolerancia',
+        widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: 0.001'}),
+        required=True,
+        min_value=0.0,
+        max_value=100.0,
+    )
+
+    def clean_Ec_values(self):
+        ecuacion = self.cleaned_data['Ec_values']
+
+        try:
+            # Intenta crear una expresión sympy a partir de la ecuación
+            sympify(ecuacion)
+        except SyntaxError:
+            raise ValidationError(_('La ecuación ingresada no es válida.'))
+
+        return ecuacion
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        valor_min = cleaned_data.get('valor_min')
+        valor_max = cleaned_data.get('valor_max')
+        step = cleaned_data.get('step')
+        error_porcentual = cleaned_data.get('error_porcentual')
+
+        if valor_min >= valor_max:
+            raise ValidationError(_('El valor mínimo debe ser menor que el valor máximo.'))
+
+        if step <= 0:
+            raise ValidationError(_('El tamaño del paso debe ser mayor que cero.'))
+
+        return cleaned_data
 
 class DiferenciacionForm(forms.Form):
     f = forms.CharField(label='Escriba la ecuacion:', widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: x**2+5*3x'}))
     x = forms.CharField(label='Ingrese el valor de X:', widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: 7'}))
     h = forms.CharField(label='Ingrese el valor de h', widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: 0.4'}))
 
+    def clean_f(self):
+        f_value = self.cleaned_data['f']
+        try:
+            sympify(f_value)
+        except SyntaxError:
+            raise forms.ValidationError('La ecuación ingresada no es válida.')
+
+        return f_value
+
+    def clean_x(self):
+        x_value = self.cleaned_data['x']
+        try:
+            float(x_value)
+        except ValueError:
+            raise forms.ValidationError('Ingrese un valor numérico válido para X.')
+
+        return x_value
+
+    def clean_h(self):
+        h_value = self.cleaned_data['h']
+        try:
+            float(h_value)
+        except ValueError:
+            raise forms.ValidationError('Ingrese un valor numérico válido para h.')
+
+        return h_value
+
+    def clean(self):
+        cleaned_data = super().clean()
+        x_value = cleaned_data.get('x')
+        h_value = cleaned_data.get('h')
+
+        if x_value and h_value:
+            x_float = float(x_value)
+            h_float = float(h_value)
+
+            if h_float == 0:
+                raise forms.ValidationError('El valor de h no puede ser cero.')
+
+        return cleaned_data
 
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=150, required=True)

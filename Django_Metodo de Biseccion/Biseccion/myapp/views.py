@@ -234,10 +234,9 @@ def calcular_biseccion(request):
                 x = symbols('x')
                 ecuacion = sympify(ecuacion, locals={'sin': sin, 'cos': cos, 'tan': tan, 'exp': exp})
                 resultado_biseccion = biseccion(ecuacion, valor_min, valor_max, error_porcentual)
-                raiz_aproximada, iter_count, error_final, iteraciones_data = biseccion(ecuacion, valor_min, valor_max, error_porcentual)
-                
+
                 # Obtener datos para graficar
-                raiz_aproximada, _, _, iteraciones_data = resultado_biseccion
+                raiz_aproximada, iter_count, error_final, iteraciones_data = resultado_biseccion
 
                 # Graficar la función y la raíz encontrada
                 x_vals = np.linspace(valor_min, valor_max, 400)
@@ -265,11 +264,14 @@ def calcular_biseccion(request):
                 buffer.seek(0)
                 grafica_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
                 buffer.close()
-                
-                
 
+            except SyntaxError:
+                mensaje = 'La ecuación ingresada no es válida.'
             except ValueError as e:
                 mensaje = str(e)
+            except Exception as e:
+                mensaje = f'Ocurrió un error durante el cálculo: {str(e)}'
+
     else:
         form = BiseecionForm()
 
@@ -398,6 +400,10 @@ def diferencias(request):
 
                 messages.success(request, 'Cálculo de derivadas completado y guardado correctamente.')
 
+            except ValueError as e:
+                messages.error(request, f'Ocurrió un error de valor: {str(e)}')
+            except SyntaxError as e:
+                messages.error(request, f'Ocurrió un error de sintaxis en la ecuación: {str(e)}')
             except Exception as e:
                 messages.error(request, f'Ocurrió un error durante el cálculo: {str(e)}')
 
