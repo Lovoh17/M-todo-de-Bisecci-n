@@ -1,3 +1,5 @@
+####################################################################################################################################
+
 #Librerias
 from django.shortcuts import render,redirect
 from django.shortcuts import get_object_or_404
@@ -21,7 +23,7 @@ from io import BytesIO
 from django.http import HttpResponseForbidden
 import io
 import os
-import base64
+import urllib, base64
 import pandas as pd
 from django.contrib import messages
 from .models import *
@@ -29,34 +31,42 @@ from django.contrib.auth.models import User
 from .models import Usuarios
 from .models import DifferenceDividedHistory
 from django.conf import settings
+
+####################################################################################################################################
+
 #Vista principal
 def principal(request):
     return render(request ,'Biseccion/index.html')
+
+####################################################################################################################################
+
 def home(request):
     return render(request ,'Biseccion/home.html')
-#Vista del login y validaciones
 
+####################################################################################################################################
+
+#Vista del login y validaciones
 def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
             correo_User = form.cleaned_data['username']
             password_User = form.cleaned_data['password']
-            
-            # Autenticar al usuario con las credenciales ingresadas
+            # Autenticacion
             user = authenticate(request, username=correo_User, password=password_User)
-            
             if user is not None:
                 login(request, user)
-                return redirect('home')  # Redirigir a la vista deseada para usuarios autenticados
+                return redirect('home')
             else:
-                # Agregar mensaje de error con credenciales ingresadas
                 error_message = f"Usuario: {correo_User}, Contraseña: {password_User}"
                 form.add_error(None, error_message)
     else:
         form = LoginForm()
 
     return render(request, 'Biseccion/login.html', {'form': form})
+
+####################################################################################################################################
+
 #Funcion para la teoria de Diferenciacion Numerica
 def teoria_diferencias():
     teoria = """
@@ -92,11 +102,15 @@ def teoria_diferencias():
     """
     return teoria
 
+####################################################################################################################################
+
 def mostrar_teoria(request):
     contexto = {
         'explicacion_teorica': teoria_diferencias()
     }
     return render(request, 'Biseccion/teoriaDif.html', contexto)
+
+####################################################################################################################################
 #Funcion de la teoria de Biseccion
 def metodo_biseccion(request):
     formulas = [
@@ -145,40 +159,39 @@ def metodo_biseccion(request):
     }
     
     return render(request, 'Biseccion/teoriaBiseccion.html', context)
+
+####################################################################################################################################
+
 # Función para convertir la ecuación simbólica a función lambda y aplicar el método de bisección
 def biseccion(ecuacion, a, b, tol_porcentual, max_iter=100):
     try:
         x = symbols('x')
-        f = lambdify(x, ecuacion)  # Convertir la expresión simbólica a una función lambda
+        f = lambdify(x, ecuacion)
     except Exception as e:
         raise ValueError(f"No se pudo convertir la ecuación: {str(e)}")
 
     iter_count = 0
     iteraciones = []
-    error = 100.0  # Inicializar el error alto para asegurar que entre en el bucle while
+    error = 100.0 
     prev_midpoint = None
     
     while error > tol_porcentual:
         iter_count += 1
         midpoint = (a + b) / 2.0
-        
-        # Evaluación de f(x) en el punto medio
+
         fx_mid = f(midpoint)
-        
-        # Calcular el error porcentual entre las aproximaciones sucesivas
+
         if prev_midpoint is not None:
             error = abs((midpoint - prev_midpoint) / midpoint) * 100
         else:
             error = 100.0
         
-        # Redondear los valores antes de agregarlos a iteraciones
         raiz_actual = round(midpoint, 4)
         error = round(error, 4)
         
-        # Agregar a iteraciones solo si es una nueva iteración o se ha alcanzado la tolerancia
         iteraciones.append([iter_count, f'F({raiz_actual})', raiz_actual, f'{error}%'])
 
-        if fx_mid == 0:  # La raíz se encuentra exactamente en el punto medio
+        if fx_mid == 0: 
             break
         
         if f(a) * fx_mid < 0:
@@ -192,21 +205,21 @@ def biseccion(ecuacion, a, b, tol_porcentual, max_iter=100):
             break
 
     raiz_aproximada = (a + b) / 2.0
-    
-    # Calcular el error porcentual final
+
     if raiz_aproximada != 0:
         error_final = abs((raiz_aproximada - prev_midpoint) / raiz_aproximada) * 100
     else:
         error_final = 0
     
-    # Redondear los valores finales
     raiz_aproximada = round(raiz_aproximada, 4)
     error_final = round(error_final, 4)
     
-    # Agregar la última iteración a iteraciones
     iteraciones.append([iter_count, f'F({raiz_aproximada})', raiz_aproximada, f'{error_final}%'])
 
     return raiz_aproximada, iter_count, error_final, iteraciones
+
+####################################################################################################################################
+
 # Función para encontrar intervalos donde la función cambia de signo
 def encontrar_intervalos(f, rango_min, rango_max, paso):
     intervalos = []
@@ -218,6 +231,9 @@ def encontrar_intervalos(f, rango_min, rango_max, paso):
     
     df_intervalos = pd.DataFrame(intervalos, columns=["Inicio Intervalo", "Fin Intervalo"])
     return df_intervalos
+
+####################################################################################################################################
+
 # Vista para calcular el método de bisección y mostrar resultados
 def calcular_biseccion(request):
     resultado_biseccion = None
@@ -237,10 +253,8 @@ def calcular_biseccion(request):
                 ecuacion = sympify(ecuacion, locals={'sin': sin, 'cos': cos, 'tan': tan, 'exp': exp})
                 resultado_biseccion = biseccion(ecuacion, valor_min, valor_max, error_porcentual)
 
-                # Obtener datos para graficar
                 raiz_aproximada, iter_count, error_final, iteraciones_data = resultado_biseccion
 
-                # Graficar la función y la raíz encontrada
                 x_vals = np.linspace(valor_min, valor_max, 400)
                 f = lambdify(x, ecuacion)
                 y_vals = f(x_vals)
@@ -260,14 +274,12 @@ def calcular_biseccion(request):
                 plt.legend()
                 plt.grid(True)
 
-                # Convertir la gráfica a base64 para mostrar en la plantilla
                 buffer = io.BytesIO()
                 plt.savefig(buffer, format='png')
                 buffer.seek(0)
                 grafica_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
                 buffer.close()
 
-                # Guardar los resultados en la base de datos
                 BiseccionHistory.objects.create(
                     user=request.user,
                     ecuacion=form.cleaned_data['Ec_values'],
@@ -296,12 +308,10 @@ def calcular_biseccion(request):
         'grafica_base64': grafica_base64,
     }
     return render(request, 'Biseccion/calcular_biseccion.html', context)
-# Función para calcular la derivada numérica usando diferencia hacia atras
 
-#def exercise_detail(request, pk):
-#   ejercicio = get_object_or_404(DifferenceDividedHistory, pk=pk, user=request.user)
-#    return render(request, 'Biseccion/detalles_diferencias.html', {'ejercicio': ejercicio})
+####################################################################################################################################
 
+# Función para calcular la derivada numérica usando diferencia hacia adelante
 def derivada_forward(f, x, h):
     f_x = round(f(x), 4)
     f_x_plus_h = round(f(x + h), 4)
@@ -314,6 +324,9 @@ def derivada_forward(f, x, h):
     ]
     return resultado, formula_sustituida, pasos
 
+####################################################################################################################################
+
+# Función para calcular la derivada numérica usando diferencia hacia atras
 def derivada_backward(f, x, h):
     f_x = round(f(x), 4)
     f_x_minus_h = round(f(x - h), 4)
@@ -326,6 +339,9 @@ def derivada_backward(f, x, h):
     ]
     return resultado, formula_sustituida, pasos
 
+####################################################################################################################################
+
+# Función para calcular la derivada numérica usando diferencia central
 def derivada_central(f, x, h):
     f_x = round(f(x), 4)
     f_x_plus_h = round(f(x + h), 4)
@@ -340,6 +356,9 @@ def derivada_central(f, x, h):
     ]
     return resultado, formula_sustituida, pasos
 
+####################################################################################################################################
+
+#Calcula error de las diferencias
 def calcular_errores(derivada_fwd, derivada_bwd, derivada_cen, derivada_exacta_val):
     error_fwd = abs(derivada_fwd - derivada_exacta_val)
     error_bwd = abs(derivada_bwd - derivada_exacta_val)
@@ -350,10 +369,14 @@ def calcular_errores(derivada_fwd, derivada_bwd, derivada_cen, derivada_exacta_v
         'error_bwd': round(error_bwd, 4),
         'error_cen': round(error_cen, 4)
     }
-#@login_required
+
+####################################################################################################################################
+
+#Funcion del metodo de diferenciacion numerica
 def diferencias(request):
     resultado = {}
-
+    grafica_url = ""
+    
     if request.method == 'POST':
         form = DiferenciacionForm(request.POST)
         if form.is_valid():
@@ -365,21 +388,17 @@ def diferencias(request):
                 x = symbols('x')
                 ecuacion = sympify(funcion)
                 f = lambdify(x, ecuacion)
-
-                # Calculate derivatives
+                
                 derivada_exacta = diff(ecuacion, x)
                 derivada_exacta_func = lambdify(x, derivada_exacta)
                 derivada_exacta_val = round(derivada_exacta_func(valor_x), 4)
 
-                # Calculate derivatives using three methods with steps
                 derivada_fwd, formula_fwd, pasos_fwd = derivada_forward(f, valor_x, valor_h)
                 derivada_bwd, formula_bwd, pasos_bwd = derivada_backward(f, valor_x, valor_h)
                 derivada_cen, formula_cen, pasos_cen = derivada_central(f, valor_x, valor_h)
 
-                # Calculate errors
                 errores = calcular_errores(derivada_fwd, derivada_bwd, derivada_cen, derivada_exacta_val)
 
-                # Save results to database
                 if request.user.is_authenticated:
                     DifferenceDividedHistory.objects.create(
                         user=request.user,
@@ -395,7 +414,6 @@ def diferencias(request):
                         error_cen=errores['error_cen']
                     )
 
-                # Prepare results for template
                 resultado = {
                     'derivada_fwd': derivada_fwd,
                     'formula_fwd': formula_fwd,
@@ -411,6 +429,25 @@ def diferencias(request):
                     'error_bwd': round(errores['error_bwd'], 4),
                     'error_cen': round(errores['error_cen'], 4)
                 }
+                
+                x_vals = [valor_x - 2*valor_h, valor_x - valor_h, valor_x, valor_x + valor_h, valor_x + 2*valor_h]
+                y_vals = [f(val) for val in x_vals]
+                
+                plt.figure()
+                plt.plot(x_vals, y_vals, 'b-', label='Función')
+                plt.plot(valor_x, f(valor_x), 'ro', label='Punto de Evaluación')
+                plt.xlabel('x')
+                plt.ylabel('f(x)')
+                plt.title('Gráfica de la Función y Puntos Encontrados')
+                plt.legend()
+                
+                buf = io.BytesIO()
+                plt.savefig(buf, format='png')
+                buf.seek(0)
+                
+                string = base64.b64encode(buf.read())
+                grafica_url = 'data:image/png;base64,' + urllib.parse.quote(string)
+                buf.close()
 
                 messages.success(request, 'Cálculo de derivadas completado y guardado correctamente.')
 
@@ -424,34 +461,39 @@ def diferencias(request):
     else:
         form = DiferenciacionForm()
 
-    return render(request, 'Biseccion/diferencias.html', {'form': form, 'resultado': resultado})
+    return render(request, 'Biseccion/diferencias.html', {'form': form, 'resultado': resultado, 'grafica_url': grafica_url})
+
+####################################################################################################################################
+
 #Funcion de nuevo registro de usuario
 def registro(request):
     if request.user.is_authenticated:
-        return redirect('home')  # Redirige al usuario autenticado a la página de inicio
+        return redirect('home')
     
     if request.method == 'POST':
         form = RegistroForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
 
-            # Autentica al usuario recién registrado
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
 
             if user is not None:
-                login(request, user)  # Inicia sesión con el usuario autenticado
+                login(request, user)
                 messages.success(request, f'Bienvenido {username}, tu cuenta ha sido creada exitosamente.')
-                return redirect('home')  # Redirige a la página de inicio
+                return redirect('home')
             else:
                 messages.error(request, 'Hubo un problema al autenticarse. Inténtelo de nuevo.')
         else:
             messages.error(request, 'Error al crear la cuenta. Verifique los datos ingresados.')
     else:
-        form = RegistroForm()  # Crea un formulario vacío si es una solicitud GET
+        form = RegistroForm()
 
     return render(request, 'Biseccion/registro.html', {'form': form})
+
+####################################################################################################################################
+
 #Funcion del cambio de contraseña
 def cambio_contraseña(request):
     mensaje = ""
@@ -470,15 +512,24 @@ def cambio_contraseña(request):
         form = CambioContraseñaForm(request.user)
 
     return render(request, 'Biseccion/cambio_contraseña.html', {'form': form, 'mensaje': mensaje, 'tipo_alerta': tipo_alerta})
+
+####################################################################################################################################
+
 #Funcion de cerrar secion
 def cerrar_sesion(request):
     logout(request)
     return redirect('/')
+
+####################################################################################################################################
+
 #Vista para ver el perfil de usuario
 @login_required
 def perfil(request):
     user = request.user
     return render(request, 'Biseccion/perfil.html', {'user': user})
+
+####################################################################################################################################
+
 #Funcion para imprimir el proceso
 def generar_pdf(request):
     resultado_biseccion = request.GET.get('resultado_biseccion')
@@ -494,7 +545,6 @@ def generar_pdf(request):
 
     c.drawString(100, height - 40, "Resultados de la Bisección")
 
-    # Mostrar raíz aproximada, número de iteraciones y error
     c.drawString(100, height - 60, f"Raíz aproximada: {resultado_biseccion}")
     c.drawString(100, height - 80, "Número de iteraciones: No calculado")
     c.drawString(100, height - 100, "Error: No calculado")
@@ -504,31 +554,43 @@ def generar_pdf(request):
 
     return response
 
+####################################################################################################################################
+
+#Funcion para filtrar el historial del usuario
 @login_required
 def diferencias_historial(request):
     history = DifferenceDividedHistory.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'Biseccion/historial.html', {'history': history})
 
+####################################################################################################################################
+
+# Función para calcular la derivada numérica usando diferencia hacia atras
 @login_required
 def historial_biseccion(request):
     history = BiseccionHistory.objects.filter(user=request.user).order_by('-created_at')
-    print(history)  # Añade un mensaje para imprimir en la consola del servidor
     return render(request, 'Biseccion/biseccion_historial.html', {'history': history})
 
+####################################################################################################################################
 
+# Función para mostrar el historial de los dos metodos
 @login_required
 def Historial_general(request):
     history = BiseccionHistory.objects.filter(user=request.user).order_by('-created_at')
     historydiferencias = DifferenceDividedHistory.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'Biseccion/Historial_general.html', {'history': history, 'historydiferencias': historydiferencias})
 
+####################################################################################################################################
 
+# Función para mostrar los libros de biblioteca
 def ver_biblioteca(request):
     json_path = os.path.join(settings.BASE_DIR, 'libros.json')
     with open(json_path, 'r') as file:
         libros = json.load(file)
     return render(request, 'Biseccion/biblioteca.html', {'libros': libros})
 
+####################################################################################################################################
+
+# Función para mostrar los videos de biblioteca
 @login_required
 def ver_videos(request):
     json_path = os.path.join(settings.BASE_DIR, 'videos.json')
@@ -536,8 +598,8 @@ def ver_videos(request):
         videos = json.load(file)
     return render(request, 'Biseccion/videos.html', {'videos': videos})
 
+####################################################################################################################################
+
+#Funcion para mostrar los desarrolladores del groyecto
 def creator_list(request):
-    json_path = os.path.join(settings.BASE_DIR, 'creadores.json')
-    with open(json_path, 'r') as file:
-        creators = json.load(file)
-    return render(request, 'Biseccion/creadores.html', {'creators': creators})
+    return render(request, 'Biseccion/creadores.html')

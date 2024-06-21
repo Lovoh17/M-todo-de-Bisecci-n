@@ -5,9 +5,7 @@
 {% block content %}
 <div class="text-center fade-in">
     <h2 class="mb-4">¡Bienvenido!</h2>
-    {% if user.profile.image %}
-      <img src="{{ user.profile.image.url }}" class="rounded-circle mx-auto d-block" style="width: 200px; height: 200px;" alt="Imagen de perfil">
-    {% endif %}
+    <img src="https://cdn4.iconfinder.com/data/icons/business-smooth/356/11-person-man-user-avatar-512.png" class="rounded-circle mx-auto d-block" style="width: 200px; height: 200px;" alt="Imagen de perfil">
     <p>Hola, {{ user.username }}!</p>
     <a href="{% url 'cerrar_sesion' %}" class="btn btn-danger">Cerrar Sesión</a>
 </div>

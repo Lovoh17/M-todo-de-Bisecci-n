@@ -79,3 +79,5 @@ class BiseccionHistory(models.Model):
 
 def __str__(self):
     return f"Bisección de '{self.ecuacion}' por {self.user.username}"
+
+####################################################################################################################################

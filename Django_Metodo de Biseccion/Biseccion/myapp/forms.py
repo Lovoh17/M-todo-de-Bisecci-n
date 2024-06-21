@@ -8,6 +8,8 @@ from .models import Profile
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from sympy import sympify
+
+####################################################################################################################################
 class BiseecionForm(forms.Form):
     Ec_values = forms.CharField(
         label='Escriba la ecuación:',
@@ -65,6 +67,8 @@ class BiseecionForm(forms.Form):
 
         return cleaned_data
 
+####################################################################################################################################
+
 class DiferenciacionForm(forms.Form):
     f = forms.CharField(label='Escriba la ecuacion:', widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: x**2+5*3x'}))
     x = forms.CharField(label='Ingrese el valor de X:', widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: 7'}))
@@ -111,9 +115,13 @@ class DiferenciacionForm(forms.Form):
 
         return cleaned_data
 
+####################################################################################################################################
+
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=150, required=True)
     password = forms.CharField(widget=forms.PasswordInput, required=True)
+
+####################################################################################################################################
 class RegistroForm(UserCreationForm):
     email = forms.EmailField(required=True)
     first_name = forms.CharField(max_length=30, required=False)
@@ -141,6 +149,9 @@ class RegistroForm(UserCreationForm):
                 profile.image = image
                 profile.save()
         return user 
+
+####################################################################################################################################
+
 class CambioContraseñaForm(PasswordChangeForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -149,9 +160,10 @@ class CambioContraseñaForm(PasswordChangeForm):
         self.fields['new_password1'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Nueva contraseña'})
         self.fields['new_password2'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Confirmar nueva contraseña'})
 
-
-
+####################################################################################################################################
 class ExerciseHistoryForm(forms.ModelForm):
     class Meta:
         model = ExerciseHistory
         fields = ['exercise_name', 'duration', 'calories_burned']
+
+####################################################################################################################################

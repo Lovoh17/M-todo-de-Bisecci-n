@@ -3,20 +3,29 @@
 {% block title %}Bienvenida{% endblock %}
 
 {% block content %}
-    <div class="text-center">
-            <h2 class="mb-4">¡Bienvenido a nuestra plataforma de Análisis Numérico!</h2>
-            <p>La página cuenta con la posibilidad de resolver métodos numéricos como el Método de Bisección y la Diferenciación Numérica.</p>
-            <p>Además, puedes explorar y utilizar herramientas como:</p>
-            <ul class="list-unstyled">
-                <li><strong>Usuarios Registrados:</strong> Crea tu cuenta para tener la mejor experiencia.</li>
-                <li><strong>Resolución de Métodos Numéricos:</strong> Calcula raíces de ecuaciones y derivadas numéricas.</li>
-                <li><strong>Historial de Cálculos:</strong> Visualiza y gestiona tus cálculos previos.</li>
-                <li><strong>Biblioteca de Material de Apoyo:</strong> Accede a libros y recursos sobre análisis numérico.</li>
-                <li><strong>Videos Instructivos:</strong> Aprende conceptos clave con videos explicativos.</li>
-            </ul>
-            <br>
-            <a href="{% url 'registro' %}" class="btn btn-success">Registrarse</a>
-            <a href="{% url 'login' %}" class="btn btn-primary">Iniciar Sesión</a>
-            <br>
+    <div class="text-center mt-5">
+        <h2 class="mb-4">¡Bienvenido a nuestra plataforma de Análisis Numérico!</h2>
+        <p class="lead">Estamos encantados de tenerte aquí. Nuestra plataforma está diseñada para ayudarte a resolver y entender los métodos numéricos con facilidad y precisión.</p>
+        
+        <p>En esta página, podrás explorar y utilizar una variedad de herramientas y recursos que te ayudarán en tu aprendizaje y aplicación del análisis numérico. Aquí hay algunas cosas que puedes hacer:</p>
+        
+        <ul class="list-unstyled my-4">
+            <li><strong>Usuarios Registrados:</strong> <span class="text-muted">Crea tu cuenta para acceder a todas las funcionalidades y guardar tu progreso.</span></li>
+            <li><strong>Resolución de Métodos Numéricos:</strong> <span class="text-muted">Calcula raíces de ecuaciones y derivadas numéricas utilizando métodos como el Método de Bisección y la Diferenciación Numérica.</span></li>
+            <li><strong>Historial de Cálculos:</strong> <span class="text-muted">Mantén un registro de tus cálculos previos para revisarlos y gestionarlos en cualquier momento.</span></li>
+            <li><strong>Biblioteca de Material de Apoyo:</strong> <span class="text-muted">Accede a una amplia colección de libros y recursos sobre análisis numérico para complementar tu estudio.</span></li>
+            <li><strong>Videos Instructivos:</strong> <span class="text-muted">Aprende conceptos clave y técnicas de análisis numérico con nuestros videos explicativos y tutoriales.</span></li>
+        </ul>
+        
+        <p class="mb-4">Estamos aquí para apoyarte en tu viaje de aprendizaje. No dudes en explorar todas las herramientas y recursos disponibles, y si tienes alguna pregunta, estamos aquí para ayudarte.</p>
+        
+        {% if not user.is_authenticated %}
+            <div class="my-4">
+                <a href="{% url 'registro' %}" class="btn btn-success me-2">Registrarse</a>
+                <a href="{% url 'login' %}" class="btn btn-primary">Iniciar Sesión</a>
+            </div>
+        {% endif %}
+        
+        <p class="mt-4">¡Esperamos que disfrutes tu experiencia en nuestra plataforma!</p>
     </div>
 {% endblock %}

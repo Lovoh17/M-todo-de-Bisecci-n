@@ -5,19 +5,18 @@
   {% load static %}
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"/>
   <style> 
-    /* Estilos adicionales personalizados */
     body {
-      background-color: #f2f2f5; /* Fondo blanco */
+      background-color: #f2f2f5;
     }
 
     header {
-      border-bottom: 1px solid #6c757d; /* Borde inferior morado */
+      border-bottom: 1px solid #6c757d;
       padding-bottom: 10px;
       margin-bottom: 20px;
     }
 
     hr {
-      border-top: 1px solid #6c757d; /* Borde superior morado */
+      border-top: 1px solid #6c757d;
       margin: 20px 0;
     }
 
@@ -28,22 +27,46 @@
 
     .navbar-brand,
     .navbar-nav .nav-link {
-      color: #000000; /* Texto blanco para enlaces en la barra de navegación */
+      color: #000000;
     }
 
     .navbar-nav .nav-link.active {
-      font-weight: bold; /* Enlace activo en negrita */
+      font-weight: bold;
     }
 
     .container {
-      border-radius: 10px; /* Bordes redondeados */
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
       padding: 20px;
       margin-top: 20px;
     }
 
     h1 {
-      color: #6c757d; /* Título morado */
+      color: #6c757d;
+    }
+    footer {
+      background-color: #6c757d;
+      color: #ffffff;
+      padding: 1rem 0;
+    }
+
+    footer a {
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: #adb5bd;
+    }
+
+    .social-icons a {
+      margin: 0 10px;
+      color: #ffffff;
+      font-size: 1.5rem;
+    }
+
+    .social-icons a:hover {
+      color: #adb5bd;
     }
   </style>
   <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1"/>
@@ -91,7 +114,33 @@
     <hr class="my-4">
   </div>
 
-  <!-- Scripts de Bootstrap y otros -->
+  <footer class="text-center text-lg-start text-white mt-5">
+    <div class="container p-4" style="border: 2px solid #ffffff;">
+      <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+          <img src="https://itrsal.com/wp-content/uploads/2020/03/ues.png" alt="Universidad de El Salvador" class="img-fluid" style="max-width: 150px;">
+        </div>
+  
+        <div class="col-lg-8 col-md-6 mb-4 mb-md-0 text-md-end">
+          <p class="mb-1">Universidad de El Salvador</p>
+          <p class="mb-1">Facultad Multidisciplinaria Oriental</p>
+          <p class="mb-1">Departamento de Ingeniería y Arquitectura</p>
+          <p class="mb-1">© 2024 Calculadora Metódica. Todos los derechos reservados.</p>
+          <p class="mb-1">
+            <a href="#" class="text-white">Ingeniería de Sistemas Informáticos</a> | 
+            <a href="#" class="text-white">Análisis Numérico</a>
+          </p>
+          <div class="social-icons mt-3">
+            <a href="https://facebook.com" target="_blank" aria-label="Facebook" class="text-white me-2"><i class="bi bi-facebook"></i></a>
+            <a href="https://twitter.com" target="_blank" aria-label="Twitter" class="text-white me-2"><i class="bi bi-twitter"></i></a>
+            <a href="https://instagram.com" target="_blank" aria-label="Instagram" class="text-white me-2"><i class="bi bi-instagram"></i></a>
+            <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn" class="text-white me-2"><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

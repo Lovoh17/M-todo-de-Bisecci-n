@@ -1,33 +1,39 @@
 {% extends 'Biseccion/base.html' %}
-    
+{% load static %}
 {% block content %}
-        <h1 class="text-center f">Creadores</h1> <br>
-        <div class="row">
-            {% for creator in creators %}
-                <div class="col-md-6 mb-4">
-                    <div class="card shadow-lg p-3 mb-5 bg-body-tertiary rounded">
-                        {% if creator.image_url %}
-                            <img src="{{ creator.image_url }}" class="card-img-top img-fluid" style="height: 300px; object-fit: cover;" alt="Imagen del creador">
-                        {% endif %}
-                        <div class="card-body ">
-                            <h5 class="card-title">{{ creator.first_name }} {{ creator.last_name }}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">{{ creator.email }}</h6>
-                            <p class="card-text">{{ creator.bio }}</p>
-                            <p class="card-text">
-                                <strong>Desarrollo:</strong> {% for desarrollo in creator.Desarrollo %}
-                                    {{ desarrollo }}
-                                    {% if not forloop.last %}, {% endif %}
-                                {% endfor %}
-                            </p>
-                            <p class="card-text">
-                                <strong>Realización:</strong> {% for realizacion in creator.Realizacion %}
-                                    {{ realizacion }}
-                                    {% if not forloop.last %}, {% endif %}
-                                {% endfor %}
-                            </p>
-                        </div>
-                    </div>
+    <h1 class="text-center">Desarrolladores</h1>
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+                <img src="https://media.licdn.com/dms/image/D4E03AQEADboDu8zl0g/profile-displayphoto-shrink_800_800/0/1718995447255?e=1724284800&v=beta&t=VKqEad9QKoFk8sI4DCmJs_9FRY7ufSbOnOCV3FLR5NQ" class="card-img-top img-fluid" style="height: 300px; object-fit: cover;" alt="Imagen de Rafael Lino">
+                <div class="card-body">
+                    <h5 class="card-title">Rafael Humberto Lino Lovo</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">LL22017@ues.edu.sv</h6>
+                    <p class="card-text">Back-end</p>
+                    <p class="card-text">
+                        <strong>Desarrollo:</strong> Python, Django, Mysql
+                    </p>
+                    <p class="card-text">
+                        <strong>Realización:</strong> Modelos, Vistas, Urls, Plantillas, Base de datos
+                    </p>
                 </div>
-            {% endfor %}
+            </div>
         </div>
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+                <img src="https://0kev0.github.io/DripCSS/IMG/image.png" class="card-img-top img-fluid" style="height: 300px; object-fit: cover;" alt="Imagen de Kevin Rodríguez">
+                <div class="card-body">
+                    <h5 class="card-title">Kevin Isrrael Rodríguez Rivera</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">rr19119@ues.edu.sv</h6>
+                    <p class="card-text">Front-end</p>
+                    <p class="card-text">
+                        <strong>Desarrollo:</strong> Bootstrap, Css, Python
+                    </p>
+                    <p class="card-text">
+                        <strong>Realización:</strong> Dessing, Formularios, Validaciones, Plantillas
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
