@@ -3,22 +3,45 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-   <div class="text-center fade-in">
-     <h2 class="mb-4">¡Bienvenido!</h2>
-     {% if user.is_authenticated %}
-        <p>Hola {{ user.username }}!</p>
-        <a href="{% url 'cerrar_sesion' %}" class="btn btn-danger">Cerrar Sesion</a><br>
-        <br><a href="{% url 'editar' %}" class="btn btn-primary mt-4">Editar contraseña</a>
-        <br><a href="{% url 'perfil' %}" class="btn btn-primary mt-4">Perfil</a><br>
-        <a href="{% url 'calcular_Biseccion' %}" class="btn btn-primary mt-4">Calcular Metodo de Biseccion</a><br>
-        <a href="{% url 'diferencias_divididas' %}" class="btn btn-primary mt-4">Calcular Metodo de Diferenciacion Numericas</a><br>
-        <a href="{% url 'history' %}" class="btn btn-primary mt-4">Ver tu Historial</a><br>
-      {% else %}
-        <a href="{% url 'login' %}" class="btn btn-primary"><span class="glyphicon glyphicon-log-in"></span>Iniciar Sesion</a> 
-        <a href="{% url 'registro' %}" class="btn btn-success">Registrarse</a>
-        <br><br></a>Utilizar método sin registrarse</a><br>
-        <a href="{% url 'calcular_Biseccion' %}" class="btn btn-primary mt-4">Calcular metodo de Biseccion</a><br>
-        <a href="{% url 'diferencias_divididas' %}"  class="btn btn-primary mt-4">Calcular Metodo de Diferenciacion Numericas</a><br>
-      {% endif %}
-   </div>
+<div class="container my-5">
+    <div class="text-center fade-in">
+        <h2 class="mb-4">¡Bienvenido!</h2>
+        {% if user.is_authenticated %}
+            <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary-subtle mt-4">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav mx-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'cerrar_sesion' %}">Cerrar Sesión</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'editar' %}">Editar contraseña</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'perfil' %}">Perfil</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'calcular_Biseccion' %}">Método de Bisección</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'diferencias_divididas' %}">Diferenciación Numérica</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'history' %}">Ver tu Historial</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <p>Hola, {{ user.username }}!</p>
+            <p>Sumergete en el conocimiento del análisis numérico con los métodos disponibles de bisección y diferenciación numérica.</p>
+            
+        {% else %}
+            <p>Por favor, inicia sesión para acceder a todas las funcionalidades.</p>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

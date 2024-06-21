@@ -4,6 +4,7 @@
   <title>{% block title %}Método de Bisección y Diferenciación Numérica{% endblock %}</title>
   {% load static %}
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
   <style> 
     body {
       background-color: #f2f2f5;
@@ -68,43 +69,120 @@
     .social-icons a:hover {
       color: #adb5bd;
     }
+    .sidebar {
+      width: 250px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      z-index: 1000;
+      transition: all 0.3s;
+    }
+  
+    .sidebar.active {
+      margin-left: -250px;
+    }
+  
+    .sidebar .sidebar-header {
+      background-color: #6c757d;
+      color: #fff;
+      padding: 1rem;
+    }
+  
+    .sidebar .components {
+      padding: 1rem 0;
+    }
+  
+    .sidebar .components li {
+      padding: 0.5rem 1rem;
+    }
+  
+    .sidebar .components li a {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+      transition: background 0.3s;
+    }
+  
+    .sidebar .components li a:hover {
+      background: #495057;
+    }
+  
+    #sidebarCollapse, #sidebarOpen {
+      border: none;
+      background: none;
+    }
   </style>
   <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1"/>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container" style="border: 2px solid #ffffff;">
-      <a class="navbar-brand" href="#">Calculadora Metódica</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'principal' %}">Principal</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'home' %}">Iniciar</a>
-          </li>
-          <li class="nav-item">
-            <a href="{% url 'teoriaB' %}" class="nav-link">Método de Bisección</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'teoriaD' %}">Diferenciación Numérica</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'biblioteca' %}">Biblioteca</a>
-          </li>
-          <li class="nav-item">
-            <a href="{% url 'creator' %}" class="nav-link">Creadores</a>
-          </li>
-        </ul>
+  <nav id="sidebar" class="sidebar bg-dark text-white" style="background-color: #6c757d;">
+    <div class="sidebar-header d-flex align-items-center justify-content-between p-3" >
+      <div class="logo">
+        <img src="https://th.bing.com/th/id/OIG4.bQ4RdAHWUBg2lR6GKLPY?pid=ImgGn" alt="Logo" height="40">
       </div>
+      <h3 class="mb-0">Menú</h3>
+      <button type="button" id="sidebarCollapse" class="btn btn-outline-light">
+        <i class="bi bi-list"></i>
+      </button>
     </div>
+    <ul class="list-unstyled components p-2">
+      <li class="mb-2">
+        <a href="{% url 'principal' %}" class="text-white text-decoration-none">
+          <i class="bi bi-house-door me-2"></i>Principal
+        </a>
+      </li>
+      <li class="mb-2">
+        <a href="{% url 'teoriaB' %}" class="text-white text-decoration-none">
+          <i class="bi bi-bar-chart me-2"></i>Método de Bisección
+        </a>
+      </li>
+      <li class="mb-2">
+        <a href="{% url 'teoriaD' %}" class="text-white text-decoration-none">
+          <i class="bi bi-graph-up-arrow me-2"></i>Diferenciación Numérica
+        </a>
+      </li>
+      <li class="mb-2">
+        <a href="{% url 'biblioteca' %}" class="text-white text-decoration-none">
+          <i class="bi bi-book me-2"></i>Biblioteca
+        </a>
+      </li>
+      <li class="mb-2">
+        <a href="{% url 'creator' %}" class="text-white text-decoration-none">
+          <i class="bi bi-people me-2"></i>Creadores
+        </a>
+      </li>
+      {% if user.is_authenticated %}
+      <li class="mb-2">
+        <a class="text-white text-decoration-none" href="{% url 'history' %}">
+            <i class="bi bi-clock-history"></i> Ver tu Historial
+        </a>
+      </li>
+      <h3 class="mb-0">Menú de Secion</h3><br>
+        <li class="mb-2">
+          <a href="{% url 'cerrar_sesion' %}" class="text-white text-decoration-none">
+          <i class="bi bi-house-door me-2"></i>Salir
+          </a>
+        </li>
+        <li class="mb-2">
+          <a class="text-white text-decoration-none" href="{% url 'editar' %}">
+          <i class="bi bi-pencil"></i> Editar contraseña</a>
+      </li>
+      <li class="mb-2">
+          <a class="text-white text-decoration-none" href="{% url 'perfil' %}">
+          <i class="bi bi-person"></i> Perfil</a>
+      </li>
+      {% endif %}
+    </ul>
   </nav>
-  <div class="container py-4">
+
+  <button type="button" id="sidebarOpen" class="btn btn-outline-light bg-dark" style="position: fixed; top: 10px; left: 10px;">
+    <i class="bi bi-list"></i>
+  </button>
+
+  <div class="container py-4" style="margin-top:50px">
     <header class="text-center mb-4">
-      <h1>Métodos Numericos</h1>
+      <h1 id="sidebarCollapse" style="color: #007bff;">Métodos Numéricos</h1>
     </header>
     <hr class="my-4">
     <main>
@@ -115,7 +193,7 @@
   </div>
 
   <footer class="text-center text-lg-start text-white mt-5">
-    <div class="container p-4" style="border: 2px solid #ffffff;">
+    <div class="container p-4">
       <div class="row">
         <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
           <img src="https://itrsal.com/wp-content/uploads/2020/03/ues.png" alt="Universidad de El Salvador" class="img-fluid" style="max-width: 150px;">
@@ -142,5 +220,31 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  {% block scripts %}
+  <script>
+    document.getElementById('sidebarCollapse').addEventListener('click', function() {
+      const sidebar = document.getElementById('sidebar');
+      const sidebarOpen = document.getElementById('sidebarOpen');
+      sidebar.classList.toggle('active');
+      if (sidebar.classList.contains('active')) {
+        sidebarOpen.style.display = 'block';
+      } else {
+        sidebarOpen.style.display = 'none';
+      }
+    });
+  
+    document.getElementById('sidebarOpen').addEventListener('click', function() {
+      const sidebar = document.getElementById('sidebar');
+      const sidebarOpen = document.getElementById('sidebarOpen');
+      sidebar.classList.toggle('active');
+      if (sidebar.classList.contains('active')) {
+        sidebarOpen.style.display = 'block';
+      } else {
+        sidebarOpen.style.display = 'none';
+      }
+    });
+  </script>
+  {% endblock %}
 </body>
 </html>

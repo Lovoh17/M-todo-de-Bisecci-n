@@ -56,7 +56,7 @@ def login_view(request):
             user = authenticate(request, username=correo_User, password=password_User)
             if user is not None:
                 login(request, user)
-                return redirect('home')
+                return redirect('principal')
             else:
                 error_message = f"Usuario: {correo_User}, Contraseña: {password_User}"
                 form.add_error(None, error_message)
