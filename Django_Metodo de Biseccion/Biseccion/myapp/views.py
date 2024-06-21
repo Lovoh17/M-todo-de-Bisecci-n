@@ -30,6 +30,8 @@ from .models import Usuarios
 from .models import DifferenceDividedHistory
 from django.conf import settings
 #Vista principal
+def principal(request):
+    return render(request ,'Biseccion/index.html')
 def home(request):
     return render(request ,'Biseccion/home.html')
 #Vista del login y validaciones
@@ -521,6 +523,18 @@ def Historial_general(request):
     return render(request, 'Biseccion/Historial_general.html', {'history': history, 'historydiferencias': historydiferencias})
 
 
+def ver_biblioteca(request):
+    json_path = os.path.join(settings.BASE_DIR, 'libros.json')
+    with open(json_path, 'r') as file:
+        libros = json.load(file)
+    return render(request, 'Biseccion/biblioteca.html', {'libros': libros})
+
+@login_required
+def ver_videos(request):
+    json_path = os.path.join(settings.BASE_DIR, 'videos.json')
+    with open(json_path, 'r') as file:
+        videos = json.load(file)
+    return render(request, 'Biseccion/videos.html', {'videos': videos})
 
 def creator_list(request):
     json_path = os.path.join(settings.BASE_DIR, 'creadores.json')

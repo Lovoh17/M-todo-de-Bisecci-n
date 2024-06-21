@@ -1,0 +1,30 @@
+{% extends 'Biseccion/base.html' %}
+
+{% block title %}Biblioteca{% endblock %}
+
+{% block content %}
+<div class="text-center fade-in center">
+    <h2 class="mb-4">Libros de Análisis Numérico</h2>
+</div>
+
+<div class="container my-5">
+    <div class="row" id="book-gallery">
+        {% for book in libros %}
+        <div class="col-md-4 mb-4">
+            <div class="card book-card">
+                <img src="{{ book.image_url }}" class="card-img-top img-fluid" style="height: 300px; object-fit: cover;" alt="{{ book.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text"><strong>Autor:</strong> {{ book.author }}</p>
+                    <p class="card-text">{{ book.description }}</p>
+                    <a href="https://drive.google.com/drive/folders/1gyd0n7gtXbvI4sBlIa4jBC316P5mBLtS?usp=drive_link" class="btn btn-primary">Ver Más</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% if user.is_authenticated %}
+            <a href="{% url 'videos' %}" class="btn btn-info mt-4">Videos sobre los temas</a> <br>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

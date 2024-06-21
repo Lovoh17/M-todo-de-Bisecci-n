@@ -1,8 +1,10 @@
 {% extends "Biseccion/base.html" %}
+
 {% block content %}
-  <div class="container">
-    <h2 class="mb-4">Historial de Cálculos de Bisección</h2>
-    {% if history %}
+<div class="container">
+  <h2 class="mb-4">Historial de Cálculos de Bisección</h2>
+  {% if history %}
+    <div class="table-responsive">
       <table class="table table-striped">
         <thead>
           <tr>
@@ -31,9 +33,12 @@
           {% endfor %}
         </tbody>
       </table>
-    {% else %}
-      <p>No has realizado ningún cálculo de bisección aún.</p>
-    {% endif %}
-    <a href="{% url 'calcular_Biseccion' %}" class="btn btn-primary mt-4">Volver al Método de Biseccion</a>
+    </div>
+  {% else %}
+    <p class="text-center">No has realizado ningún cálculo de bisección aún.</p>
+  {% endif %}
+  <div class="text-center">
+    <a href="{% url 'calcular_Biseccion' %}" class="btn btn-primary mt-4">Volver al Método de Bisección</a>
   </div>
+</div>
 {% endblock %}

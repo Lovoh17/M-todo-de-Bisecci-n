@@ -1,0 +1,44 @@
+[
+    {
+        "thumbnail_url": "https://aprendercurso.com/wp-content/uploads/sites/52/2018/03/El-m%C3%A9todo-de-bisecci%C3%B3n-300x190.gif",
+        "video_url": "https://www.youtube.com/watch?v=mdG6gpzE54k",
+        "title": "Metodo de Biseccion",
+        "description": "Explico el procedimiento para aplicar el Método de Bisección. El método de bisección, es un método iterativo para encontrar la solución, o raíz, de una función no lineal. Otro método numérico que sirve para encontrar la solución de ecuaciones no lineales.",
+        "category": "bisection"
+    },
+    {
+        "thumbnail_url": "https://www.monografias.com/trabajos107/solucion-ecuaciones-no-lineales-programacion-numerica/img9.png",
+        "video_url": "https://www.youtube.com/watch?v=rcdv9hlnimU",
+        "title": " Metodo de la Biseccion ejercicio parte 1",
+        "description": "Explicacion paso a pasa del metodo de Biseccion.",
+        "category": "differentiation"
+    },
+    {
+        "thumbnail_url": "https://th.bing.com/th/id/R.232bc43810e262198ba09a612069c900?rik=JP9%2b9Xupnbv3dA&pid=ImgRaw&r=0&sres=1&sresct=1",
+        "video_url": "https://www.youtube.com/watch?v=RGqVbq4eklA",
+        "title": " Metodo de la Biseccion en excel ejercicio parte 2",
+        "description": "Una mirada detallada a los algoritmos de búsqueda de raíces, incluyendo el método de bisección y su automatizacion en excel.",
+        "category": "bisection"
+    },
+    {
+        "thumbnail_url": "https://i.ytimg.com/vi/-Atv6LhtYp0/maxresdefault.jpg",
+        "video_url": "https://www.youtube.com/watch?v=-Atv6LhtYp0&t=14s",
+        "title": "Diferenciacion numerica",
+        "description": "En este video estudiaremos el tema de diferenciación numérica por medio de los esquemas hacia atrás, adelante y centrado.",
+        "category": "differentiation"
+    },
+    {
+        "thumbnail_url": "https://th.bing.com/th/id/OIP.otzJ_3uqG4FSS3VNLj0YDwHaFY?pid=ImgDet&w=474&h=344&rs=1",
+        "video_url": "https://www.youtube.com/watch?v=wI8PNVu-Muo&t=434s",
+        "title": "Derivacion numerica",
+        "description": "Encontrando el valor numerico de una derivada",
+        "category": "differentiation"
+    },
+    {
+        "thumbnail_url": "https://th.bing.com/th/id/OIP.7cUxV6AgCXirbLVLl9E5SQAAAA?w=280&h=180&rs=1&pid=ImgDetMain",
+        "video_url": "https://www.youtube.com/watch?v=fsHrYnqIr7Y",
+        "title": "Ejemplo del metodo de diferenciación numerica",
+        "description": "En este capítulo de métodos numéricos aplicaremos los conceptos visto en la clase anterior del método de diferenciación numérica. Por lo que aplicaremos cada una de las fórmulas definidas en el video anterior a la solución de un problema en específico.",
+        "category": "differentiation"
+    }
+]

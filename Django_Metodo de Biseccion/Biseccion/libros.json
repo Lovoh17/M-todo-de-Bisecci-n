@@ -1,0 +1,32 @@
+[
+    {
+        "image_url": "https://images-na.ssl-images-amazon.com/images/I/419u6skfHxL.jpg",
+        "title": "Analisis Numerico",
+        "author": "Richard L. Burden, J. Douglas Faires",
+        "description": "Una introduccion a los conceptos fundamentales del analisis numerico, incluyendo analisis de errores, diferenciacion numerica e integracion."
+    },
+    {
+        "image_url": "https://th.bing.com/th/id/R.72a6e6967721c2523c4c2520441b2a21?rik=Gf4VvibgH0NmJg&pid=ImgRaw&r=0",
+        "title": "Metodos Numericos Aplicados con MATLAB",
+        "author": "Steven C. Chapra",
+        "description": "Este libro proporciona una introduccion completa a los metodos numericos y sus aplicaciones utilizando MATLAB."
+    },
+    {
+        "image_url": "https://media.s-bol.com/7A78Ay3PKvnw/550x836.jpg",
+        "title": "Metodos Computacionales para el Analisis Numerico con R",
+        "author": "James P. Howard, II",
+        "description": "Una guia practica de metodos computacionales para el analisis numerico utilizando el lenguaje de programacion R."
+    },
+    {
+        "image_url": "https://0.academia-photos.com/attachment_thumbnails/57016985/mini_magick20181219-13753-6is6g5.png?1545273651",
+        "title": "Metodos Introductorios de Analisis Numerico",
+        "author": "S. S. Sastry",
+        "description": "Un texto introductorio sobre analisis numerico, cubriendo la busqueda de raices, interpolacion, integracion numerica y ecuaciones diferenciales."
+    },
+    {
+        "image_url": "https://images-na.ssl-images-amazon.com/images/I/4159NAAHipL._AC_.jpg",
+        "title": "Recetas Numericas: El Arte de la Computacion Cientafica",
+        "author": "William H. Press, Saul A. Teukolsky, William T. Vetterling, Brian P. Flannery",
+        "description": "Un recurso completo sobre metodos numericos para la computacion cientifica, incluyendo algoritmos y ejemplos de codigo."
+    }
+]

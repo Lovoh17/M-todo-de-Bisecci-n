@@ -1,0 +1,22 @@
+{% extends 'Biseccion/base.html' %}
+
+{% block title %}Bienvenida{% endblock %}
+
+{% block content %}
+    <div class="text-center">
+            <h2 class="mb-4">¡Bienvenido a nuestra plataforma de Análisis Numérico!</h2>
+            <p>La página cuenta con la posibilidad de resolver métodos numéricos como el Método de Bisección y la Diferenciación Numérica.</p>
+            <p>Además, puedes explorar y utilizar herramientas como:</p>
+            <ul class="list-unstyled">
+                <li><strong>Usuarios Registrados:</strong> Crea tu cuenta para tener la mejor experiencia.</li>
+                <li><strong>Resolución de Métodos Numéricos:</strong> Calcula raíces de ecuaciones y derivadas numéricas.</li>
+                <li><strong>Historial de Cálculos:</strong> Visualiza y gestiona tus cálculos previos.</li>
+                <li><strong>Biblioteca de Material de Apoyo:</strong> Accede a libros y recursos sobre análisis numérico.</li>
+                <li><strong>Videos Instructivos:</strong> Aprende conceptos clave con videos explicativos.</li>
+            </ul>
+            <br>
+            <a href="{% url 'registro' %}" class="btn btn-success">Registrarse</a>
+            <a href="{% url 'login' %}" class="btn btn-primary">Iniciar Sesión</a>
+            <br>
+    </div>
+{% endblock %}

@@ -1,40 +1,44 @@
 {% extends "Biseccion/baseDiferencias.html" %}
 
 {% block content %}
-  <h2>Historial de Diferencias Divididas</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Fecha</th>
-        <th>Función</th>
-        <th>x</th>
-        <th>h</th>
-        <th>Derivada Forward</th>
-        <th>Derivada Backward</th>
-        <th>Derivada Central</th>
-        <th>Derivada Exacta</th>
-        <th>Error Forward</th>
-        <th>Error Backward</th>
-        <th>Error Central</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for record in history %}
+  <h2 class="text-center mb-4">Historial de Diferencias Divididas</h2>
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead>
         <tr>
-          <td>{{ record.created_at|date:"Y-m-d" }}</td>
-          <td>{{ record.function }}</td>
-          <td>{{ record.x_value }}</td>
-          <td>{{ record.h_value }}</td>
-          <td>{{ record.derivada_fwd }}</td>
-          <td>{{ record.derivada_bwd }}</td>
-          <td>{{ record.derivada_cen }}</td>
-          <td>{{ record.derivada_exacta }}</td>
-          <td>{{ record.error_fwd }}</td>
-          <td>{{ record.error_bwd }}</td>
-          <td>{{ record.error_cen }}</td>
+          <th>Fecha</th>
+          <th>Función</th>
+          <th>x</th>
+          <th>h</th>
+          <th>Derivada Forward</th>
+          <th>Derivada Backward</th>
+          <th>Derivada Central</th>
+          <th>Derivada Exacta</th>
+          <th>Error Forward</th>
+          <th>Error Backward</th>
+          <th>Error Central</th>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  <a href="{% url 'diferencias_divididas' %}" class="btn btn-primary mt-4">Volver al Metodo de Diferencias Divididas</a><br>
+      </thead>
+      <tbody>
+        {% for record in history %}
+          <tr>
+            <td>{{ record.created_at|date:"Y-m-d" }}</td>
+            <td>{{ record.function }}</td>
+            <td>{{ record.x_value }}</td>
+            <td>{{ record.h_value }}</td>
+            <td>{{ record.derivada_fwd }}</td>
+            <td>{{ record.derivada_bwd }}</td>
+            <td>{{ record.derivada_cen }}</td>
+            <td>{{ record.derivada_exacta }}</td>
+            <td>{{ record.error_fwd }}</td>
+            <td>{{ record.error_bwd }}</td>
+            <td>{{ record.error_cen }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="text-center">
+    <a href="{% url 'diferencias_divididas' %}" class="btn btn-primary mt-4">Volver al Método de Diferencias Divididas</a><br>
+  </div>
 {% endblock %}

@@ -58,13 +58,19 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Inicio</a>
+            <a class="nav-link active" aria-current="page" href="{% url 'principal' %}">Principal</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}">Iniciar</a>
           </li>
           <li class="nav-item">
             <a href="{% url 'teoriaB' %}" class="nav-link">Método de Bisección</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'teoriaD' %}">Diferenciación Numérica</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'biblioteca' %}">Biblioteca</a>
           </li>
           <li class="nav-item">
             <a href="{% url 'creator' %}" class="nav-link">Creadores</a>
@@ -75,7 +81,7 @@
   </nav>
   <div class="container py-4">
     <header class="text-center mb-4">
-      <h1>Diferenciación Numérica</h1>
+      <h1>Métodos Numericos</h1>
     </header>
     <hr class="my-4">
     <main>

@@ -1,0 +1,24 @@
+{% extends 'Biseccion/baseDiferencias.html' %}
+
+{% block title %}Galería de Videos de Análisis Numérico{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        {% for video in videos %}
+        <div class="col-md-4 mb-4">
+            <div class="card video-card">
+                <a href="{{ video.video_url }}" target="_blank">
+                    <img src="{{ video.thumbnail_url }}" class="card-img-top" alt="{{ video.title }}">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">{{ video.title }}</h5>
+                    <p class="card-text">{{ video.description }}</p>
+                    <a href="{{ video.video_url }}" target="_blank" class="btn btn-primary">Ver Video</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
