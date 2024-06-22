@@ -74,7 +74,6 @@ class BiseccionHistory(models.Model):
     error_porcentual = models.FloatField()
     raiz_aproximada = models.FloatField()
     iter_count = models.IntegerField()
-    error_final = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
 
 def __str__(self):

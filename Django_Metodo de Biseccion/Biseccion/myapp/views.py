@@ -162,152 +162,180 @@ def metodo_biseccion(request):
 
 ####################################################################################################################################
 
-# Función para convertir la ecuación simbólica a función lambda y aplicar el método de bisección
-def biseccion(ecuacion, a, b, tol_porcentual, max_iter=100):
-    try:
-        x = symbols('x')
-        f = lambdify(x, ecuacion)
-    except Exception as e:
-        raise ValueError(f"No se pudo convertir la ecuación: {str(e)}")
+# Función auxiliar para encontrar el intervalo inicial
+def find_initial_interval(equation, x, x_start, x_end, step):
+    f = sp.lambdify(x, equation, 'numpy')
+    x_values = np.arange(x_start, x_end + step, step)
+    y_values = f(x_values)
+    
+    intervals = []
+    for i in range(len(x_values) - 1):
+        if np.sign(y_values[i]) != np.sign(y_values[i + 1]):
+            intervals.append((round(x_values[i], 4), round(x_values[i + 1], 4)))
+    
+    if len(intervals) == 0:
+        return None
+    elif len(intervals) > 1:
+        return intervals[0]
+    else:
+        return intervals[0]
 
+# Función auxiliar para el método de bisección
+def bisection_method(a, b, tol, f):
+    if f(a) * f(b) >= 0:
+        return None, "El método de bisección no garantiza convergencia en este intervalo."
+    
     iter_count = 0
-    iteraciones = []
-    error = 100.0 
-    prev_midpoint = None
-    
-    while error > tol_porcentual:
+    while True:
+        c = (a + b) / 2
+        
+        if abs(f(c)) < tol:
+            return round(c, 4), f"¡Se encontró la raíz aproximada dentro de la tolerancia! x = {round(c, 4)}"
+        
+        if f(a) * f(c) < 0:
+            b = c
+        else:
+            a = c
+        
         iter_count += 1
-        midpoint = (a + b) / 2.0
+    
+    return round((a + b) / 2, 4), "Iteraciones completadas. La aproximación final de la raíz es x = {round((a + b) / 2, 4)}"
 
-        fx_mid = f(midpoint)
 
-        if prev_midpoint is not None:
-            error = abs((midpoint - prev_midpoint) / midpoint) * 100
-        else:
-            error = 100.0
+# Función auxiliar para generar las iteraciones
+def generate_iterations(a, b, tol, f):
+    iteraciones = []
+    iter_count = 0
+    previous_c = None
+    
+    while True:
+        c = (a + b) / 2
+        error = abs((c - previous_c) / c) if previous_c is not None else None
         
-        raiz_actual = round(midpoint, 4)
-        error = round(error, 4)
+        iteraciones.append((iter_count, round(f(c), 4), round(c, 4), round(error, 4) if error is not None else None))
         
-        iteraciones.append([iter_count, f'F({raiz_actual})', raiz_actual, f'{error}%'])
-
-        if fx_mid == 0: 
+        if abs(f(c)) < tol:
             break
         
-        if f(a) * fx_mid < 0:
-            b = midpoint
+        if f(a) * f(c) < 0:
+            b = c
         else:
-            a = midpoint
+            a = c
         
-        prev_midpoint = midpoint
-        
-        if iter_count >= max_iter:
-            break
-
-    raiz_aproximada = (a + b) / 2.0
-
-    if raiz_aproximada != 0:
-        error_final = abs((raiz_aproximada - prev_midpoint) / raiz_aproximada) * 100
-    else:
-        error_final = 0
+        previous_c = c
+        iter_count += 1
     
-    raiz_aproximada = round(raiz_aproximada, 4)
-    error_final = round(error_final, 4)
+    return iteraciones
+
+
+# Función auxiliar para generar una gráfica
+def generate_plot(equation_str, x_start, x_end, raiz):
+    # Crear un símbolo para la variable x
+    x = sp.symbols('x')
     
-    iteraciones.append([iter_count, f'F({raiz_aproximada})', raiz_aproximada, f'{error_final}%'])
-
-    return raiz_aproximada, iter_count, error_final, iteraciones
-
-####################################################################################################################################
-
-# Función para encontrar intervalos donde la función cambia de signo
-def encontrar_intervalos(f, rango_min, rango_max, paso):
-    intervalos = []
-    x = rango_min
-    while x < rango_max:
-        if f(x) * f(x + paso) < 0:
-            intervalos.append((x, x + paso))
-        x += paso
+    # Convertir la ecuación a un objeto simbólico
+    equation = sp.sympify(equation_str)
     
-    df_intervalos = pd.DataFrame(intervalos, columns=["Inicio Intervalo", "Fin Intervalo"])
-    return df_intervalos
+    # Convertir la ecuación en una función numérica usando lambdify
+    f = sp.lambdify(x, equation, 'numpy')
+    
+    # Crear datos para la gráfica
+    x_values = np.linspace(x_start, x_end, 400)
+    y_values = f(x_values)
+    
+    # Generar la gráfica usando matplotlib
+    plt.figure(figsize=(10, 6))
+    plt.plot(x_values, y_values, label='Función')
+    plt.axhline(0, color='gray', linewidth=0.5)
+    plt.axvline(raiz, color='red', linestyle='--', label='Raíz')
+    plt.scatter(raiz, f(raiz), color='red')
+    plt.title('Gráfica de la función y raíz encontrada')
+    plt.xlabel('x')
+    plt.ylabel('f(x)')
+    plt.legend()
+    
+    # Convertir la gráfica a base64
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    grafica_base64 = base64.b64encode(buffer.getvalue()).decode()
+    plt.close()
+    
+    return grafica_base64
 
-####################################################################################################################################
-
-# Vista para calcular el método de bisección y mostrar resultados
-def calcular_biseccion(request):
-    resultado_biseccion = None
+def bisection_view(request):
     mensaje = None
+    resultado_biseccion = None
     grafica_base64 = None
-
+    
     if request.method == 'POST':
-        form = BiseecionForm(request.POST)
+        form = BiseccionForm(request.POST)
         if form.is_valid():
-            ecuacion = form.cleaned_data['Ec_values']
-            valor_min = float(form.cleaned_data['valor_min'])
-            valor_max = float(form.cleaned_data['valor_max'])
-            error_porcentual = float(form.cleaned_data['error_porcentual'])
-
-            try:
-                x = symbols('x')
-                ecuacion = sympify(ecuacion, locals={'sin': sin, 'cos': cos, 'tan': tan, 'exp': exp})
-                resultado_biseccion = biseccion(ecuacion, valor_min, valor_max, error_porcentual)
-
-                raiz_aproximada, iter_count, error_final, iteraciones_data = resultado_biseccion
-
-                x_vals = np.linspace(valor_min, valor_max, 400)
-                f = lambdify(x, ecuacion)
-                y_vals = f(x_vals)
-
-                plt.figure(figsize=(8, 6))
-                plt.plot(x_vals, y_vals, label='Función')
-                plt.axhline(0, color='black', linewidth=0.5)
-                plt.axvline(raiz_aproximada, color='red', linestyle='--', label=f'Raíz aproximada: {raiz_aproximada}')
+            # Obtener datos del formulario
+            equation_str = form.cleaned_data['equation']
+            x_start = form.cleaned_data['x_start']
+            x_end = form.cleaned_data['x_end']
+            step = form.cleaned_data['step']
+            tol = form.cleaned_data['tol']
+            
+            # Validar que x_start < x_end
+            if x_start > x_end:
+                mensaje = "El valor inicial del intervalo debe ser menor que el valor final."
+            else:
+                # Crear un símbolo para la variable x
+                x = sp.symbols('x')
                 
-                for _, _, mid, _ in iteraciones_data:
-                    plt.axvline(mid, color='blue', linestyle=':', linewidth=0.5)
-
-                plt.scatter(raiz_aproximada, f(raiz_aproximada), color='red')
-                plt.title('Método de Bisección')
-                plt.xlabel('x')
-                plt.ylabel('f(x)')
-                plt.legend()
-                plt.grid(True)
-
-                buffer = io.BytesIO()
-                plt.savefig(buffer, format='png')
-                buffer.seek(0)
-                grafica_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
-                buffer.close()
-
-                BiseccionHistory.objects.create(
-                    user=request.user,
-                    ecuacion=form.cleaned_data['Ec_values'],
-                    valor_min=valor_min,
-                    valor_max=valor_max,
-                    error_porcentual=error_porcentual,
-                    raiz_aproximada=raiz_aproximada,
-                    iter_count=iter_count,
-                    error_final=error_final
-                    )
-
-            except SyntaxError:
-                mensaje = 'La ecuación ingresada no es válida.'
-            except ValueError as e:
-                mensaje = str(e)
-            except Exception as e:
-                mensaje = f'Ocurrió un error durante el cálculo: {str(e)}'
-
+                # Convertir la ecuación a un objeto simbólico
+                equation = sp.sympify(equation_str)
+                
+                # Encontrar el intervalo inicial
+                interval = find_initial_interval(equation, x, x_start, x_end, step)
+                if interval is None:
+                    mensaje = "No se encontraron cambios de signo en el intervalo dado."
+                else:
+                    # Convertir la ecuación en una función numérica usando lambdify
+                    f = sp.lambdify(x, equation, 'numpy')
+                    
+                    # Calcular la raíz usando el método de bisección
+                    raiz, mensaje_raiz = bisection_method(interval[0], interval[1], tol, f)
+                    
+                    if raiz is not None:
+                        # Preparar resultados
+                        iteraciones = generate_iterations(interval[0], interval[1], tol, f)
+                        iteraciones.append((raiz, None))  # Agregar la raíz final sin error
+                        
+                        # Preparar contexto para la plantilla
+                        resultado_biseccion = (raiz, len(iteraciones) - 1, None, iteraciones, mensaje_raiz,f)
+                        
+                        # Generar gráfica
+                        grafica_base64 = generate_plot(equation_str, x_start, x_end, raiz)
+                        
+                        if User.is_authenticated:
+                            BiseccionHistory.objects.create(
+                                user=request.user,
+                                ecuacion=equation_str,
+                                valor_min=x_start,
+                                valor_max=x_end,
+                                error_porcentual=tol,
+                                raiz_aproximada=raiz,
+                                iter_count=len(iteraciones) - 1,
+                            )
+                        
+                    else:
+                        mensaje = "El método de bisección no garantiza convergencia en este intervalo."
+        
+        else:
+            mensaje = "Formulario inválido. Por favor, revise los datos ingresados."
+    
     else:
-        form = BiseecionForm()
-
-    context = {
+        form = BiseccionForm()
+    
+    return render(request, 'Biseccion/calcular_biseccion.html', {
         'form': form,
-        'resultado_biseccion': resultado_biseccion,
         'mensaje': mensaje,
+        'resultado_biseccion': resultado_biseccion,
         'grafica_base64': grafica_base64,
-    }
-    return render(request, 'Biseccion/calcular_biseccion.html', context)
+    })
 
 ####################################################################################################################################
 

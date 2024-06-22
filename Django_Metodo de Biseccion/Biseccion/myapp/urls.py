@@ -22,7 +22,7 @@ urlpatterns = [
     path('historial/', views.diferencias_historial, name='exercise_history'),
     path('biseccion_historial.html/', views.historial_biseccion, name='biseccion_history'),
     path('Historial_general.html/', views.Historial_general, name='history'),
-    path('Biseccion/myapp/templates/Biseccion/calcular_biseccion.html', views.calcular_biseccion, name='calcular_Biseccion'),
+    path('Biseccion/myapp/templates/Biseccion/calcular_biseccion.html', views.bisection_view, name='calcular_Biseccion'),
     path('diferencias.html', views.diferencias, name='diferencias_divididas'),
     path('generar_pdf/', views.generar_pdf, name='generar_pdf'),
 ] 

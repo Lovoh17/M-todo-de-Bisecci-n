@@ -7,63 +7,58 @@ from tinymce.widgets import TinyMCE
 from .models import Profile
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from sympy import sympify
+import sympy as sp
 
 ####################################################################################################################################
-class BiseecionForm(forms.Form):
-    Ec_values = forms.CharField(
+class BiseccionForm(forms.Form):
+    equation = forms.CharField(
         label='Escriba la ecuación:',
         widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: x**2 + 5*3*x'}),
         required=True,
         max_length=100,
     )
-    valor_min = forms.FloatField(
+    x_start = forms.FloatField(
         label='Ingrese el rango mínimo de búsqueda:',
         widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: -3'}),
         required=True,
     )
-    valor_max = forms.FloatField(
-        label='Ingrese el rango máximo de búsqueda',
+    x_end = forms.FloatField(
+        label='Ingrese el rango máximo de búsqueda:',
         widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: 3'}),
         required=True,
     )
     step = forms.FloatField(
-        label='Ingrese el tamaño del paso para buscar intervalos: ',
+        label='Ingrese el tamaño del paso para buscar intervalos:',
         widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: 1'}),
         required=True,
     )
-    error_porcentual = forms.FloatField(
-        label='Ingrese el valor de la Tolerancia',
+    tol = forms.FloatField(
+        label='Ingrese el valor de la Tolerancia:',
         widget=forms.TextInput(attrs={'placeholder': 'Ejemplo: 0.001'}),
         required=True,
         min_value=0.0,
         max_value=100.0,
     )
 
-    def clean_Ec_values(self):
-        ecuacion = self.cleaned_data['Ec_values']
-
-        try:
-            # Intenta crear una expresión sympy a partir de la ecuación
-            sympify(ecuacion)
-        except SyntaxError:
-            raise ValidationError(_('La ecuación ingresada no es válida.'))
-
-        return ecuacion
-
     def clean(self):
         cleaned_data = super().clean()
 
-        valor_min = cleaned_data.get('valor_min')
-        valor_max = cleaned_data.get('valor_max')
+        x_start = cleaned_data.get('x_start')
+        x_end = cleaned_data.get('x_end')
         step = cleaned_data.get('step')
-        error_porcentual = cleaned_data.get('error_porcentual')
 
-        if valor_min >= valor_max:
+        if x_start >= x_end:
             raise ValidationError(_('El valor mínimo debe ser menor que el valor máximo.'))
 
         if step <= 0:
             raise ValidationError(_('El tamaño del paso debe ser mayor que cero.'))
+
+        equation_str = cleaned_data.get('equation')
+        try:
+            # Intenta crear una expresión sympy a partir de la ecuación
+            sp.sympify(equation_str)
+        except sp.SympifyError:
+            raise ValidationError(_('La ecuación ingresada no es válida.'))
 
         return cleaned_data
 
@@ -77,7 +72,7 @@ class DiferenciacionForm(forms.Form):
     def clean_f(self):
         f_value = self.cleaned_data['f']
         try:
-            sympify(f_value)
+            sp.sympify(f_value)
         except SyntaxError:
             raise forms.ValidationError('La ecuación ingresada no es válida.')
 
