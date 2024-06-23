@@ -17,7 +17,6 @@
                     <th scope="col">Error Porcentual</th>
                     <th scope="col">Raíz Aproximada</th>
                     <th scope="col">Iteraciones</th>
-                    <th scope="col">Error Final</th>
                     <th scope="col">Fecha</th>
                 </tr>
             </thead>
@@ -30,7 +29,6 @@
                     <td>{{ item.error_porcentual }}</td>
                     <td>{{ item.raiz_aproximada }}</td>
                     <td>{{ item.iter_count }}</td>
-                    <td>{{ item.error_final }}</td>
                     <td>{{ item.created_at|date:"d M Y H:i" }}</td>
                 </tr>
                 {% endfor %}

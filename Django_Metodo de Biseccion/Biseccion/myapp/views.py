@@ -1,4 +1,4 @@
-####################################################################################################################################
+########################################################################################################################################################################
 
 #Librerias
 from django.shortcuts import render,redirect
@@ -32,18 +32,18 @@ from .models import Usuarios
 from .models import DifferenceDividedHistory
 from django.conf import settings
 
-####################################################################################################################################
+########################################################################################################################################################################
 
 #Vista principal
 def principal(request):
     return render(request ,'Biseccion/index.html')
 
-####################################################################################################################################
+########################################################################################################################################################################
 
 def home(request):
     return render(request ,'Biseccion/home.html')
 
-####################################################################################################################################
+########################################################################################################################################################################
 
 #Vista del login y validaciones
 def login_view(request):
@@ -65,7 +65,7 @@ def login_view(request):
 
     return render(request, 'Biseccion/login.html', {'form': form})
 
-####################################################################################################################################
+########################################################################################################################################################################
 
 #Funcion para la teoria de Diferenciacion Numerica
 def teoria_diferencias():
@@ -102,7 +102,7 @@ def teoria_diferencias():
     """
     return teoria
 
-####################################################################################################################################
+########################################################################################################################################################################
 
 def mostrar_teoria(request):
     contexto = {
@@ -110,7 +110,7 @@ def mostrar_teoria(request):
     }
     return render(request, 'Biseccion/teoriaDif.html', contexto)
 
-####################################################################################################################################
+########################################################################################################################################################################
 #Funcion de la teoria de Biseccion
 def metodo_biseccion(request):
     formulas = [
@@ -160,7 +160,7 @@ def metodo_biseccion(request):
     
     return render(request, 'Biseccion/teoriaBiseccion.html', context)
 
-####################################################################################################################################
+########################################################################################################################################################################
 
 # Función auxiliar para encontrar el intervalo inicial
 def find_initial_interval(equation, x, x_start, x_end, step):
@@ -179,6 +179,8 @@ def find_initial_interval(equation, x, x_start, x_end, step):
         return intervals[0]
     else:
         return intervals[0]
+
+########################################################################################################################################################################
 
 # Función auxiliar para el método de bisección
 def bisection_method(a, b, tol, f):
@@ -201,6 +203,7 @@ def bisection_method(a, b, tol, f):
     
     return round((a + b) / 2, 4), "Iteraciones completadas. La aproximación final de la raíz es x = {round((a + b) / 2, 4)}"
 
+########################################################################################################################################################################
 
 # Función auxiliar para generar las iteraciones
 def generate_iterations(a, b, tol, f):
@@ -227,6 +230,7 @@ def generate_iterations(a, b, tol, f):
     
     return iteraciones
 
+########################################################################################################################################################################
 
 # Función auxiliar para generar una gráfica
 def generate_plot(equation_str, x_start, x_end, raiz):
@@ -263,6 +267,8 @@ def generate_plot(equation_str, x_start, x_end, raiz):
     
     return grafica_base64
 
+########################################################################################################################################################################
+
 def bisection_view(request):
     mensaje = None
     resultado_biseccion = None
@@ -271,46 +277,41 @@ def bisection_view(request):
     if request.method == 'POST':
         form = BiseccionForm(request.POST)
         if form.is_valid():
-            # Obtener datos del formulario
+
             equation_str = form.cleaned_data['equation']
             x_start = form.cleaned_data['x_start']
             x_end = form.cleaned_data['x_end']
             step = form.cleaned_data['step']
             tol = form.cleaned_data['tol']
             
-            # Validar que x_start < x_end
             if x_start > x_end:
                 mensaje = "El valor inicial del intervalo debe ser menor que el valor final."
             else:
-                # Crear un símbolo para la variable x
+                
                 x = sp.symbols('x')
                 
-                # Convertir la ecuación a un objeto simbólico
                 equation = sp.sympify(equation_str)
                 
-                # Encontrar el intervalo inicial
                 interval = find_initial_interval(equation, x, x_start, x_end, step)
                 if interval is None:
                     mensaje = "No se encontraron cambios de signo en el intervalo dado."
                 else:
-                    # Convertir la ecuación en una función numérica usando lambdify
+                    
                     f = sp.lambdify(x, equation, 'numpy')
                     
-                    # Calcular la raíz usando el método de bisección
+                    
                     raiz, mensaje_raiz = bisection_method(interval[0], interval[1], tol, f)
                     
                     if raiz is not None:
-                        # Preparar resultados
+
                         iteraciones = generate_iterations(interval[0], interval[1], tol, f)
-                        iteraciones.append((raiz, None))  # Agregar la raíz final sin error
+                        iteraciones.append((raiz, None)) 
                         
-                        # Preparar contexto para la plantilla
-                        resultado_biseccion = (raiz, len(iteraciones) - 1, None, iteraciones, mensaje_raiz,f)
+                        resultado_biseccion = (raiz, len(iteraciones) - 1, None, iteraciones, mensaje_raiz, f)
                         
-                        # Generar gráfica
                         grafica_base64 = generate_plot(equation_str, x_start, x_end, raiz)
                         
-                        if User.is_authenticated:
+                        if request.user.is_authenticated:
                             BiseccionHistory.objects.create(
                                 user=request.user,
                                 ecuacion=equation_str,
@@ -337,7 +338,7 @@ def bisection_view(request):
         'grafica_base64': grafica_base64,
     })
 
-####################################################################################################################################
+########################################################################################################################################################################
 
 # Función para calcular la derivada numérica usando diferencia hacia adelante
 def derivada_forward(f, x, h):
@@ -352,7 +353,7 @@ def derivada_forward(f, x, h):
     ]
     return resultado, formula_sustituida, pasos
 
-####################################################################################################################################
+########################################################################################################################################################################
 
 # Función para calcular la derivada numérica usando diferencia hacia atras
 def derivada_backward(f, x, h):
@@ -367,7 +368,7 @@ def derivada_backward(f, x, h):
     ]
     return resultado, formula_sustituida, pasos
 
-####################################################################################################################################
+########################################################################################################################################################################
 
 # Función para calcular la derivada numérica usando diferencia central
 def derivada_central(f, x, h):
@@ -384,7 +385,7 @@ def derivada_central(f, x, h):
     ]
     return resultado, formula_sustituida, pasos
 
-####################################################################################################################################
+########################################################################################################################################################################
 
 #Calcula error de las diferencias
 def calcular_errores(derivada_fwd, derivada_bwd, derivada_cen, derivada_exacta_val):
@@ -398,7 +399,7 @@ def calcular_errores(derivada_fwd, derivada_bwd, derivada_cen, derivada_exacta_v
         'error_cen': round(error_cen, 4)
     }
 
-####################################################################################################################################
+########################################################################################################################################################################
 
 #Funcion del metodo de diferenciacion numerica
 def diferencias(request):
@@ -491,7 +492,7 @@ def diferencias(request):
 
     return render(request, 'Biseccion/diferencias.html', {'form': form, 'resultado': resultado, 'grafica_url': grafica_url})
 
-####################################################################################################################################
+########################################################################################################################################################################
 
 #Funcion de nuevo registro de usuario
 def registro(request):
@@ -520,7 +521,7 @@ def registro(request):
 
     return render(request, 'Biseccion/registro.html', {'form': form})
 
-####################################################################################################################################
+########################################################################################################################################################################
 
 #Funcion del cambio de contraseña
 def cambio_contraseña(request):
@@ -541,14 +542,14 @@ def cambio_contraseña(request):
 
     return render(request, 'Biseccion/cambio_contraseña.html', {'form': form, 'mensaje': mensaje, 'tipo_alerta': tipo_alerta})
 
-####################################################################################################################################
+########################################################################################################################################################################
 
 #Funcion de cerrar secion
 def cerrar_sesion(request):
     logout(request)
     return redirect('/')
 
-####################################################################################################################################
+########################################################################################################################################################################
 
 #Vista para ver el perfil de usuario
 @login_required
@@ -556,7 +557,7 @@ def perfil(request):
     user = request.user
     return render(request, 'Biseccion/perfil.html', {'user': user})
 
-####################################################################################################################################
+########################################################################################################################################################################
 
 #Funcion para imprimir el proceso
 def generar_pdf(request):
@@ -582,7 +583,7 @@ def generar_pdf(request):
 
     return response
 
-####################################################################################################################################
+########################################################################################################################################################################
 
 #Funcion para filtrar el historial del usuario
 @login_required
@@ -590,7 +591,7 @@ def diferencias_historial(request):
     history = DifferenceDividedHistory.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'Biseccion/historial.html', {'history': history})
 
-####################################################################################################################################
+########################################################################################################################################################################
 
 # Función para calcular la derivada numérica usando diferencia hacia atras
 @login_required
@@ -598,7 +599,7 @@ def historial_biseccion(request):
     history = BiseccionHistory.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'Biseccion/biseccion_historial.html', {'history': history})
 
-####################################################################################################################################
+########################################################################################################################################################################
 
 # Función para mostrar el historial de los dos metodos
 @login_required
@@ -607,7 +608,7 @@ def Historial_general(request):
     historydiferencias = DifferenceDividedHistory.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'Biseccion/Historial_general.html', {'history': history, 'historydiferencias': historydiferencias})
 
-####################################################################################################################################
+########################################################################################################################################################################
 
 # Función para mostrar los libros de biblioteca
 def ver_biblioteca(request):
@@ -616,7 +617,7 @@ def ver_biblioteca(request):
         libros = json.load(file)
     return render(request, 'Biseccion/biblioteca.html', {'libros': libros})
 
-####################################################################################################################################
+########################################################################################################################################################################
 
 # Función para mostrar los videos de biblioteca
 @login_required
@@ -626,8 +627,160 @@ def ver_videos(request):
         videos = json.load(file)
     return render(request, 'Biseccion/videos.html', {'videos': videos})
 
-####################################################################################################################################
+########################################################################################################################################################################
 
 #Funcion para mostrar los desarrolladores del groyecto
 def creator_list(request):
     return render(request, 'Biseccion/creadores.html')
+
+########################################################################################################################################################################
+
+def ver_detalle(request, history_id):
+    history_obj = get_object_or_404(BiseccionHistory, id=history_id, user=request.user)
+    resultado_biseccion = None
+    grafica_base64 = None
+    mensaje = None
+    
+    if request.method == 'POST':
+        form = BiseccionForm(request.POST)
+        if form.is_valid():
+            equation_str = form.cleaned_data['equation']
+            x_start = form.cleaned_data['x_start']
+            x_end = form.cleaned_data['x_end']
+            step = form.cleaned_data['step']
+            tol = form.cleaned_data['tol']
+            
+            if x_start > x_end:
+                mensaje = "El valor inicial del intervalo debe ser menor que el valor final."
+            else:
+                x = sp.symbols('x')
+                
+                equation = sp.sympify(equation_str)
+                
+                interval = find_initial_interval(equation, x, x_start, x_end, step)
+                if interval is None:
+                    mensaje = "No se encontraron cambios de signo en el intervalo dado."
+                else:
+                    f = sp.lambdify(x, equation, 'numpy')
+
+                    raiz, mensaje_raiz = bisection_method(interval[0], interval[1], tol, f)
+                    
+                    if raiz is not None:
+                        # Preparar resultados
+                        iteraciones = generate_iterations(interval[0], interval[1], tol, f)
+                        iteraciones.append((raiz, None))
+                        
+                        resultado_biseccion = (raiz, len(iteraciones) - 1, None, iteraciones, mensaje_raiz, f)
+
+                        grafica_base64 = generate_plot(equation_str, x_start, x_end, raiz)
+                        
+                    else:
+                        mensaje = "El método de bisección no garantiza convergencia en este intervalo."
+        
+        else:
+            mensaje = "Formulario inválido. Por favor, revise los datos ingresados."
+    
+    else:
+        form_data = {
+            'equation': history_obj.ecuacion,
+            'x_start': history_obj.valor_min,
+            'x_end': history_obj.valor_max,
+            'tol': history_obj.error_porcentual,
+        }
+        form = BiseccionForm(initial=form_data)
+    
+    return render(request, 'Biseccion/detalles_biseccion.html', {
+        'form': form,
+        'history_obj': history_obj,
+        'resultado_biseccion': resultado_biseccion,
+        'grafica_base64': grafica_base64,
+        'mensaje': mensaje,
+    })
+    return render(request, 'Biseccion/detalles_biseccion.html', {'form': form, 'history_obj': history_obj})
+
+########################################################################################################################################################################
+
+def detalles_registro_diferenciacion(request, registro_id):
+    history_dif = get_object_or_404(DifferenceDividedHistory, id=registro_id, user=request.user)
+
+    if request.method == 'POST':
+        form = DiferenciacionForm(request.POST)
+        if form.is_valid():
+            funcion = form.cleaned_data['f']
+            valor_x = float(form.cleaned_data['x'])
+            valor_h = float(form.cleaned_data['h'])
+
+            try:
+                x = symbols('x')
+                ecuacion = sympify(funcion)
+                f = lambdify(x, ecuacion)
+                
+                derivada_exacta = diff(ecuacion, x)
+                derivada_exacta_func = lambdify(x, derivada_exacta)
+                derivada_exacta_val = round(derivada_exacta_func(valor_x), 4)
+
+                derivada_fwd, formula_fwd, pasos_fwd = derivada_forward(f, valor_x, valor_h)
+                derivada_bwd, formula_bwd, pasos_bwd = derivada_backward(f, valor_x, valor_h)
+                derivada_cen, formula_cen, pasos_cen = derivada_central(f, valor_x, valor_h)
+
+                errores = calcular_errores(derivada_fwd, derivada_bwd, derivada_cen, derivada_exacta_val)
+
+                resultado = {
+                    'derivada_fwd': derivada_fwd,
+                    'formula_fwd': formula_fwd,
+                    'pasos_fwd': pasos_fwd,
+                    'derivada_bwd': derivada_bwd,
+                    'formula_bwd': formula_bwd,
+                    'pasos_bwd': pasos_bwd,
+                    'derivada_cen': derivada_cen,
+                    'formula_cen': formula_cen,
+                    'pasos_cen': pasos_cen,
+                    'derivada_exacta': derivada_exacta_val,
+                    'error_fwd': round(errores['error_fwd'], 4),
+                    'error_bwd': round(errores['error_bwd'], 4),
+                    'error_cen': round(errores['error_cen'], 4)
+                }
+                
+                x_vals = [valor_x - 2*valor_h, valor_x - valor_h, valor_x, valor_x + valor_h, valor_x + 2*valor_h]
+                y_vals = [f(val) for val in x_vals]
+                
+                plt.figure()
+                plt.plot(x_vals, y_vals, 'b-', label='Función')
+                plt.plot(valor_x, f(valor_x), 'ro', label='Punto de Evaluación')
+                plt.xlabel('x')
+                plt.ylabel('f(x)')
+                plt.title('Gráfica de la Función y Puntos Encontrados')
+                plt.legend()
+                
+                buf = io.BytesIO()
+                plt.savefig(buf, format='png')
+                buf.seek(0)
+                
+                string = base64.b64encode(buf.read())
+                grafica_url = 'data:image/png;base64,' + urllib.parse.quote(string)
+                buf.close()
+
+                messages.success(request, 'Cálculo de derivadas completado y guardado correctamente.')
+
+            except ValueError as e:
+                messages.error(request, f'Ocurrió un error de valor: {str(e)}')
+            except SyntaxError as e:
+                messages.error(request, f'Ocurrió un error de sintaxis en la ecuación: {str(e)}')
+            except Exception as e:
+                messages.error(request, f'Ocurrió un error durante el cálculo: {str(e)}')
+
+    else:
+        form = DiferenciacionForm(initial={
+            'f': history_dif.function,
+            'x': history_dif.x_value,
+            'h': history_dif.h_value
+        })
+
+    return render(request, 'Biseccion/detalles_diferencias.html', {
+        'form': form,
+        'history_obj': history_dif,
+        'grafica_url': grafica_url if 'grafica_url' in locals() else "",
+        'resultado': resultado if 'resultado' in locals() else None
+    })
+
+########################################################################################################################################################################

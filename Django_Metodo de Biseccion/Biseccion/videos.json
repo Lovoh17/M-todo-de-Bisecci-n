@@ -11,11 +11,25 @@
         "video_url": "https://www.youtube.com/watch?v=rcdv9hlnimU",
         "title": " Metodo de la Biseccion ejercicio parte 1",
         "description": "Explicacion paso a pasa del metodo de Biseccion.",
-        "category": "differentiation"
+        "category": "bisection"
+    },
+    {
+        "thumbnail_url": "https://i.ytimg.com/vi/qFqZmFioXJM/maxresdefault.jpg",
+        "video_url": "https://www.youtube.com/watch?v=1XZr50bvsa4",
+        "title": "Metodo de la Biseccion",
+        "description": "Explicacion paso a pasa del metodo de Biseccion.",
+        "category": "bisection"
     },
     {
         "thumbnail_url": "https://th.bing.com/th/id/R.232bc43810e262198ba09a612069c900?rik=JP9%2b9Xupnbv3dA&pid=ImgRaw&r=0&sres=1&sresct=1",
         "video_url": "https://www.youtube.com/watch?v=RGqVbq4eklA",
+        "title": " Metodo de la Biseccion en excel ejercicio parte 2",
+        "description": "Una mirada detallada a los algoritmos de búsqueda de raíces, incluyendo el método de bisección y su automatizacion en excel.",
+        "category": "bisection"
+    },
+    {
+        "thumbnail_url": "https://th.bing.com/th/id/R.75610cc921433f28f99ed1d5bf09c421?rik=Uu0ujXO%2b35tOZg&riu=http%3a%2f%2fwww.mecapedia.uji.es%2fpages%2fimages%2fmetodo_de_la_biseccion1.gif&ehk=3hTs246feBGsSsvavLpAQzwqOdxWFGlCwzemP70yTjA%3d&risl=&pid=ImgRaw&r=0",
+        "video_url": "https://www.youtube.com/watch?v=Z5dWohkvhZE",
         "title": " Metodo de la Biseccion en excel ejercicio parte 2",
         "description": "Una mirada detallada a los algoritmos de búsqueda de raíces, incluyendo el método de bisección y su automatizacion en excel.",
         "category": "bisection"
@@ -39,6 +53,20 @@
         "video_url": "https://www.youtube.com/watch?v=fsHrYnqIr7Y",
         "title": "Ejemplo del metodo de diferenciación numerica",
         "description": "En este capítulo de métodos numéricos aplicaremos los conceptos visto en la clase anterior del método de diferenciación numérica. Por lo que aplicaremos cada una de las fórmulas definidas en el video anterior a la solución de un problema en específico.",
+        "category": "differentiation"
+    },
+    {
+        "thumbnail_url": "https://th.bing.com/th/id/OIP.8iMIqulP_7f6km2ybkjZMAAAAA?rs=1&pid=ImgDetMain",
+        "video_url": "https://www.youtube.com/watch?v=sQnmlmVeL8E",
+        "title": "Diferenciacion numerica",
+        "description": "Metodos Numericos",
+        "category": "differentiation"
+    },
+    {
+        "thumbnail_url": "https://0901.static.prezi.com/preview/v2/xb2wgyi4ukrtagvwwmw24iaapd6jc3sachvcdoaizecfr3dnitcq_3_0.png",
+        "video_url": "https://www.youtube.com/watch?v=Xe5avvdHL4Q",
+        "title": "Diferenciacion numerica",
+        "description": "Metodos Numericos",
         "category": "differentiation"
     }
 ]

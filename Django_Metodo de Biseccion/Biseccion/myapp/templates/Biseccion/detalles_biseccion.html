@@ -1,0 +1,77 @@
+{% extends "Biseccion/base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Detalles del Cálculo de Bisección</h2>
+
+    <div class="card">
+        <div class="card-header">
+            Detalles del Ejercicio
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Ecuación</h5>
+            <p class="card-text">{{ history_obj.ecuacion }}</p>
+            
+            <h5 class="card-title">Intervalo</h5>
+            <p class="card-text">Valor Mínimo: {{ history_obj.valor_min }}</p>
+            <p class="card-text">Valor Máximo: {{ history_obj.valor_max }}</p>
+            
+            <h5 class="card-title">Error Porcentual</h5>
+            <p class="card-text">{{ history_obj.error_porcentual }}</p>
+            
+            <h5 class="card-title">Fecha del Ejercicio</h5>
+            <p class="card-text">{{ history_obj.created_at|date:"d M Y H:i" }}</p>
+        </div>
+    </div>
+    <br><br>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary mt-3">Calcular</button>
+    </form>
+    <br><br>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Raíz aproximada</h5>
+            <p class="card-text">{{ resultado_biseccion.0|default:"No calculada" }}</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Número de iteraciones</h5>
+            <p class="card-text">{{ resultado_biseccion.1|default:"No calculado" }}</p>
+        </div>
+    </div>
+
+    {% if resultado_biseccion %}
+        <div class="mt-4">
+            {% if resultado_biseccion.3 %}
+                <h3>Iteraciones:</h3>
+                <div class="card-columns">
+                    {% for iteracion in resultado_biseccion.3 %}
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Iteración {{ iteracion.0 }}</h5>
+                            <p class="card-text">f(Raíz) = {{ iteracion.1 }}</p>
+                            <p class="card-text">Raíz Aproximada = {{ iteracion.2 }}</p>
+                            <p class="card-text">Error % = {{ iteracion.3 }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if grafica_base64 %}
+                <div class="mt-4">
+                    <h2>Gráfica:</h2>
+                    <img src="data:image/png;base64,{{ grafica_base64 }}" alt="Gráfica de la función y raíz encontrada" class="img-fluid mt-3">
+                </div>
+            {% endif %}
+            <br><br>
+            <a href="{% url 'biseccion_history' %}" class="btn btn-outline-secondary ms-2">Volver Historial</a>
+            <br><br>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

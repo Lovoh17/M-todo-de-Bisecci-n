@@ -1,19 +1,88 @@
 {% extends "Biseccion/baseDiferencias.html" %}
 
 {% block content %}
-  <h2>Detalles del Ejercicio</h2>
-  <ul>
-    <li><strong>Fecha:</strong> {{ ejercicio.created_at }}</li>
-    <li><strong>Función:</strong> {{ ejercicio.function }}</li>
-    <li><strong>x:</strong> {{ ejercicio.x_value }}</li>
-    <li><strong>h:</strong> {{ ejercicio.h_value }}</li>
-    <li><strong>Derivada Forward:</strong> {{ ejercicio.derivada_fwd }}</li>
-    <li><strong>Derivada Backward:</strong> {{ ejercicio.derivada_bwd }}</li>
-    <li><strong>Derivada Central:</strong> {{ ejercicio.derivada_cen }}</li>
-    <li><strong>Derivada Exacta:</strong> {{ ejercicio.derivada_exacta }}</li>
-    <li><strong>Error Forward:</strong> {{ ejercicio.error_fwd }}</li>
-    <li><strong>Error Backward:</strong> {{ ejercicio.error_bwd }}</li>
-    <li><strong>Error Central:</strong> {{ ejercicio.error_cen }}</li>
-  </ul>
-  <a href="{% url 'exercise_history' %}" class="btn btn-primary mt-4">Volver al Historial</a>
+  <div class="container">
+    <h2>Detalles del Ejercicio de Diferenciación Numérica</h2>
+
+    <div class="card mb-4">
+      <div class="card-header">
+        Detalles del Ejercicio
+      </div>
+      <div class="card-body">
+        <ul>
+          <li><strong>Fecha:</strong> {{ history_obj.created_at }}</li>
+          <li><strong>Función:</strong> {{ history_obj.function }}</li>
+          <li><strong>x:</strong> {{ history_obj.x_value }}</li>
+          <li><strong>h:</strong> {{ history_obj.h_value }}</li>
+        </ul>
+      </div>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary mt-3">Recalcular</button>
+    </form>
+
+    {% if resultado %}
+      {% if not resultado.error %}
+        <div class="mt-4">
+          <h2>Resultados:</h2>
+
+          <div class="card mb-3">
+            <div class="card-body">
+              <h3 class="card-title">Diferencia hacia adelante:</h3>
+              <p class="card-text">Resultado: {{ resultado.derivada_fwd }} (Error: {{ resultado.error_fwd }})</p>
+              <p class="card-text">Fórmula sustituida: {{ resultado.formula_fwd }}</p>
+              <h4 class="card-title">Paso a paso:</h4>
+              <ul class="list-group list-group-flush">
+                {% for paso in resultado.pasos_fwd %}
+                  <li class="list-group-item">{{ paso }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+
+          <div class="card mb-3">
+            <div class="card-body">
+              <h3 class="card-title">Diferencia hacia atrás:</h3>
+              <p class="card-text">Resultado: {{ resultado.derivada_bwd }} (Error: {{ resultado.error_bwd }})</p>
+              <p class="card-text">Fórmula sustituida: {{ resultado.formula_bwd }}</p>
+              <h4 class="card-title">Paso a paso:</h4>
+              <ul class="list-group list-group-flush">
+                {% for paso in resultado.pasos_bwd %}
+                  <li class="list-group-item">{{ paso }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+
+          <div class="card mb-3">
+            <div class="card-body">
+              <h3 class="card-title">Diferencia central:</h3>
+              <p class="card-text">Resultado: {{ resultado.derivada_cen }} (Error: {{ resultado.error_cen }})</p>
+              <p class="card-text">Fórmula sustituida: {{ resultado.formula_cen }}</p>
+              <h4 class="card-title">Paso a paso:</h4>
+              <ul class="list-group list-group-flush">
+                {% for paso in resultado.pasos_cen %}
+                  <li class="list-group-item">{{ paso }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+
+          <p><strong>Derivada exacta:</strong> {{ resultado.derivada_exacta }}</p>
+        </div>
+      {% else %}
+        <p>{{ resultado.error }}</p>
+      {% endif %}
+
+      <div class="mt-4">
+        <h2>Gráfica</h2>
+        <img src="{{ grafica_url }}" alt="Gráfica de la función y puntos encontrados">
+      </div>
+    {% endif %}
+
+    <a href="{% url 'exercise_history' %}" class="btn btn-outline-secondary ms-2">Volver al Historial</a>
+  </div>
 {% endblock %}

@@ -16,6 +16,7 @@
             <th>Iteraciones</th>
             <th>Error Final</th>
             <th>Fecha</th>
+            <th>Acciones</th> <!-- Columna para el botón Ver Detalles -->
           </tr>
         </thead>
         <tbody>
@@ -29,6 +30,9 @@
               <td>{{ item.iter_count }}</td>
               <td>{{ item.error_final }}</td>
               <td>{{ item.created_at|date:"d M Y H:i" }}</td>
+              <td>
+                <a href="{% url 'detalles' item.id %}" class="btn btn-info btn-sm">Ver Detalles</a>
+              </td>
             </tr>
           {% endfor %}
         </tbody>
